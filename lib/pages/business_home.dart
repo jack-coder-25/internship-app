@@ -15,7 +15,7 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text(""),
-        backgroundColor: const Color.fromARGB(255, 255, 0, 0),
+        backgroundColor: Colors.white,
       ),
       drawer: const DrawerWidget(),
       bottomNavigationBar: const BottomBarWidget(),
