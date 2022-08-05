@@ -1,3 +1,8 @@
+import 'package:app/pages/OurClubsandAssociation.dart';
+import 'package:app/pages/SubscriptionPage.dart';
+import 'package:app/pages/profilepage.dart';
+import 'package:app/pages/splash_screen.dart';
+import 'package:app/widget/dashboard.dart';
 import 'package:flutter/material.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -53,7 +58,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ListTile(
             leading: const Icon(Icons.dashboard_customize_rounded),
             iconColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SubscriptionPage(),
+                ),
+              );
+            },
             title: const Text(
               'Dashboard',
               style: TextStyle(color: Colors.white),
@@ -62,7 +74,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ListTile(
             leading: const Icon(Icons.discount),
             iconColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SubscriptionPage(),
+                ),
+              );
+            },
             title: const Text(
               'Offers',
               style: TextStyle(color: Colors.white),
@@ -71,7 +90,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ListTile(
             leading: const Icon(Icons.percent),
             iconColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SubscriptionPage(),
+                ),
+              );
+            },
             title: const Text(
               'Your Coupons',
               style: TextStyle(color: Colors.white),
@@ -80,7 +106,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ListTile(
             leading: const Icon(Icons.percent),
             iconColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SubscriptionPage(),
+                ),
+              );
+            },
             title: const Text(
               'Additional Coupons',
               style: TextStyle(color: Colors.white),
@@ -89,7 +122,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ListTile(
             leading: const Icon(Icons.group),
             iconColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SubscriptionPage(),
+                ),
+              );
+            },
             title: const Text(
               'Your Referrals',
               style: TextStyle(color: Colors.white),
@@ -98,7 +138,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ListTile(
             leading: const Icon(Icons.gamepad),
             iconColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SubscriptionPage(),
+                ),
+              );
+            },
             title: const Text(
               'Lucky Draw',
               style: TextStyle(color: Colors.white),
@@ -107,7 +154,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ListTile(
             leading: const Icon(Icons.handshake),
             iconColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Club(),
+                ),
+              );
+            },
             title: const Text(
               'Our Partner',
               style: TextStyle(color: Colors.white),
@@ -116,7 +170,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ListTile(
             leading: const Icon(Icons.upgrade),
             iconColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SubscriptionPage(),
+                ),
+              );
+            },
             title: const Text(
               'Upgrade',
               style: TextStyle(color: Colors.white),
@@ -125,7 +186,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ListTile(
             leading: const Icon(Icons.settings),
             iconColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => profilePage(),
+                ),
+              );
+            },
             title: const Text(
               'Settings',
               style: TextStyle(color: Colors.white),
@@ -134,7 +202,14 @@ class _DrawerWidgetState extends State<DrawerWidget> {
           ListTile(
             leading: const Icon(Icons.logout),
             iconColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SplashScreen(),
+                ),
+              );
+            },
             title: const Text(
               'Logout',
               style: TextStyle(color: Colors.white),

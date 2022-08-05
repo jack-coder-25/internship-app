@@ -15,7 +15,13 @@ class _ClubState extends State<Club> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("Our Clubs and Association"),
+        backgroundColor: const Color.fromARGB(255, 255, 0, 0),
+        leading: const BackButton(
+          color: Color.fromARGB(255, 251, 240, 240),
+        ),
+      ),
       body: ListView(
         scrollDirection: Axis.vertical,
         children: <Widget>[
@@ -39,14 +45,13 @@ class _ClubState extends State<Club> {
                         ),
                         Container(
                           width: 250,
-                          height: 200,
+                          height: 180,
                           child: ClipRRect(
                             borderRadius: new BorderRadius.circular(24.0),
                             child: Image(
                               fit: BoxFit.contain,
                               alignment: Alignment.topRight,
-                              image: NetworkImage(
-                                  "https://content3.jdmagicbox.com/comp/chennai/i8/044pxx44.xx44.191205160421.k1i8/catalogue/zodiac-recreation-club-jafferkhanpet-chennai-restaurants-7v3ef32i2q.jpg"),
+                              image: AssetImage("assets/images/club1.jpg"),
                             ),
                           ),
                         ),
@@ -81,8 +86,7 @@ class _ClubState extends State<Club> {
                             child: Image(
                               fit: BoxFit.contain,
                               alignment: Alignment.topRight,
-                              image: NetworkImage(
-                                  "https://images.unsplash.com/photo-1545396872-a6682fc218ab?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"),
+                              image: AssetImage("assets/images/club2.jpg"),
                             ),
                           ),
                         ),
@@ -117,8 +121,7 @@ class _ClubState extends State<Club> {
                             child: Image(
                               fit: BoxFit.contain,
                               alignment: Alignment.topRight,
-                              image: NetworkImage(
-                                  "https://images.unsplash.com/photo-1525640932057-b18561aca9b5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"),
+                              image: AssetImage("assets/images/club3.jpg"),
                             ),
                           ),
                         ),
@@ -152,9 +155,43 @@ class _ClubState extends State<Club> {
                             borderRadius: new BorderRadius.circular(24.0),
                             child: Image(
                               fit: BoxFit.contain,
-                              alignment: Alignment.topLeft,
-                              image: NetworkImage(
-                                  "https://images.unsplash.com/photo-1526399232581-2ab5608b6336?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"),
+                              alignment: Alignment.topRight,
+                              image: AssetImage("assets/images/club4.jpg"),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Container(
+              child: new FittedBox(
+                child: Material(
+                    color: Colors.white,
+                    elevation: 14.0,
+                    borderRadius: BorderRadius.circular(24.0),
+                    shadowColor: Color(0x802196F3),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 16.0),
+                            child: myDetailsContainer5(),
+                          ),
+                        ),
+                        Container(
+                          width: 250,
+                          height: 180,
+                          child: ClipRRect(
+                            borderRadius: new BorderRadius.circular(24.0),
+                            child: Image(
+                              fit: BoxFit.contain,
+                              alignment: Alignment.topRight,
+                              image: AssetImage("assets/images/club5.jpg"),
                             ),
                           ),
                         ),
@@ -176,7 +213,7 @@ class _ClubState extends State<Club> {
           padding: const EdgeInsets.only(left: 8.0),
           child: Container(
               child: Text(
-            "BENZE ZODIAC RECREATION CLUB",
+            "BENZE ZODIAC CLUB",
             style: TextStyle(
                 color: Color.fromARGB(255, 16, 12, 12),
                 fontSize: 24.0,
@@ -245,7 +282,7 @@ class _ClubState extends State<Club> {
         ),
         Container(
             child: Text(
-          "Our goal is to offer all esteemed members a comfortable environment where one can relax ,Socialize , Have fun, Entertain and Enjoy",
+          "Our goal is to offer all ",
           style: TextStyle(
               color: Colors.black54,
               fontSize: 18.0,
@@ -263,7 +300,7 @@ class _ClubState extends State<Club> {
           padding: const EdgeInsets.only(left: 8.0),
           child: Container(
               child: Text(
-            "Chocolate Haven",
+            "WELLINGTON PLAZA CLUB",
             style: TextStyle(
                 color: Color(0xffe6020a),
                 fontSize: 24.0,
@@ -320,7 +357,7 @@ class _ClubState extends State<Club> {
               ),
               Container(
                   child: Text(
-                "(75) \u00B7 1.2 mi",
+                "   ",
                 style: TextStyle(
                   color: Colors.black54,
                   fontSize: 18.0,
@@ -331,7 +368,7 @@ class _ClubState extends State<Club> {
         ),
         Container(
             child: Text(
-          "Pastries \u00B7 Phoenix,AZ",
+          "Benze club has defined Luxury club",
           style: TextStyle(
             color: Colors.black54,
             fontSize: 18.0,
@@ -349,7 +386,7 @@ class _ClubState extends State<Club> {
           padding: const EdgeInsets.only(left: 8.0),
           child: Container(
               child: Text(
-            "Cake Walk",
+            "KOLATHUR CLUB",
             style: TextStyle(
                 color: Color(0xffe6020a),
                 fontSize: 24.0,
@@ -399,7 +436,7 @@ class _ClubState extends State<Club> {
               ),
               Container(
                   child: Text(
-                "(100) \u00B7 2.0 mi",
+                "  ",
                 style: TextStyle(
                   color: Colors.black54,
                   fontSize: 18.0,
@@ -410,7 +447,7 @@ class _ClubState extends State<Club> {
         ),
         Container(
             child: Text(
-          "Pastries \u00B7 Phoenix,AZ",
+          "   ",
           style: TextStyle(
             color: Colors.black54,
             fontSize: 18.0,
@@ -428,7 +465,7 @@ class _ClubState extends State<Club> {
           padding: const EdgeInsets.only(left: 8.0),
           child: Container(
               child: Text(
-            "Chocolate Bar",
+            " BENZE ECR CLUB",
             style: TextStyle(
                 color: Color(0xffe6020a),
                 fontSize: 24.0,
@@ -478,7 +515,7 @@ class _ClubState extends State<Club> {
               ),
               Container(
                   child: Text(
-                "(50) \u00B7 2.5 mi",
+                "    ",
                 style: TextStyle(
                   color: Colors.black54,
                   fontSize: 18.0,
@@ -489,7 +526,86 @@ class _ClubState extends State<Club> {
         ),
         Container(
             child: Text(
-          "Pastries \u00B7 Phoenix,AZ",
+          "   ",
+          style: TextStyle(
+            color: Colors.black54,
+            fontSize: 18.0,
+          ),
+        )),
+      ],
+    );
+  }
+
+  Widget myDetailsContainer5() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Container(
+              child: Text(
+            " BENZE ECR CLUB",
+            style: TextStyle(
+                color: Color(0xffe6020a),
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold),
+          )),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Container(
+              child: Row(
+            children: <Widget>[
+              Container(
+                  child: Text(
+                "3.5",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 18.0,
+                ),
+              )),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStar,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                child: Icon(
+                  FontAwesomeIcons.solidStarHalf,
+                  color: Colors.amber,
+                  size: 15.0,
+                ),
+              ),
+              Container(
+                  child: Text(
+                "    ",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 18.0,
+                ),
+              )),
+            ],
+          )),
+        ),
+        Container(
+            child: Text(
+          "   ",
           style: TextStyle(
             color: Colors.black54,
             fontSize: 18.0,

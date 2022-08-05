@@ -255,6 +255,121 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
+<<<<<<< HEAD
+                ),
+              ),
+              Card(
+                color: Colors.grey,
+                clipBehavior: Clip.antiAlias,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Ink.image(
+                      image: new AssetImage('assets/images/theclublogo-rm.jpg'),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => Club(),
+                            ),
+                          );
+                        },
+                      ),
+                      height: 180,
+                      fit: BoxFit.fill,
+                    ),
+                    Text(
+                      '', //Our CLub and Association
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(213, 116, 28, 28),
+                        fontSize: 24,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Card(
+                color: Colors.grey,
+                clipBehavior: Clip.antiAlias,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Ink.image(
+                      image: new AssetImage(
+                          'assets/images/ic_subscription_banner.png'),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      SubscriptionPage()));
+                        },
+                      ),
+                      height: 180,
+                      fit: BoxFit.fill,
+                    ),
+                    Text(
+                      ' ', //Membership packages
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(213, 116, 28, 28),
+                        fontSize: 24,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Card(
+                color: Colors.grey,
+                clipBehavior: Clip.antiAlias,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Ink.image(
+                      image:
+                          new AssetImage('assets/images/luckydraw_banner.jpg'),
+                      child: InkWell(
+                        onTap: () {
+                          showModalBottomSheet<void>(
+                            context: context,
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(30),
+                              ),
+                            ),
+                            builder: (BuildContext context) {
+                              return Container(
+                                height: 200,
+                                color: Color.fromARGB(255, 230, 229, 227),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      const Text('Buy a plan'),
+                                      ElevatedButton(
+                                        child: const Text('Subscribe'),
+                                        onPressed: () => Navigator.of(context)
+                                            .pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                SubscriptionPage(),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+=======
                   Card(
                     color: Colors.grey,
                     clipBehavior: Clip.antiAlias,
@@ -307,6 +422,7 @@ class _HomePageState extends State<HomePage> {
                                 shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.vertical(
                                     top: Radius.circular(30),
+>>>>>>> 07f661c0467f73c8b6f5ddafadc9e5905dc382ce
                                   ),
                                 ),
                                 builder: (BuildContext context) {
@@ -353,8 +469,21 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
+<<<<<<< HEAD
+                    Text(
+                      '      ', //lucky spin
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(213, 116, 28, 28),
+                        fontSize: 24,
+                      ),
+                    ),
+                  ],
+                ),
+=======
                   ),
                 ]),
+>>>>>>> 07f661c0467f73c8b6f5ddafadc9e5905dc382ce
               ),
             )));
   }

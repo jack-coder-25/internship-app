@@ -1,4 +1,3 @@
-import 'package:app/pages/business_home.dart';
 import 'package:app/pages/home.dart';
 import 'package:app/pages/onboarding_business.dart';
 import 'package:app/pages/onboarding_mem.dart';
@@ -26,7 +25,11 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
+<<<<<<< HEAD
+      home: const SplashScreen(),
+=======
       home: const onBoardingBus(),
+>>>>>>> 07f661c0467f73c8b6f5ddafadc9e5905dc382ce
     );
   }
 }
