@@ -1,5 +1,7 @@
 import 'package:app/pages/business_home.dart';
 import 'package:app/pages/home.dart';
+import 'package:app/pages/onboarding_business.dart';
+import 'package:app/pages/onboarding_mem.dart';
 import 'package:app/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: const onBoardingBus(),
     );
   }
 }

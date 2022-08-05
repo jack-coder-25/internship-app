@@ -71,7 +71,7 @@ class _MemberLoginPageState extends State<MemberLoginPage> {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.only(
-              top: 48.0,
+              top: 35.0,
               left: 16.0,
               right: 16.0,
               bottom: 20.0,
@@ -80,10 +80,10 @@ class _MemberLoginPageState extends State<MemberLoginPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(20.0),
+                  borderRadius: BorderRadius.circular(10.0),
                   child: Image.asset('assets/images/logo.png'),
                 ),
-                const Padding(padding: EdgeInsets.all(8.0)),
+                const Padding(padding: EdgeInsets.all(3.0)),
                 const Text(
                   "Welcome",
                   textAlign: TextAlign.left,

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
-
   @override
   State<StatefulWidget> createState() => StartState();
 }
@@ -17,7 +16,7 @@ class StartState extends State<SplashScreen> {
   }
 
   startTime() async {
-    var duration = const Duration(seconds: 3);
+    var duration = const Duration(seconds: 2);
     return Timer(duration, route);
   }
 
@@ -38,8 +37,8 @@ class StartState extends State<SplashScreen> {
               color: Color.fromARGB(255, 255, 255, 255),
               gradient: LinearGradient(
                 colors: [
-                  Color.fromARGB(255, 255, 0, 0),
-                  Color.fromARGB(255, 255, 0, 0)
+                  Color.fromARGB(255, 255, 255, 255),
+                  Color.fromARGB(255, 255, 255, 255)
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,

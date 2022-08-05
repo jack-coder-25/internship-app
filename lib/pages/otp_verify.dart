@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:app/pages/home.dart';
+import 'package:app/pages/onboarding_mem.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sms_autofill/sms_autofill.dart';
@@ -113,7 +114,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
       if (!mounted) return;
 
       Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const HomePage()),
+        MaterialPageRoute(builder: (context) => const onBoardingMem()),
       );
     } catch (error) {
       showSnackBarText(error.toString());
