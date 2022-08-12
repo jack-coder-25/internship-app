@@ -1,3 +1,4 @@
+import 'package:app/constants/temp.dart';
 import 'package:app/widget/drawer_widget/drawer_wrapper.dart';
 import 'package:flutter/material.dart';
 
@@ -70,7 +71,11 @@ class _MemberHomePageState extends State<MemberHomePage> {
                           fit: BoxFit.fill,
                           child: InkWell(
                             onTap: () {
-                              Navigator.pushNamed(context, '/subscription');
+                              if (Temp.isBarAllowed) {
+                                Navigator.pushNamed(context, '/bar-home');
+                              } else {
+                                Navigator.pushNamed(context, '/subscription');
+                              }
                             },
                           ),
                         ),

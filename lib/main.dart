@@ -1,4 +1,3 @@
-import 'package:app/pages/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +9,10 @@ import 'package:app/pages/welcome.dart';
 import 'package:app/pages/auth/member/member_login.dart';
 import 'package:app/pages/auth/business/business_login.dart';
 import 'package:app/pages/auth/business/business_signup.dart';
+import 'package:app/pages/bar_detail.dart';
+import 'package:app/pages/bar_home.dart';
+import 'package:app/pages/bottom_bar.dart';
+import 'package:app/pages/subcription_detail.dart';
 import 'package:app/models/user.dart';
 import 'package:app/pages/dashboard.dart';
 import 'package:app/pages/splash_screen.dart';
@@ -69,11 +72,14 @@ class MyApp extends StatelessWidget {
           '/business-login': (context) => BusinessLoginPage(),
           '/business-signup': (context) => BusinessSignupPage(),
           '/otp-verify': (context) => const OtpVerifyPage(),
+          '/bar-home': (context) => const BarHomePage(),
+          '/bar-detail': (context) => const BarDetailPage(),
           '/onboarding': (context) => const OnboardingWrapper(),
           '/bottom-bar': (context) => const BottomBarPage(),
           '/dashboard': (context) => const DashboardPage(),
           '/profile': (context) => ProfilePage(),
           '/subscription': (context) => const SubscriptionPage(),
+          '/subscription-detail': (context) => const SubscriptionDetailPage(),
           '/clubs-associations': (context) => const ClubsAndAssociationsPage(),
         },
       ),

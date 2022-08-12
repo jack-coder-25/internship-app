@@ -44,7 +44,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                       fit: BoxFit.fill,
                       child: InkWell(
                         onTap: () {
-                          Navigator.pushNamed(context, '/bottom-bar');
+                          Navigator.pushNamed(context, '/subscription-detail');
                         },
                       ),
                     ),
@@ -90,7 +90,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                       fit: BoxFit.fill,
                       child: InkWell(
                         onTap: () {
-                          Navigator.pushNamed(context, '/bottom-bar');
+                          Navigator.pushNamed(context, '/subscription-detail');
                         },
                       ),
                     ),
@@ -136,7 +136,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                       fit: BoxFit.fill,
                       child: InkWell(
                         onTap: () {
-                          Navigator.pushNamed(context, '/bottom-bar');
+                          Navigator.pushNamed(context, '/subscription-detail');
                         },
                       ),
                     ),
@@ -182,7 +182,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                       fit: BoxFit.fill,
                       child: InkWell(
                         onTap: () {
-                          Navigator.pushNamed(context, '/bottom-bar');
+                          Navigator.pushNamed(context, '/subscription-detail');
                         },
                       ),
                     ),
@@ -228,7 +228,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                       fit: BoxFit.fill,
                       child: InkWell(
                         onTap: () {
-                          Navigator.pushNamed(context, '/bottom-bar');
+                          Navigator.pushNamed(context, '/subscription-detail');
                         },
                       ),
                     ),
@@ -274,7 +274,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                       fit: BoxFit.fill,
                       child: InkWell(
                         onTap: () {
-                          Navigator.pushNamed(context, '/bottom-bar');
+                          Navigator.pushNamed(context, '/subscription-detail');
                         },
                       ),
                     ),
