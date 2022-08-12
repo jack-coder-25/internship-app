@@ -9,14 +9,18 @@ import 'package:app/pages/welcome.dart';
 import 'package:app/pages/auth/member/member_login.dart';
 import 'package:app/pages/auth/business/business_login.dart';
 import 'package:app/pages/auth/business/business_signup.dart';
+import 'package:app/pages/offers.dart';
 import 'package:app/pages/bar_detail.dart';
 import 'package:app/pages/bar_home.dart';
 import 'package:app/pages/bottom_bar.dart';
+import 'package:app/pages/coupons.dart';
+import 'package:app/pages/partners.dart';
 import 'package:app/pages/subcription_detail.dart';
 import 'package:app/models/user.dart';
 import 'package:app/pages/dashboard.dart';
 import 'package:app/pages/splash_screen.dart';
 import 'package:app/pages/subscription.dart';
+import 'package:app/pages/referrals.dart';
 import 'package:app/pages/auth/otp_verify.dart';
 import 'package:app/pages/auth/authentication_wrapper.dart';
 import 'package:app/pages/profile.dart';
@@ -25,6 +29,8 @@ import 'package:app/pages/onboarding/onboarding_wrapper.dart';
 import 'package:app/utils/authentication_service.dart';
 
 late UserObject? userObject;
+
+// https://github.com/KevalSenghani171/UPI-Payment-Flutter
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -78,7 +84,11 @@ class MyApp extends StatelessWidget {
           '/bottom-bar': (context) => const BottomBarPage(),
           '/dashboard': (context) => const DashboardPage(),
           '/profile': (context) => ProfilePage(),
+          '/referrals': (context) => const ReferralsPage(),
+          '/offers': (context) => const OffersPage(),
           '/subscription': (context) => const SubscriptionPage(),
+          '/coupons': (context) => const CouponsPage(),
+          '/partners': (context) => const PartnersPage(),
           '/subscription-detail': (context) => const SubscriptionDetailPage(),
           '/clubs-associations': (context) => const ClubsAndAssociationsPage(),
         },

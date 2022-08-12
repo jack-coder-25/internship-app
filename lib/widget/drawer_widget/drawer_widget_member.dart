@@ -89,7 +89,7 @@ class _DrawerWidgetMemberState extends State<DrawerWidgetMember> {
             leading: const Icon(Icons.discount),
             iconColor: Colors.white,
             onTap: () {
-              Navigator.pushNamed(context, '/subscription');
+              Navigator.pushNamed(context, '/offers');
             },
             title: const Text(
               'Offers',
@@ -100,7 +100,7 @@ class _DrawerWidgetMemberState extends State<DrawerWidgetMember> {
             leading: const Icon(Icons.percent),
             iconColor: Colors.white,
             onTap: () {
-              Navigator.pushNamed(context, '/subscription');
+              Navigator.pushNamed(context, '/coupons');
             },
             title: const Text(
               'Your Coupons',
@@ -122,7 +122,7 @@ class _DrawerWidgetMemberState extends State<DrawerWidgetMember> {
             leading: const Icon(Icons.group),
             iconColor: Colors.white,
             onTap: () {
-              Navigator.pushNamed(context, '/subscription');
+              Navigator.pushNamed(context, '/referrals');
             },
             title: const Text(
               'Your Referrals',
@@ -144,7 +144,7 @@ class _DrawerWidgetMemberState extends State<DrawerWidgetMember> {
             leading: const Icon(Icons.handshake),
             iconColor: Colors.white,
             onTap: () {
-              Navigator.pushNamed(context, '/clubs-and-association');
+              Navigator.pushNamed(context, '/partners');
             },
             title: const Text(
               'Our Partner',

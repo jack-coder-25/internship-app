@@ -38,13 +38,13 @@ class _MemberHomePageState extends State<MemberHomePage> {
       child: MaterialApp(
         home: Scaffold(
           drawer: const DrawerWrapper(),
+          resizeToAvoidBottomInset: false,
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
                   const TextField(
-                    keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.search),
                       border: OutlineInputBorder(
@@ -71,7 +71,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                           fit: BoxFit.fill,
                           child: InkWell(
                             onTap: () {
-                              if (Temp.isBarAllowed) {
+                              if (Temp.userSubscribed) {
                                 Navigator.pushNamed(context, '/bar-home');
                               } else {
                                 Navigator.pushNamed(context, '/subscription');

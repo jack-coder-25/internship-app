@@ -299,6 +299,52 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
               const SizedBox(
                 height: 10,
               ),
+              Card(
+                color: Colors.grey,
+                clipBehavior: Clip.antiAlias,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Ink.image(
+                      image: const AssetImage(
+                        'assets/images/48651f50-b91c-41ff-b571-3fad35a65222.jpg',
+                      ),
+                      colorFilter: ColorFilter.mode(
+                        Colors.black.withOpacity(0.6),
+                        BlendMode.dstATop,
+                      ),
+                      height: 180,
+                      fit: BoxFit.fill,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/subscription-detail');
+                        },
+                      ),
+                    ),
+                    const Text(
+                      'SAMPLE TEST',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(212, 255, 253, 253),
+                        fontSize: 24,
+                        shadows: <Shadow>[
+                          Shadow(
+                            offset: Offset(10.0, 10.0),
+                            blurRadius: 8.0,
+                            color: Color.fromARGB(255, 72, 33, 33),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
             ],
           ),
         ),

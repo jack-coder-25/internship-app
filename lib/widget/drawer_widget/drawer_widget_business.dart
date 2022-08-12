@@ -86,7 +86,9 @@ class _DrawerWidgetBusinessState extends State<DrawerWidgetBusiness> {
           ListTile(
             leading: const Icon(Icons.discount),
             iconColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/offers');
+            },
             title: const Text(
               'Offers',
               style: TextStyle(color: Colors.white),
@@ -95,7 +97,9 @@ class _DrawerWidgetBusinessState extends State<DrawerWidgetBusiness> {
           ListTile(
             leading: const Icon(Icons.percent),
             iconColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/coupons');
+            },
             title: const Text(
               'Your Coupons',
               style: TextStyle(color: Colors.white),
@@ -113,7 +117,9 @@ class _DrawerWidgetBusinessState extends State<DrawerWidgetBusiness> {
           ListTile(
             leading: const Icon(Icons.group),
             iconColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/referrals');
+            },
             title: const Text(
               'Your Referrals',
               style: TextStyle(color: Colors.white),
@@ -131,7 +137,9 @@ class _DrawerWidgetBusinessState extends State<DrawerWidgetBusiness> {
           ListTile(
             leading: const Icon(Icons.handshake),
             iconColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/partners');
+            },
             title: const Text(
               'Our Partner',
               style: TextStyle(color: Colors.white),
