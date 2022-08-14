@@ -111,7 +111,7 @@ class _DrawerWidgetMemberState extends State<DrawerWidgetMember> {
             leading: const Icon(Icons.percent),
             iconColor: Colors.white,
             onTap: () {
-              Navigator.pushNamed(context, '/subscription');
+              Navigator.pushNamed(context, '/additional-coupons');
             },
             title: const Text(
               'Additional Coupons',

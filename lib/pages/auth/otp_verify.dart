@@ -13,11 +13,13 @@ class OtpVerifyPageArguments {
   final UserObject user;
   final String mobile;
   final String password;
+  final bool showOnboarding;
 
   OtpVerifyPageArguments({
     required this.user,
     required this.mobile,
     required this.password,
+    required this.showOnboarding,
   });
 }
 
@@ -115,7 +117,27 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
       await args.user.userCredential?.updatePhoneNumber(credential);
       authService.signIn(email: args.user.email, password: args.password);
       if (!mounted) return;
-      Navigator.pushNamedAndRemoveUntil(context, "/onboarding", (r) => false);
+
+      if (args.showOnboarding) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          "/onboarding",
+          (r) => false,
+        );
+      } else {
+        authService.updateUser(
+          userObject: args.user,
+          email: args.user.email,
+          phone: args.password,
+          displayName: args.user.fullName,
+          dateOfBirth: args.user.dateOfBirth,
+        );
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          "/auth",
+          (r) => false,
+        );
+      }
     } catch (error) {
       String message = authService.handleFirebaseError(error);
       showSnackbar(context, message);

@@ -38,6 +38,8 @@ dependencies:
   carousel_slider: ^4.1.1
   quantity_input: ^1.0.2
   pay: ^1.0.10
+  image_picker: ^0.8.5+3
+  flutter_dialogs: ^3.0.0
 
 dev_dependencies:
   flutter_test:

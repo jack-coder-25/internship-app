@@ -83,6 +83,7 @@ class _BusinessSignupPageState extends State<BusinessSignupPage> {
       try {
         user = await authService.signUp(
           email: emailTextController.text.trim(),
+          phone: mobileTextController.text.trim(),
           password: passwordTextController.text.trim(),
           displayName: fullNameTextController.text.trim(),
           dateOfBirth: dateOfBirthTextController.text.trim(),
@@ -103,6 +104,7 @@ class _BusinessSignupPageState extends State<BusinessSignupPage> {
           user: user,
           mobile: mobileTextController.text.trim(),
           password: passwordTextController.text.trim(),
+          showOnboarding: true
         ),
       );
     }

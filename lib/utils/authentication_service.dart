@@ -20,9 +20,9 @@ final controller = StreamController<UserObject?>.broadcast();
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
-  final FirebaseFirestore _firestore;
+  static final usersRef = FirebaseFirestore.instance.collection('users');
 
-  AuthenticationService(this._firebaseAuth, this._firestore);
+  AuthenticationService(this._firebaseAuth);
 
   Stream<UserObject?> get authStateChanges => controller.stream;
   static UserObject? userObject;
@@ -35,7 +35,7 @@ class AuthenticationService {
       return null;
     }
 
-    final doc = FirebaseFirestore.instance.collection('users').doc(user.uid);
+    final doc = usersRef.doc(user.uid);
     final data = await doc.get();
 
     userObject = UserObject(
@@ -65,7 +65,7 @@ class AuthenticationService {
         password: password,
       );
 
-      final doc = _firestore.collection('users').doc(user.user?.uid);
+      final doc = usersRef.doc(user.user?.uid);
       final data = await doc.get();
 
       userObject = UserObject(
@@ -86,6 +86,7 @@ class AuthenticationService {
 
   Future<UserObject?> signUp({
     required String email,
+    required String phone,
     required String password,
     required String displayName,
     required String dateOfBirth,
@@ -99,10 +100,14 @@ class AuthenticationService {
         password: password,
       );
 
+      //TODO: Check if phone already exists using firebase functions
+
       await user.user?.updateDisplayName(displayName);
-      final doc = _firestore.collection('users').doc(user.user?.uid);
+      final doc = usersRef.doc(user.user?.uid);
 
       await doc.set({
+        'email': email,
+        'phone': phone,
         'dateOfBirth': dateOfBirth,
         'referralCode': referralCode,
         'accountType': accountType.name,
@@ -116,6 +121,38 @@ class AuthenticationService {
         dateOfBirth: dateOfBirth,
         referralCode: referralCode,
         userCredential: user.user,
+      );
+
+      controller.sink.add(userObject);
+      return userObject;
+    } on Exception {
+      rethrow;
+    }
+  }
+
+  Future<UserObject?> updateUser({
+    required UserObject userObject,
+    required String email,
+    required String phone,
+    required String displayName,
+    required String dateOfBirth
+  }) async {
+    try {
+      final doc = usersRef.doc(userObject.userCredential?.uid);
+
+      await doc.update({
+        'email': email,
+        'phone': phone,
+        'dateOfBirth': dateOfBirth,
+      });
+
+      userObject = UserObject(
+        fullName: displayName,
+        email: email,
+        accountType: userObject.accountType,
+        dateOfBirth: dateOfBirth,
+        referralCode: userObject.referralCode,
+        userCredential: userObject.userCredential,
       );
 
       controller.sink.add(userObject);
@@ -142,7 +179,7 @@ class AuthenticationService {
 
     try {
       final user = _firebaseAuth.currentUser;
-      final doc = _firestore.collection('users').doc(user?.uid);
+      final doc = usersRef.doc(user?.uid);
       final data = await doc.get();
 
       userObject = UserObject(

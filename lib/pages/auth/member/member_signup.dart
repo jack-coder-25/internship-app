@@ -42,6 +42,7 @@ class _MemberSignupPageState extends State<MemberSignupPage> {
       try {
         user = await authService.signUp(
           email: emailTextController.text.trim(),
+          phone: mobileTextController.text.trim(),
           password: passwordTextController.text.trim(),
           displayName: fullNameTextController.text.trim(),
           accountType: AccountType.member,
@@ -62,6 +63,7 @@ class _MemberSignupPageState extends State<MemberSignupPage> {
           user: user,
           mobile: mobileTextController.text.trim(),
           password: passwordTextController.text.trim(),
+          showOnboarding: true
         ),
       );
     }

@@ -1,17 +1,17 @@
+import 'package:app/pages/additional_coupons.dart';
+import 'package:app/pages/offers/offers_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:app/pages/auth/member/member_signup.dart';
 import 'package:app/pages/clubs_and_association.dart';
 import 'package:app/pages/welcome.dart';
 import 'package:app/pages/auth/member/member_login.dart';
 import 'package:app/pages/auth/business/business_login.dart';
 import 'package:app/pages/auth/business/business_signup.dart';
-import 'package:app/pages/offers.dart';
-import 'package:app/pages/bar_detail.dart';
-import 'package:app/pages/bar_home.dart';
+import 'package:app/pages/bar/bar_detail.dart';
+import 'package:app/pages/bar/bar_home.dart';
 import 'package:app/pages/bottom_bar.dart';
 import 'package:app/pages/coupons.dart';
 import 'package:app/pages/partners.dart';
@@ -48,8 +48,7 @@ class MyApp extends StatelessWidget {
       providers: [
         Provider<AuthenticationService>(
           create: (_) => AuthenticationService(
-            FirebaseAuth.instance,
-            FirebaseFirestore.instance,
+            FirebaseAuth.instance
           ),
         ),
         StreamProvider(
@@ -85,9 +84,10 @@ class MyApp extends StatelessWidget {
           '/dashboard': (context) => const DashboardPage(),
           '/profile': (context) => ProfilePage(),
           '/referrals': (context) => const ReferralsPage(),
-          '/offers': (context) => const OffersPage(),
+          '/offers': (context) => const OffersWrapper(),
           '/subscription': (context) => const SubscriptionPage(),
           '/coupons': (context) => const CouponsPage(),
+          '/additional-coupons': (context) => const AdditionalCouponsPage(),
           '/partners': (context) => const PartnersPage(),
           '/subscription-detail': (context) => const SubscriptionDetailPage(),
           '/clubs-associations': (context) => const ClubsAndAssociationsPage(),

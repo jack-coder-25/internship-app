@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class OffersPage extends StatefulWidget {
-  const OffersPage({Key? key}) : super(key: key);
+class MemberOffersPage extends StatefulWidget {
+  const MemberOffersPage({Key? key}) : super(key: key);
 
   @override
-  State<OffersPage> createState() => _OffersPageState();
+  State<MemberOffersPage> createState() => _MemberOffersPageState();
 }
 
-class _OffersPageState extends State<OffersPage> {
+class _MemberOffersPageState extends State<MemberOffersPage> {
   String dropdownvalue = 'All';
 
   // List of items in our dropdown menu
