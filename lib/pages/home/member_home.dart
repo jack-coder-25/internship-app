@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:app/constants/temp.dart';
 import 'package:app/widget/drawer_widget/drawer_wrapper.dart';
-import 'package:flutter/material.dart';
 
 class MemberHomePage extends StatefulWidget {
   const MemberHomePage({Key? key}) : super(key: key);
@@ -16,11 +17,13 @@ class _MemberHomePageState extends State<MemberHomePage> {
           title: const Text('Wanna leave ?'),
           actions: [
             ElevatedButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: const Text('Yes')),
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Yes'),
+            ),
             ElevatedButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: const Text('No')),
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('No'),
+            ),
           ],
         ),
       );
@@ -44,6 +47,73 @@ class _MemberHomePageState extends State<MemberHomePage> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
+                  CarouselSlider(
+                    items: [
+                      Container(
+                        margin: const EdgeInsets.all(6.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          image: const DecorationImage(
+                            image: AssetImage("assets/images/drinkoffer1.jpg"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.all(6.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          image: const DecorationImage(
+                            image: AssetImage("assets/images/drinkoffer2.jpg"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.all(6.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          image: const DecorationImage(
+                            image: AssetImage("assets/images/drinkoffer3.jpg"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.all(6.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          image: const DecorationImage(
+                            image: AssetImage("assets/images/drinkoffer4.jpg"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.all(6.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          image: const DecorationImage(
+                            image: AssetImage("assets/images/drinkoffer3.jpg"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ],
+                    options: CarouselOptions(
+                      height: 270.0,
+                      enlargeCenterPage: true,
+                      autoPlay: true,
+                      aspectRatio: 16 / 9,
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      enableInfiniteScroll: true,
+                      autoPlayAnimationDuration: const Duration(
+                        milliseconds: 800,
+                      ),
+                      viewportFraction: 0.8,
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsets.all(8.0)),
                   const TextField(
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.search),

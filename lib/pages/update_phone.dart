@@ -136,7 +136,7 @@ class _UpdatePhoneDialogState extends State<UpdatePhoneDialog> {
       builder: (_) => BasicDialogAlert(
         title: const Text("Verify Your Phone Number"),
         content: const UpdatePhoneDialog(),
-        actions: const [],
+        actions: null,
       ),
     );
   }

@@ -77,42 +77,30 @@ class _DrawerWidgetBusinessState extends State<DrawerWidgetBusiness> {
           ListTile(
             leading: const Icon(Icons.dashboard_customize_rounded),
             iconColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/dashboard');
+            },
             title: const Text(
               'Dashboard',
               style: TextStyle(color: Colors.white),
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.discount),
+            leading: const Icon(Icons.subscriptions),
             iconColor: Colors.white,
-            onTap: () {
-              Navigator.pushNamed(context, '/offers');
-            },
+            onTap: () {},
             title: const Text(
-              'Offers',
+              'Package Subscription',
               style: TextStyle(color: Colors.white),
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.percent),
+            leading: const Icon(Icons.notifications),
             iconColor: Colors.white,
             onTap: () {
-              Navigator.pushNamed(context, '/coupons');
             },
             title: const Text(
-              'Your Coupons',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.percent),
-            iconColor: Colors.white,
-            onTap: () {
-              Navigator.pushNamed(context, '/additional-coupons');
-            },
-            title: const Text(
-              'Additional Coupons',
+              'Notifications',
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -124,35 +112,6 @@ class _DrawerWidgetBusinessState extends State<DrawerWidgetBusiness> {
             },
             title: const Text(
               'Your Referrals',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.gamepad),
-            iconColor: Colors.white,
-            onTap: () {},
-            title: const Text(
-              'Lucky Draw',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.handshake),
-            iconColor: Colors.white,
-            onTap: () {
-              Navigator.pushNamed(context, '/partners');
-            },
-            title: const Text(
-              'Our Partner',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.upgrade),
-            iconColor: Colors.white,
-            onTap: () {},
-            title: const Text(
-              'Upgrade',
               style: TextStyle(color: Colors.white),
             ),
           ),

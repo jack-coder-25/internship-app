@@ -1,3 +1,4 @@
+import 'package:app/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dialogs/flutter_dialogs.dart';
 
@@ -46,22 +47,123 @@ void _showConfirmationAlert(BuildContext context) {
   showPlatformDialog(
     context: context,
     builder: (_) => BasicDialogAlert(
-      title: const Text("Vendor Coupon"),
-      content: Column(
-        children: const [],
+      title: const Text(
+        "Vendor Coupon",
+        textAlign: TextAlign.center,
+      ),
+      content: SizedBox(
+        height: 350.0,
+        width: 380.0,
+        child: Column(
+          children: [
+            const Icon(
+              Icons.euro,
+              size: 80.0,
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text("Vendor"),
+                Text("WELLINGTON PLAZA"),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text("Service"),
+                Text("CLUB"),
+              ],
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              "Coupon Validity Period",
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text("From Date"),
+                Text("2021-11-12"),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text("To Date"),
+                Text("2023-11-12"),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text("Coupon"),
+                Text("ZT9ZAA5GK"),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text("Coupon Amount"),
+                Text(
+                  "₹5",
+                  style: TextStyle(
+                    color: Colors.green,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text("Buy Amount"),
+                Text(
+                  "₹1",
+                  style: TextStyle(
+                    color: Colors.green,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
       ),
       actions: <Widget>[
-        BasicDialogAction(
-          title: const Text("Cancel"),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(
+              primary: Colors.white,
+            ),
+            child: const Text(
+              "Cancel",
+              style: TextStyle(
+                color: ColorConstants.red,
+              ),
+            ),
+          ),
         ),
-        BasicDialogAction(
-          title: const Text("Buy"),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            style: ElevatedButton.styleFrom(
+              primary: ColorConstants.red,
+            ),
+            child: const Text("Buy"),
+          ),
         ),
       ],
     ),

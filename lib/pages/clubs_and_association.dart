@@ -29,7 +29,11 @@ class _ClubsAndAssociationsPageState extends State<ClubsAndAssociationsPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: FittedBox(
-              child: Material(
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, '/club-detail');
+                },
+                child: Material(
                   color: Colors.white,
                   elevation: 14.0,
                   borderRadius: BorderRadius.circular(24.0),
@@ -54,131 +58,137 @@ class _ClubsAndAssociationsPageState extends State<ClubsAndAssociationsPage> {
                         ),
                       ),
                     ],
-                  )),
+                  ),
+                ),
+              ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: FittedBox(
               child: Material(
-                  color: Colors.white,
-                  elevation: 14.0,
-                  borderRadius: BorderRadius.circular(24.0),
-                  shadowColor: const Color(0x802196F3),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
-                        child: myDetailsContainer4(),
-                      ),
-                      SizedBox(
-                        width: 250,
-                        height: 180,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(24.0),
-                          child: const Image(
-                            fit: BoxFit.contain,
-                            alignment: Alignment.topRight,
-                            image: AssetImage("assets/images/club2.jpg"),
-                          ),
+                color: Colors.white,
+                elevation: 14.0,
+                borderRadius: BorderRadius.circular(24.0),
+                shadowColor: const Color(0x802196F3),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child: myDetailsContainer4(),
+                    ),
+                    SizedBox(
+                      width: 250,
+                      height: 180,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(24.0),
+                        child: const Image(
+                          fit: BoxFit.contain,
+                          alignment: Alignment.topRight,
+                          image: AssetImage("assets/images/club2.jpg"),
                         ),
                       ),
-                    ],
-                  )),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: FittedBox(
               child: Material(
-                  color: Colors.white,
-                  elevation: 14.0,
-                  borderRadius: BorderRadius.circular(24.0),
-                  shadowColor: const Color(0x802196F3),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
-                        child: myDetailsContainer3(),
-                      ),
-                      SizedBox(
-                        width: 250,
-                        height: 180,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(24.0),
-                          child: const Image(
-                            fit: BoxFit.contain,
-                            alignment: Alignment.topRight,
-                            image: AssetImage("assets/images/club3.jpg"),
-                          ),
+                color: Colors.white,
+                elevation: 14.0,
+                borderRadius: BorderRadius.circular(24.0),
+                shadowColor: const Color(0x802196F3),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child: myDetailsContainer3(),
+                    ),
+                    SizedBox(
+                      width: 250,
+                      height: 180,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(24.0),
+                        child: const Image(
+                          fit: BoxFit.contain,
+                          alignment: Alignment.topRight,
+                          image: AssetImage("assets/images/club3.jpg"),
                         ),
                       ),
-                    ],
-                  )),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: FittedBox(
               child: Material(
-                  color: Colors.white,
-                  elevation: 14.0,
-                  borderRadius: BorderRadius.circular(24.0),
-                  shadowColor: const Color(0x802196F3),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
-                        child: myDetailsContainer2(),
-                      ),
-                      SizedBox(
-                        width: 250,
-                        height: 180,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(24.0),
-                          child: const Image(
-                            fit: BoxFit.contain,
-                            alignment: Alignment.topRight,
-                            image: AssetImage("assets/images/club4.jpg"),
-                          ),
+                color: Colors.white,
+                elevation: 14.0,
+                borderRadius: BorderRadius.circular(24.0),
+                shadowColor: const Color(0x802196F3),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child: myDetailsContainer2(),
+                    ),
+                    SizedBox(
+                      width: 250,
+                      height: 180,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(24.0),
+                        child: const Image(
+                          fit: BoxFit.contain,
+                          alignment: Alignment.topRight,
+                          image: AssetImage("assets/images/club4.jpg"),
                         ),
                       ),
-                    ],
-                  )),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: FittedBox(
               child: Material(
-                  color: Colors.white,
-                  elevation: 14.0,
-                  borderRadius: BorderRadius.circular(24.0),
-                  shadowColor: const Color.fromARGB(255, 255, 8, 0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
-                        child: myDetailsContainer5(),
-                      ),
-                      SizedBox(
-                        width: 250,
-                        height: 180,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(24.0),
-                          child: const Image(
-                            fit: BoxFit.contain,
-                            alignment: Alignment.topRight,
-                            image: AssetImage("assets/images/club5.jpg"),
-                          ),
+                color: Colors.white,
+                elevation: 14.0,
+                borderRadius: BorderRadius.circular(24.0),
+                shadowColor: const Color.fromARGB(255, 255, 8, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child: myDetailsContainer5(),
+                    ),
+                    SizedBox(
+                      width: 250,
+                      height: 180,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(24.0),
+                        child: const Image(
+                          fit: BoxFit.contain,
+                          alignment: Alignment.topRight,
+                          image: AssetImage("assets/images/club5.jpg"),
                         ),
                       ),
-                    ],
-                  )),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
@@ -248,14 +258,6 @@ class _ClubsAndAssociationsPageState extends State<ClubsAndAssociationsPage> {
             ],
           ),
         ),
-        const Text(
-          "Our goal is to offer all ",
-          style: TextStyle(
-            color: Colors.black54,
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
       ],
     );
   }
@@ -269,9 +271,10 @@ class _ClubsAndAssociationsPageState extends State<ClubsAndAssociationsPage> {
           child: Text(
             "WELLINGTON PLAZA CLUB",
             style: TextStyle(
-                color: Color.fromARGB(255, 0, 0, 0),
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold),
+              color: Color.fromARGB(255, 0, 0, 0),
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         Padding(
@@ -318,13 +321,6 @@ class _ClubsAndAssociationsPageState extends State<ClubsAndAssociationsPage> {
                 ),
               ),
             ],
-          ),
-        ),
-        const Text(
-          "Benze club has defined Luxury club",
-          style: TextStyle(
-            color: Colors.black54,
-            fontSize: 18.0,
           ),
         ),
       ],
