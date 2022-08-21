@@ -13,21 +13,14 @@ class DrawerWidgetMember extends StatefulWidget {
 }
 
 class _DrawerWidgetMemberState extends State<DrawerWidgetMember> {
-  late AuthenticationService authService;
   UserObject? user;
 
   @override
   void initState() {
     super.initState();
-    authService = context.read<AuthenticationService>();
-    getUserData();
-  }
-
-  void getUserData() async {
-    final userObject = await authService.getUser();
 
     setState(() {
-      user = userObject;
+      user = context.read<UserObject?>();
     });
   }
 
@@ -43,46 +36,40 @@ class _DrawerWidgetMemberState extends State<DrawerWidgetMember> {
               left: 12.0,
               bottom: 16.0,
             ),
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.account_circle,
-                  size: 64.0,
-                  color: Colors.white,
-                ),
-                const SizedBox(width: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      user != null ? user!.fullName : "No User Found",
-                      style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.account_circle,
+                    size: 64.0,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(width: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        user != null ? user!.fullName : "...",
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      user != null ? user!.email : "No User Found",
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.white,
+                      const SizedBox(height: 4),
+                      Text(
+                        user != null ? user!.email : "...",
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.dashboard_customize_rounded),
-            iconColor: Colors.white,
-            onTap: () {
-              Navigator.pushNamed(context, '/dashboard');
-            },
-            title: const Text(
-              'Dashboard',
-              style: TextStyle(color: Colors.white),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           ListTile(
@@ -111,7 +98,11 @@ class _DrawerWidgetMemberState extends State<DrawerWidgetMember> {
             leading: const Icon(Icons.percent),
             iconColor: Colors.white,
             onTap: () {
-              Navigator.pushNamed(context, '/additional-coupons');
+              if (user?.profile?.data?.subscriptionId == null) {
+                Navigator.pushNamed(context, '/subscription');
+              } else {
+                Navigator.pushNamed(context, '/additional-coupons');
+              }
             },
             title: const Text(
               'Additional Coupons',
@@ -132,9 +123,7 @@ class _DrawerWidgetMemberState extends State<DrawerWidgetMember> {
           ListTile(
             leading: const Icon(Icons.gamepad),
             iconColor: Colors.white,
-            onTap: () {
-              Navigator.pushNamed(context, '/subscription');
-            },
+            onTap: () {},
             title: const Text(
               'Lucky Draw',
               style: TextStyle(color: Colors.white),
@@ -147,7 +136,7 @@ class _DrawerWidgetMemberState extends State<DrawerWidgetMember> {
               Navigator.pushNamed(context, '/partners');
             },
             title: const Text(
-              'Our Partner',
+              'Our Partners',
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -159,17 +148,6 @@ class _DrawerWidgetMemberState extends State<DrawerWidgetMember> {
             },
             title: const Text(
               'Upgrade',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            iconColor: Colors.white,
-            onTap: () {
-              Navigator.pushNamed(context, '/profile');
-            },
-            title: const Text(
-              'Settings',
               style: TextStyle(color: Colors.white),
             ),
           ),

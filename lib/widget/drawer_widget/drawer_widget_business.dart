@@ -13,21 +13,14 @@ class DrawerWidgetBusiness extends StatefulWidget {
 }
 
 class _DrawerWidgetBusinessState extends State<DrawerWidgetBusiness> {
-  late AuthenticationService authService;
   UserObject? user;
 
   @override
   void initState() {
     super.initState();
-    authService = context.read<AuthenticationService>();
-    getUserData();
-  }
-
-  void getUserData() async {
-    final userObject = await authService.getUser();
 
     setState(() {
-      user = userObject;
+      user = context.read<UserObject?>();
     });
   }
 
@@ -43,46 +36,40 @@ class _DrawerWidgetBusinessState extends State<DrawerWidgetBusiness> {
               left: 12.0,
               bottom: 16.0,
             ),
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.account_circle,
-                  size: 64.0,
-                  color: Colors.white,
-                ),
-                const SizedBox(width: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      user != null ? user!.fullName : "No User Found",
-                      style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.account_circle,
+                    size: 64.0,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(width: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        user != null ? user!.fullName : "...",
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      user != null ? user!.email : "No User Found",
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.white,
+                      const SizedBox(height: 4),
+                      Text(
+                        user != null ? user!.email : "...",
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.dashboard_customize_rounded),
-            iconColor: Colors.white,
-            onTap: () {
-              Navigator.pushNamed(context, '/dashboard');
-            },
-            title: const Text(
-              'Dashboard',
-              style: TextStyle(color: Colors.white),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           ListTile(
@@ -95,16 +82,6 @@ class _DrawerWidgetBusinessState extends State<DrawerWidgetBusiness> {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.notifications),
-            iconColor: Colors.white,
-            onTap: () {
-            },
-            title: const Text(
-              'Notifications',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          ListTile(
             leading: const Icon(Icons.group),
             iconColor: Colors.white,
             onTap: () {
@@ -112,17 +89,6 @@ class _DrawerWidgetBusinessState extends State<DrawerWidgetBusiness> {
             },
             title: const Text(
               'Your Referrals',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            iconColor: Colors.white,
-            onTap: () {
-              Navigator.pushNamed(context, '/profile');
-            },
-            title: const Text(
-              'Settings',
               style: TextStyle(color: Colors.white),
             ),
           ),

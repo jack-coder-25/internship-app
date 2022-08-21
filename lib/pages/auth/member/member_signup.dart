@@ -44,11 +44,11 @@ class _MemberSignupPageState extends State<MemberSignupPage> {
           email: emailTextController.text.trim(),
           phone: mobileTextController.text.trim(),
           password: passwordTextController.text.trim(),
-          displayName: fullNameTextController.text.trim(),
+          name: fullNameTextController.text.trim(),
           accountType: AccountType.member,
           dateOfBirth: dateOfBirthTextController.text.trim(),
           referralCode: referralCodeTextController.text.trim(),
-          category: null,
+          category: '',
         );
       } catch (error) {
         showSnackbar(context, error.toString());
@@ -63,7 +63,8 @@ class _MemberSignupPageState extends State<MemberSignupPage> {
           user: user,
           mobile: mobileTextController.text.trim(),
           password: passwordTextController.text.trim(),
-          showOnboarding: true
+          showOnboarding: true,
+          accountType: AccountType.member
         ),
       );
     }

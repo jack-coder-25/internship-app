@@ -1,9 +1,13 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
+import 'package:app/models/auth.dart';
+import 'package:app/utils/api_service.dart';
 import 'package:app/models/user.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 enum AccountType { member, business }
+
+const String token = 'token';
 
 AccountType stringToAccountType(String accountType) {
   switch (accountType) {
@@ -19,198 +23,294 @@ AccountType stringToAccountType(String accountType) {
 final controller = StreamController<UserObject?>.broadcast();
 
 class AuthenticationService {
-  final FirebaseAuth _firebaseAuth;
-  static final usersRef = FirebaseFirestore.instance.collection('users');
-
-  AuthenticationService(this._firebaseAuth);
-
-  Stream<UserObject?> get authStateChanges => controller.stream;
+  static const storage = FlutterSecureStorage();
+  AuthenticationService();
   static UserObject? userObject;
+  Stream<UserObject?> get authStateChanges => controller.stream;
 
-  static Future<UserObject?> init() async {
-    final user = FirebaseAuth.instance.currentUser;
+  static Future<UserObject?> _fetchUser() async {
+    final authToken = await storage.read(key: token) ?? '';
 
-    if (user == null) {
+    if (authToken == '') {
       controller.sink.add(null);
       return null;
     }
 
-    final doc = usersRef.doc(user.uid);
-    final data = await doc.get();
+    try {
+      try {
+        userObject = await ApiService.instance.getMemberProfile(
+          authToken,
+        );
 
-    userObject = UserObject(
-      fullName: user.displayName!,
-      email: user.email!,
-      accountType: stringToAccountType(data.get('accountType')),
-      dateOfBirth: data.get('dateOfBirth'),
-      referralCode: data.get('referralCode'),
-      userCredential: user,
-    );
+        controller.sink.add(userObject);
+        return userObject;
+      } catch (error) {
+        // Do Nothing
+      }
+
+      try {
+        userObject = await ApiService.instance.getBusinessProfile(
+          authToken,
+        );
+
+        controller.sink.add(userObject);
+        return userObject;
+      } catch (error) {
+        // Do Nothing
+      }
+    } on Exception {
+      return null;
+    }
 
     controller.sink.add(userObject);
-    return userObject;
+    return null;
   }
 
-  bool isUserLoggedIn() {
-    return _firebaseAuth.currentUser != null;
+  static Future<UserObject?> init() async {
+    return await _fetchUser();
+  }
+
+  Future<bool> isUserLoggedIn() async {
+    return await storage.read(key: token) != null;
   }
 
   Future<UserObject?> signIn({
-    required String email,
+    required String username,
     required String password,
+    required AccountType accountType,
   }) async {
     try {
-      final user = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      LoginResponse loginResponse;
+      UserObject userObject;
 
-      final doc = usersRef.doc(user.user?.uid);
-      final data = await doc.get();
+      switch (accountType) {
+        case AccountType.member:
+          loginResponse = await ApiService.instance.memberLogin(
+            username,
+            password,
+          );
 
-      userObject = UserObject(
-        fullName: user.user!.displayName!,
-        email: user.user!.email!,
-        accountType: stringToAccountType(data.get('accountType')),
-        dateOfBirth: data.get('dateOfBirth'),
-        referralCode: data.get('referralCode'),
-        userCredential: user.user,
-      );
+          userObject = await ApiService.instance.getMemberProfile(
+            loginResponse.data!.authToken!,
+          );
 
-      controller.sink.add(userObject);
-      return userObject;
-    } on FirebaseAuthException {
+          await storage.write(
+            key: token,
+            value: loginResponse.data?.authToken,
+          );
+          controller.sink.add(userObject);
+          return userObject;
+        case AccountType.business:
+          loginResponse = await ApiService.instance.businessLogin(
+            username,
+            password,
+          );
+
+          userObject = await ApiService.instance.getBusinessProfile(
+            loginResponse.data!.authToken!,
+          );
+
+          await storage.write(
+            key: token,
+            value: loginResponse.data?.authToken,
+          );
+          controller.sink.add(userObject);
+          return userObject;
+        default:
+      }
+    } on Exception {
       rethrow;
     }
+
+    return null;
   }
 
   Future<UserObject?> signUp({
     required String email,
     required String phone,
     required String password,
-    required String displayName,
+    required String name,
     required String dateOfBirth,
     required String referralCode,
     required AccountType accountType,
-    required String? category,
+    required String category,
   }) async {
+    RegistrationResponse registrationResponse;
+    UserObject userObject;
+
     try {
-      final user = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      switch (accountType) {
+        case AccountType.member:
+          registrationResponse = await ApiService.instance.memberRegistration(
+            name,
+            email,
+            phone,
+            password,
+            dateOfBirth,
+            referralCode,
+          );
 
-      //TODO: Check if phone already exists using firebase functions
+          userObject = await ApiService.instance.getMemberProfile(
+            registrationResponse.data!.authToken!,
+          );
 
-      await user.user?.updateDisplayName(displayName);
-      final doc = usersRef.doc(user.user?.uid);
+          await storage.write(
+            key: token,
+            value: registrationResponse.data?.authToken,
+          );
+          controller.sink.add(userObject);
+          return userObject;
+        case AccountType.business:
+          registrationResponse = await ApiService.instance.businessRegistration(
+            name,
+            email,
+            phone,
+            password,
+            dateOfBirth,
+            category,
+            referralCode,
+          );
 
-      await doc.set({
-        'email': email,
-        'phone': phone,
-        'dateOfBirth': dateOfBirth,
-        'referralCode': referralCode,
-        'accountType': accountType.name,
-        'category': category,
-      });
+          userObject = await ApiService.instance.getBusinessProfile(
+            registrationResponse.data!.authToken!,
+          );
 
-      userObject = UserObject(
-        fullName: displayName,
-        email: email,
-        accountType: accountType,
-        dateOfBirth: dateOfBirth,
-        referralCode: referralCode,
-        userCredential: user.user,
-      );
-
-      controller.sink.add(userObject);
-      return userObject;
+          await storage.write(
+            key: token,
+            value: registrationResponse.data?.authToken,
+          );
+          controller.sink.add(userObject);
+          return userObject;
+        default:
+      }
     } on Exception {
       rethrow;
     }
+
+    return null;
   }
 
-  Future<UserObject?> updateUser({
-    required UserObject userObject,
-    required String email,
-    required String phone,
-    required String displayName,
-    required String dateOfBirth
-  }) async {
+  Future<void> signOut() async {
     try {
-      final doc = usersRef.doc(userObject.userCredential?.uid);
-
-      await doc.update({
-        'email': email,
-        'phone': phone,
-        'dateOfBirth': dateOfBirth,
-      });
-
-      userObject = UserObject(
-        fullName: displayName,
-        email: email,
-        accountType: userObject.accountType,
-        dateOfBirth: dateOfBirth,
-        referralCode: userObject.referralCode,
-        userCredential: userObject.userCredential,
-      );
-
-      controller.sink.add(userObject);
-      return userObject;
-    } on Exception {
-      rethrow;
-    }
-  }
-
-  Future<bool> signOut() async {
-    try {
-      await _firebaseAuth.signOut();
+      await storage.delete(key: token);
+      userObject = null;
       controller.sink.add(null);
-      return true;
-    } on FirebaseAuthException {
+    } on Exception {
       rethrow;
     }
   }
 
   Future<UserObject?> getUser() async {
     if (userObject != null) {
+      _fetchUser();
       return userObject;
     }
 
-    try {
-      final user = _firebaseAuth.currentUser;
-      final doc = usersRef.doc(user?.uid);
-      final data = await doc.get();
-
-      userObject = UserObject(
-        fullName: user!.displayName!,
-        email: user.email!,
-        accountType: stringToAccountType(data.get('accountType')),
-        dateOfBirth: data.get('dateOfBirth'),
-        referralCode: data.get('referralCode'),
-        userCredential: user,
-      );
-
-      controller.sink.add(userObject);
-      return userObject;
-    } on Exception {
-      return null;
-    }
+    return await _fetchUser();
   }
 
-  void sendPasswordResetEmail(String email) async {
-    try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-    } on FirebaseAuthException {
-      rethrow;
-    }
+  Future<ProfileUpdateResponse> updateProfile({
+    String? name,
+    String? fatherName,
+    String? motherName,
+    String? occupation,
+    String? password,
+    String? confirmPassword,
+    String? mobile,
+    String? alterMobile,
+    String? email,
+    String? married,
+    String? dob,
+    String? weddingDate,
+    String? spouseName,
+    String? spouseDob,
+    String? numberOfChild,
+    String? doorNumber,
+    String? buildingName,
+    String? city,
+    String? state,
+    String? brandName,
+    String? landline,
+    String? authSignature,
+    String? contactPerson,
+    String? address,
+    String? webLink,
+    String? bankAccountName,
+    String? bankAccountNumber,
+    String? bankAccountType,
+    String? bankIfscCode,
+    String? gstNumber,
+    String? gstExempt,
+    String? latLon,
+    File? aadhar,
+    File? pan,
+    File? photo,
+  }) async {
+    var response = await ApiService.instance.updateProfile(
+      authToken: userObject!.authToken,
+      accountType: userObject!.accountType,
+      name: name,
+      fatherName: fatherName,
+      motherName: motherName,
+      occupation: occupation,
+      password: password,
+      confirmPassword: confirmPassword,
+      mobile: mobile,
+      alterMobile: alterMobile,
+      email: email,
+      married: married,
+      dob: dob,
+      weddingDate: weddingDate,
+      spouseName: spouseName,
+      spouseDob: spouseDob,
+      numberOfChild: numberOfChild,
+      doorNumber: doorNumber,
+      buildingName: buildingName,
+      city: city,
+      state: state,
+      brandName: brandName,
+      landline: landline,
+      authSignature: authSignature,
+      contactPerson: contactPerson,
+      address: address,
+      webLink: webLink,
+      bankAccountName: bankAccountName,
+      bankAccountNumber: bankAccountNumber,
+      bankAccountType: bankAccountType,
+      bankIfscCode: bankIfscCode,
+      gstNumber: gstNumber,
+      gstExempt: gstExempt,
+      latLon: latLon,
+      aadhar: aadhar,
+      pan: pan,
+      photo: photo,
+    );
+
+    await getUser();
+    return response;
   }
 
-  String handleFirebaseError(error) {
-    if (error is FirebaseAuthException) {
-      return error.message.toString();
-    }
+  Future<PasswordResetResponse> resetPassword(
+    String username,
+    String password,
+    AccountType accountType,
+  ) async {
+    return await ApiService.instance.memberResetPassword(
+      username,
+      password,
+      accountType,
+    );
+  }
 
-    return error.toString();
+  Future<OtpResponse> sendOtp(String phone) async {
+    return await ApiService.instance.sendOtp(phone);
+  }
+
+  Future<OtpResponse> reSendOtp(String phone, String otpKey) async {
+    return await ApiService.instance.resendOtp(phone, otpKey);
+  }
+
+  Future<OtpResponse> verifyOtp(String otp, String otpKey) async {
+    return await ApiService.instance.verifyOtp(otp, otpKey);
   }
 }

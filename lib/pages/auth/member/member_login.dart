@@ -1,3 +1,4 @@
+import 'package:app/pages/reset_password.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app/styles/buttton.dart';
@@ -18,7 +19,7 @@ class MemberLoginPage extends StatefulWidget {
 class _MemberLoginPageState extends State<MemberLoginPage> {
   late AuthenticationService authService;
   bool isPasswordHidden = true;
-  bool rememberChecked = false;
+
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
 
@@ -34,18 +35,13 @@ class _MemberLoginPageState extends State<MemberLoginPage> {
     });
   }
 
-  void setRemember(bool? value) {
-    setState(() {
-      rememberChecked = value ?? false;
-    });
-  }
-
   void onLogin() async {
     if (widget.formKey.currentState?.validate() == true) {
       try {
         final user = await authService.signIn(
-          email: emailTextController.text.trim(),
+          username: emailTextController.text.trim(),
           password: passwordTextController.text.trim(),
+          accountType: AccountType.member,
         );
 
         if (user?.accountType != AccountType.member) {
@@ -55,24 +51,19 @@ class _MemberLoginPageState extends State<MemberLoginPage> {
         if (!mounted) return;
         Navigator.popUntil(context, ModalRoute.withName('/auth'));
       } catch (error) {
-        String message = authService.handleFirebaseError(error);
-        showSnackbar(context, message.toString());
+        showSnackbar(context, error.toString());
       }
     }
   }
 
   void onForgotPassword() async {
-    if (emailTextController.text.isNotEmpty) {
-      try {
-        authService.sendPasswordResetEmail(emailTextController.text);
-        if (!mounted) return;
-        showSnackbar(context, 'Reset link sent to your email');
-      } catch (error) {
-        showSnackbar(context, error.toString());
-      }
-    } else {
-      showSnackbar(context, 'Enter email to send reset link');
-    }
+    Navigator.pushNamed(
+      context,
+      '/reset-password',
+      arguments: ResetPasswordPageArguments(
+        accountType: AccountType.member,
+      ),
+    );
   }
 
   void onSignUpPress(BuildContext context) {

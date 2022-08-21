@@ -36,17 +36,51 @@ String? validateMobile(String? value) {
   }
 }
 
+String? validateOTP(String? value) {
+  if (value == null || value.length >= 4) {
+    return 'OTP should be atleast 4 characters long';
+  } else {
+    return null;
+  }
+}
+
+String? validateAddress(String? value) {
+  if (value == null || value.length < 12) {
+    return 'Address should be atleast 12 characters long';
+  } else {
+    return null;
+  }
+}
+
+String? validateContactPerson(String? value) {
+  if (value == null || value.length < 5) {
+    return 'Contact Person should be atleast 5 characters long';
+  } else {
+    return null;
+  }
+}
+
+String? Function(String?) validateNotEmpty(String field) {
+  return (String? value) {
+    if (value == null) {
+      return '$field should be empty';
+    } else {
+      return null;
+    }
+  };
+}
+
 String? validatePassword(String? value) {
-  if (value == null || value.length < 6) {
-    return 'Password should be atleast 6 characters long';
+  if (value == null || value.length < 4) {
+    return 'Password should be atleast 4 characters long';
   } else {
     return null;
   }
 }
 
 String? validateConfirmPassword(String? value, String? password) {
-  if (value == null || value.length < 6) {
-    return 'Password should be atleast 6 characters long';
+  if (value == null || value.length < 4) {
+    return 'Password should be atleast 4 characters long';
   } else if (value != password) {
     return 'Confirm password should be same as password';
   } else {

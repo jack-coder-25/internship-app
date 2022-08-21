@@ -1,3 +1,4 @@
+import 'package:app/pages/reset_password.dart';
 import 'package:app/utils/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:app/styles/buttton.dart';
@@ -18,7 +19,6 @@ class BusinessLoginPage extends StatefulWidget {
 class _BusinessLoginPageState extends State<BusinessLoginPage> {
   late AuthenticationService authService;
   bool isPasswordHidden = true;
-  bool rememberChecked = false;
 
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
@@ -35,19 +35,13 @@ class _BusinessLoginPageState extends State<BusinessLoginPage> {
     });
   }
 
-  void setRemember(bool? value) {
-    setState(() {
-      rememberChecked = value ?? false;
-    });
-  }
-
   void onLogin() async {
     if (widget.formKey.currentState?.validate() == true) {
       try {
         final user = await authService.signIn(
-          email: emailTextController.text.trim(),
-          password: passwordTextController.text.trim(),
-        );
+            username: emailTextController.text.trim(),
+            password: passwordTextController.text.trim(),
+            accountType: AccountType.business);
 
         if (user?.accountType != AccountType.business) {
           throw Exception('Account type is not business');
@@ -56,24 +50,19 @@ class _BusinessLoginPageState extends State<BusinessLoginPage> {
         if (!mounted) return;
         Navigator.popUntil(context, ModalRoute.withName('/auth'));
       } catch (error) {
-        String message = authService.handleFirebaseError(error);
-        showSnackbar(context, message);
+        showSnackbar(context, error.toString());
       }
     }
   }
 
   void onForgotPassword() async {
-    if (emailTextController.text.isNotEmpty) {
-      try {
-        authService.sendPasswordResetEmail(emailTextController.text);
-        if (!mounted) return;
-        showSnackbar(context, 'Reset link sent to your email');
-      } catch (error) {
-        showSnackbar(context, error.toString());
-      }
-    } else {
-      showSnackbar(context, 'Enter email to send reset link');
-    }
+    Navigator.pushNamed(
+      context,
+      '/reset-password',
+      arguments: ResetPasswordPageArguments(
+        accountType: AccountType.business,
+      ),
+    );
   }
 
   void onSignUpPress(BuildContext context) {
@@ -178,9 +167,7 @@ class _BusinessLoginPageState extends State<BusinessLoginPage> {
                     ],
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(4.0)
-                ),
+                const Padding(padding: EdgeInsets.all(4.0)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -214,7 +201,8 @@ class _BusinessLoginPageState extends State<BusinessLoginPage> {
                     TextButton(
                       onPressed: () => onSignUpPress(context),
                       style: TextButton.styleFrom(
-                          primary: ColorConstants.red,),
+                        primary: ColorConstants.red,
+                      ),
                       child: const Text(
                         "Register",
                         style: TextStyle(fontSize: 16.0),

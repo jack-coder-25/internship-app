@@ -85,11 +85,11 @@ class _BusinessSignupPageState extends State<BusinessSignupPage> {
           email: emailTextController.text.trim(),
           phone: mobileTextController.text.trim(),
           password: passwordTextController.text.trim(),
-          displayName: fullNameTextController.text.trim(),
+          name: fullNameTextController.text.trim(),
           dateOfBirth: dateOfBirthTextController.text.trim(),
           referralCode: referralCodeTextController.text.trim(),
           accountType: AccountType.business,
-          category: currentSelectedValue,
+          category: currentSelectedValue!,
         );
       } catch (error) {
         showSnackbar(context, error.toString());
@@ -104,7 +104,8 @@ class _BusinessSignupPageState extends State<BusinessSignupPage> {
           user: user,
           mobile: mobileTextController.text.trim(),
           password: passwordTextController.text.trim(),
-          showOnboarding: true
+          showOnboarding: true,
+          accountType: AccountType.business
         ),
       );
     }

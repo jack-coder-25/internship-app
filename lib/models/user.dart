@@ -1,5 +1,5 @@
+import 'package:app/models/profile.dart';
 import 'package:app/utils/authentication_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class UserObject {
   UserObject({
@@ -8,7 +8,9 @@ class UserObject {
     required this.dateOfBirth,
     required this.referralCode,
     required this.accountType,
-    required this.userCredential,
+    required this.authToken,
+    required this.profile,
+    required this.businessProfile,
   });
 
   final String email;
@@ -16,5 +18,7 @@ class UserObject {
   final String dateOfBirth;
   final AccountType accountType;
   final String referralCode;
-  final User? userCredential;
+  final String authToken;
+  final ProfileResponse? profile;
+  final BusinessProfileResponse? businessProfile;
 }

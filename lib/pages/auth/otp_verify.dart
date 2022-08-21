@@ -1,25 +1,26 @@
 import 'dart:async';
 import 'package:app/models/user.dart';
 import 'package:provider/provider.dart';
-import 'package:pinput/pinput.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:app/styles/buttton.dart';
 import 'package:app/utils/helper.dart';
 import 'package:app/constants/colors.dart';
 import 'package:app/utils/authentication_service.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class OtpVerifyPageArguments {
   final UserObject user;
   final String mobile;
   final String password;
   final bool showOnboarding;
+  final AccountType accountType;
 
   OtpVerifyPageArguments({
     required this.user,
     required this.mobile,
     required this.password,
     required this.showOnboarding,
+    required this.accountType,
   });
 }
 
@@ -36,8 +37,8 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
   int seconds = 30;
   String countryCode = '+91';
   final pinController = TextEditingController();
-  String verificationId = '';
-  int? resendToken;
+  String otpKey = '';
+  String _code = '';
   late Timer timer;
 
   @override
@@ -72,31 +73,17 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
     });
   }
 
-  void resendOtp() {
+  void resendOtp() async {
     startTime();
-    verifyPhoneNumber();
+    final otpResponse = await authService.reSendOtp(args.mobile, otpKey);
+    otpKey = otpResponse.data?.otpKey ?? '';
   }
 
   void verifyPhoneNumber() async {
     try {
-      FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: countryCode + args.mobile,
-        timeout: const Duration(seconds: 30),
-        forceResendingToken: resendToken,
-        verificationCompleted: (PhoneAuthCredential credential) {
-          pinController.setText(credential.smsCode ?? '');
-          loginUser(credential);
-        },
-        verificationFailed: (FirebaseAuthException e) {
-          showSnackbar(context, "Auth Failed!");
-        },
-        codeSent: (String verificationId, int? resendToken) async {
-          showSnackbar(context, "OTP Sent!");
-          this.verificationId = verificationId;
-          this.resendToken = resendToken;
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {},
-      );
+      SmsAutoFill().listenForCode();
+      final otpResponse = await authService.sendOtp(args.mobile);
+      otpKey = otpResponse.data?.otpKey ?? '';
     } catch (error) {
       if (!mounted) return;
       showSnackbar(context, error.toString());
@@ -104,18 +91,15 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
   }
 
   void onSubmit() async {
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(
-      verificationId: verificationId,
-      smsCode: pinController.text,
-    );
-
-    loginUser(credential);
-  }
-
-  void loginUser(PhoneAuthCredential credential) async {
     try {
-      await args.user.userCredential?.updatePhoneNumber(credential);
-      authService.signIn(email: args.user.email, password: args.password);
+      await authService.verifyOtp(_code, otpKey);
+
+      authService.signIn(
+        username: args.user.email,
+        password: args.password,
+        accountType: args.accountType,
+      );
+
       if (!mounted) return;
 
       if (args.showOnboarding) {
@@ -125,13 +109,6 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
           (r) => false,
         );
       } else {
-        authService.updateUser(
-          userObject: args.user,
-          email: args.user.email,
-          phone: args.password,
-          displayName: args.user.fullName,
-          dateOfBirth: args.user.dateOfBirth,
-        );
         Navigator.pushNamedAndRemoveUntil(
           context,
           "/auth",
@@ -139,8 +116,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
         );
       }
     } catch (error) {
-      String message = authService.handleFirebaseError(error);
-      showSnackbar(context, message);
+      showSnackbar(context, error.toString());
     }
   }
 
@@ -190,7 +166,7 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                       padding: EdgeInsets.all(16.0),
                     ),
                     const Text(
-                      "Enter 6 Digit PIN",
+                      "Enter 4 Digit PIN",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 22.0,
@@ -203,36 +179,23 @@ class _OtpVerifyPageState extends State<OtpVerifyPage> {
                     Flexible(
                       child: ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 200),
-                        child: Pinput(
-                          length: 6,
-                          controller: pinController,
-                          validator: (s) =>
-                              s?.length == 6 ? null : 'Pin not valid',
-                          pinputAutovalidateMode:
-                              PinputAutovalidateMode.onSubmit,
-                          errorTextStyle: const TextStyle(
-                            color: Colors.white,
+                        child: PinFieldAutoFill(
+                          currentCode: _code,
+                          decoration: const UnderlineDecoration(
+                            colorBuilder: FixedColorBuilder(Colors.white),
+                            textStyle: TextStyle(color: Colors.white),
                           ),
-                          cursor: null,
-                          defaultPinTheme: PinTheme(
-                            width: 56,
-                            height: 56,
-                            textStyle: const TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.white),
-                              backgroundBlendMode: BlendMode.colorBurn,
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ),
-                          showCursor: true,
+                          onCodeChanged: (code) {
+                            if (code!.length == 4) {
+                              FocusScope.of(context).requestFocus(FocusNode());
+                            }
+                            _code = code;
+                          },
+                          codeLength: 4,
                         ),
                       ),
                     ),
+                    const SizedBox(height: 20),
                     TextButton(
                       onPressed: seconds == 0 ? resendOtp : null,
                       child: Text(

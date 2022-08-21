@@ -1,6 +1,8 @@
 import 'package:app/constants/colors.dart';
+import 'package:app/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dialogs/flutter_dialogs.dart';
+import 'package:provider/provider.dart';
 
 class AdditionalCouponsPage extends StatefulWidget {
   const AdditionalCouponsPage({Key? key}) : super(key: key);
@@ -10,6 +12,22 @@ class AdditionalCouponsPage extends StatefulWidget {
 }
 
 class _AdditionalCouponsPageState extends State<AdditionalCouponsPage> {
+  UserObject? user;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      user = context.watch<UserObject?>();
+      setState(() {});
+
+      if (user?.profile?.data?.subscription == null) {
+        Navigator.pushReplacementNamed(context, '/subscription');
+      }
+    });
+  }
+
   final List<Tab> tabs = <Tab>[
     const Tab(text: 'Other Coupons'),
     const Tab(text: 'Vendor Coupons'),

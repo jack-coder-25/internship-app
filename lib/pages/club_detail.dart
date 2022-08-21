@@ -130,14 +130,19 @@ class _ClubDetailPageState extends State<ClubDetailPage> {
                 'https://media.cntraveler.com/photos/57d864b9b77fe35639ae1a55/master/pass/Pool-HardRockHotelGoa-India-CRHotel.jpg',
               ].map((String url) {
                 return GridTile(
-                  child: Column(
-                    children: [
-                      Image.network(
-                        height: 130.0,
-                        url,
-                        fit: BoxFit.cover,
-                      ),
-                    ],
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/club-service-detail');
+                    },
+                    child: Column(
+                      children: [
+                        Image.network(
+                          height: 130.0,
+                          url,
+                          fit: BoxFit.cover,
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }).toList(),
@@ -179,7 +184,7 @@ class _ClubDetailPageState extends State<ClubDetailPage> {
                     textAlign: TextAlign.left,
                   ),
                   Text(
-                    "9444010456",
+                    "+919790985285",
                     textAlign: TextAlign.right,
                   ),
                 ],
@@ -196,7 +201,7 @@ class _ClubDetailPageState extends State<ClubDetailPage> {
                     textAlign: TextAlign.left,
                   ),
                   Text(
-                    "zrecreationclub@gmail.com",
+                    "customercare@bvcindia.com",
                     textAlign: TextAlign.right,
                   ),
                 ],
@@ -213,7 +218,7 @@ class _ClubDetailPageState extends State<ClubDetailPage> {
                     textAlign: TextAlign.left,
                   ),
                   Text(
-                    "#4, 3rd Floor, Kasi Estate, Pillayar \n Kovil Street Chennai - 600083",
+                    "No 781, Rayala Towers, 2nd Floor, \n Anna Salai, Mount Road, Chennai - 600002 \n (Opposite Rageja Towers & LIC Building)",
                     textAlign: TextAlign.right,
                   ),
                 ],
