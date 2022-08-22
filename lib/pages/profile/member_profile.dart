@@ -1,3 +1,4 @@
+import 'package:app/constants/constants.dart';
 import 'package:app/styles/buttton.dart';
 import 'package:app/utils/helper.dart';
 import 'package:flutter/material.dart';
@@ -217,7 +218,7 @@ class _MemberProfilePageState extends State<MemberProfilePage> {
                             children: [
                               Ink.image(
                                 image: NetworkImage(
-                                  'https://bvcindia.in/uploads/${(user!.profile?.data!.subscription!.cardBg!)}',
+                                  '${ApiConstants.uploadsPath}/${(user!.profile?.data!.subscription!.cardBg!)}',
                                 ),
                                 colorFilter: ColorFilter.mode(
                                   Colors.black.withOpacity(0.6),

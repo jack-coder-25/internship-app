@@ -21,14 +21,17 @@ class _WalletPageState extends State<WalletPage> {
   }
 
   Widget loadingSpinner() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: const [
-        CircularProgressIndicator(
-          color: ColorConstants.red,
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(48.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const [
+          CircularProgressIndicator(
+            color: ColorConstants.red,
+          ),
+        ],
+      ),
     );
   }
 
@@ -65,75 +68,20 @@ class _WalletPageState extends State<WalletPage> {
                 ),
                 builder: ((context, snapshot) {
                   Widget children;
+                  Widget topBar;
 
                   if (snapshot.hasData) {
                     if (snapshot.data!.data!.isEmpty) {
-                      children = const Text('No Transcations');
+                      children = const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child:  Text('No Transcations'),
+                      );
                     } else {
                       if (userSnapshot.data?.accountType ==
                           AccountType.member) {
-                        var credit = snapshot.data!.data!
-                            .where((e) => e.type?.toLowerCase() == 'credit')
-                            .map<double>((e) => double.parse(e.amount!))
-                            .reduce((value, element) => value + element);
-
-                        var debit = snapshot.data!.data!
-                            .where((e) => e.type?.toLowerCase() == 'debit')
-                            .map<double>((e) => double.parse(e.amount!))
-                            .reduce((value, element) => value + element);
-
-                        var total = credit - debit;
-
                         children = SizedBox(
                           child: Column(
                             children: [
-                              Container(
-                                decoration: const BoxDecoration(
-                                  color: ColorConstants.red,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            '\u{20B9} $total',
-                                            style: const TextStyle(
-                                              fontSize: 20.0,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          Text(
-                                            'Last Transaction - ${snapshot.data!.data![0].amount}',
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    ElevatedButton(
-                                      style: buttonStyleRed,
-                                      onPressed: depositCash,
-                                      child: const Text(
-                                        "Deposit Cash",
-                                        style: TextStyle(
-                                          color: ColorConstants.red,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
                               SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height / 1.37,
@@ -187,61 +135,9 @@ class _WalletPageState extends State<WalletPage> {
                           ),
                         );
                       } else {
-                        var total = snapshot.data!.data!
-                            .where((e) => e.type?.toLowerCase() == 'credit')
-                            .map<double>((e) => double.parse(e.amount!))
-                            .reduce((value, element) => value + element);
-
                         children = SizedBox(
                           child: Column(
                             children: [
-                              Container(
-                                decoration: const BoxDecoration(
-                                  color: ColorConstants.red,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          const Text(
-                                            'Total',
-                                            style: TextStyle(
-                                              fontSize: 20.0,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          Text(
-                                            '\u{20B9} $total',
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    ElevatedButton(
-                                      style: buttonStyleRed,
-                                      onPressed: withdrawCash,
-                                      child: const Text(
-                                        "Withdraw Cash",
-                                        style: TextStyle(
-                                          color: ColorConstants.red,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
                               SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height / 1.37,
@@ -302,7 +198,134 @@ class _WalletPageState extends State<WalletPage> {
                     children = loadingSpinner();
                   }
 
-                  return Center(child: children);
+                  if (userSnapshot.data!.accountType == AccountType.member) {
+                    String total;
+
+                    if (snapshot.hasData && snapshot.data!.data!.isNotEmpty) {
+                      var credit = snapshot.data!.data!
+                          .where((e) => e.type?.toLowerCase() == 'credit')
+                          .map<double>((e) => double.parse(e.amount!))
+                          .reduce((value, element) => value + element);
+
+                      var debit = snapshot.data!.data!
+                          .where((e) => e.type?.toLowerCase() == 'debit')
+                          .map<double>((e) => double.parse(e.amount!))
+                          .reduce((value, element) => value + element);
+
+                      total = (credit - debit).toString();
+                    } else {
+                      total = '0';
+                    }
+
+                    topBar = Container(
+                      decoration: const BoxDecoration(
+                        color: ColorConstants.red,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  '\u{20B9} $total',
+                                  style: const TextStyle(
+                                    fontSize: 20.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Text(
+                                  'Last Transaction - ${snapshot.data?.data?[0].amount ?? '...'}',
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          ElevatedButton(
+                            style: buttonStyleRed,
+                            onPressed: depositCash,
+                            child: const Text(
+                              "Deposit Cash",
+                              style: TextStyle(
+                                color: ColorConstants.red,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    String total;
+
+                    if (snapshot.hasData && snapshot.data!.data!.isNotEmpty) {
+                      total = snapshot.data!.data!
+                          .where((e) => e.type?.toLowerCase() == 'credit')
+                          .map<double>((e) => double.parse(e.amount!))
+                          .reduce((value, element) => value + element)
+                          .toString();
+                    } else {
+                      total = '0';
+                    }
+
+                    topBar = Container(
+                      decoration: const BoxDecoration(
+                        color: ColorConstants.red,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'Total',
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Text(
+                                  '\u{20B9} $total',
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          ElevatedButton(
+                            style: buttonStyleRed,
+                            onPressed: withdrawCash,
+                            child: const Text(
+                              "Withdraw Cash",
+                              style: TextStyle(
+                                color: ColorConstants.red,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return Column(
+                    children: [
+                      topBar,
+                      children,
+                    ],
+                  );
                 }),
               );
             } else if (userSnapshot.hasError) {

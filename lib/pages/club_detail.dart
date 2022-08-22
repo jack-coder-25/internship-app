@@ -140,6 +140,14 @@ class _ClubDetailPageState extends State<ClubDetailPage> {
                           height: 130.0,
                           url,
                           fit: BoxFit.cover,
+                          loadingBuilder: ((
+                            context,
+                            child,
+                            loadingProgress,
+                          ) {
+                            if (loadingProgress == null) return child;
+                            return Container(color: Colors.grey);
+                          }),
                         ),
                       ],
                     ),

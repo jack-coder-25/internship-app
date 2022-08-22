@@ -1,4 +1,5 @@
 import 'package:app/models/user.dart';
+import 'package:app/pages/wallet_topup.dart';
 import 'package:app/utils/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:app/models/subscriptions.dart';
@@ -58,8 +59,14 @@ class _SubscriptionDetailPageState extends State<SubscriptionDetailPage> {
     } catch (error) {
       if (!mounted) return;
 
-      if (error.toString().indexOf('Insufficient balance') == 1) {
-        Navigator.pushNamed(context, '/wallet-topup');
+      if (error.toString().contains('balance')) {
+        Navigator.pushNamed(
+          context,
+          '/wallet-topup',
+          arguments: WalletTopupPageArguments(
+            amount: args!.subscription.amount,
+          ),
+        );
       } else {
         showSnackbar(context, error.toString());
       }

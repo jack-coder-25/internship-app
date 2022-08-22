@@ -1,21 +1,20 @@
 import 'package:app/constants/colors.dart';
-import 'package:app/models/dashboard.dart';
+import 'package:app/constants/constants.dart';
+import 'package:app/models/search.dart';
 import 'package:app/models/user.dart';
 import 'package:app/utils/api_service.dart';
 import 'package:app/utils/authentication_service.dart';
-import 'package:app/utils/helper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_share/flutter_share.dart';
 import 'package:provider/provider.dart';
 
-class ReferralsPage extends StatefulWidget {
-  const ReferralsPage({Key? key}) : super(key: key);
+class SearchPage extends StatefulWidget {
+  const SearchPage({Key? key}) : super(key: key);
 
   @override
-  State<ReferralsPage> createState() => _ReferralsPageState();
+  State<SearchPage> createState() => _SearchPageState();
 }
 
-class _ReferralsPageState extends State<ReferralsPage> {
+class _SearchPageState extends State<SearchPage> {
   Future<UserObject?> getUser() async {
     AuthenticationService authService = context.read<AuthenticationService>();
     return (await authService.getUser());
@@ -43,33 +42,54 @@ class _ReferralsPageState extends State<ReferralsPage> {
     );
   }
 
-  String dropdownValue = 'All';
-  var items = ['All', 'Paid', 'Unpaid'];
+  String dropdownValue = '';
+  TextEditingController searchTextController = TextEditingController();
 
-  void referFriend() async {
-    var user = await getUser();
-
-    if (user?.profile?.data?.referralCode != null) {
-      await FlutterShare.share(
-        title: 'Referral Code',
-        chooserTitle: 'Invite Friends',
-        text: '''Hi, use my referral code -
-        ${user!.profile!.data!.referralCode}''',
-      );
-    } else {
-      if (!mounted) return;
-      showSnackbar(context, 'Referral Code Not Available!');
-    }
-  }
+  final items = [
+    "Hotel",
+    "Club",
+    "Resort",
+    "Saloon",
+    "Parlour",
+    "Service Apartments",
+    "Textile",
+    "Jewellery Shop",
+    "SPA",
+    "Marriage Hall",
+    "Provision Bazzar",
+    "Restaurant",
+    "Cinema Online Tickets",
+    "Online Discount Shopping",
+    "Tours & Travels",
+    "Gym",
+    "Online Recharge",
+    "Others",
+    "Hotels and Resorts",
+    "Electronices",
+    "Mobile Phones",
+    "Launday Services",
+    "Medicines",
+    "Beach Resort"
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Your Referrals',
-          style: TextStyle(
-            color: Colors.black,
+        title: TextFormField(
+          controller: searchTextController,
+          decoration: InputDecoration(
+            fillColor: Colors.black,
+            hintText: 'Search',
+            border: InputBorder.none,
+            suffixIcon: GestureDetector(
+              onTap: () {
+                setState(() {});
+              },
+              child: const Icon(
+                Icons.search,
+              ),
+            ),
           ),
         ),
         elevation: 0,
@@ -87,45 +107,69 @@ class _ReferralsPageState extends State<ReferralsPage> {
           future: getUser(),
           builder: ((context, userSnapshot) {
             if (userSnapshot.hasData) {
-              return FutureBuilder<DashboardSummaryResponse>(
-                future: ApiService.instance.getSummaryDashboard(
+              return FutureBuilder<VendorSearchResponse>(
+                future: ApiService.instance.searchVendors(
                   userSnapshot.data!.authToken,
-                  userSnapshot.data!.accountType,
+                  searchTextController.text,
+                  dropdownValue,
                 ),
                 builder: ((context, snapshot) {
                   Widget children;
 
                   if (snapshot.hasData) {
-                    if (snapshot.data!.data!.referrals!.total!.isEmpty) {
-                      children = const Text('No Referrals.');
-                    } else {
-                      List<ReferralItem>? referrals;
-
-                      if (dropdownValue == 'All') {
-                        referrals = snapshot.data!.data!.referrals!.total;
-                      } else if (dropdownValue == 'Paid') {
-                        referrals = snapshot.data!.data!.referrals!.paid;
-                      } else {
-                        referrals = snapshot.data!.data!.referrals!.unpaid;
-                      }
-
-                      children = ListView.separated(
-                        separatorBuilder: (context, index) => const Divider(
-                          height: 2,
-                          color: Colors.black,
+                    if (snapshot.data!.data!.isEmpty) {
+                      children = const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Text(
+                          'No Vendors Found',
                         ),
-                        itemCount: referrals!.length,
-                        itemBuilder: (((context, index) {
-                          return ListTile(
-                            title: Text(
-                              referrals![index].name!,
+                      );
+                    } else {
+                      children = GridView.count(
+                        crossAxisCount: 2,
+                        childAspectRatio: .82,
+                        padding: const EdgeInsets.all(4.0),
+                        mainAxisSpacing: 16.0,
+                        crossAxisSpacing: 4.0,
+                        children: snapshot.data!.data!.map((Data vendor) {
+                          return GridTile(
+                            child: Column(
+                              children: [
+                                Image.network(
+                                  height: 140.0,
+                                  '${ApiConstants.uploadsPath}/${vendor.photo}',
+                                  fit: BoxFit.cover,
+                                  errorBuilder: ((context, error, stackTrace) {
+                                    return const SizedBox(
+                                      height: 140.0,
+                                      child: Center(
+                                        child: Text('No Image'),
+                                      ),
+                                    );
+                                  }),
+                                  loadingBuilder: ((
+                                    context,
+                                    child,
+                                    loadingProgress,
+                                  ) {
+                                    if (loadingProgress == null) return child;
+                                    return Container(
+                                      height: 140.0,
+                                      color: Colors.grey,
+                                    );
+                                  }),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  vendor.name ?? '',
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
                             ),
-                            subtitle: Text(
-                              referrals[index].referralCommission!,
-                            ),
-                            contentPadding: const EdgeInsets.all(10.0),
                           );
-                        })),
+                        }).toList(),
                       );
                     }
                   } else if (snapshot.hasError) {
@@ -158,9 +202,16 @@ class _ReferralsPageState extends State<ReferralsPage> {
                                 child: DropdownButtonHideUnderline(
                                   child: DropdownButton(
                                     elevation: 0,
-                                    value: dropdownValue,
+                                    value: dropdownValue.isEmpty
+                                        ? null
+                                        : dropdownValue,
                                     icon: const Icon(Icons.arrow_drop_down),
                                     isDense: true,
+                                    menuMaxHeight: 400.0,
+                                    hint: const Text('Select Category'),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(20.0),
+                                    ),
                                     items: items.map((String items) {
                                       return DropdownMenuItem(
                                         value: items,
@@ -186,23 +237,8 @@ class _ReferralsPageState extends State<ReferralsPage> {
                         ],
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height / 1.45,
+                        height: MediaQuery.of(context).size.height / 1.4,
                         child: children,
-                      ),
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: const Size(10, 40),
-                              textStyle: const TextStyle(fontSize: 18),
-                              primary: Colors.orange,
-                              onPrimary: Colors.white,
-                            ),
-                            onPressed: referFriend,
-                            child: const Text("Refer your Friend"),
-                          ),
-                        ),
                       )
                     ],
                   );

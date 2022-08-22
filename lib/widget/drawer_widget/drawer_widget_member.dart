@@ -123,7 +123,9 @@ class _DrawerWidgetMemberState extends State<DrawerWidgetMember> {
           ListTile(
             leading: const Icon(Icons.gamepad),
             iconColor: Colors.white,
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/spin-wheel');
+            },
             title: const Text(
               'Lucky Draw',
               style: TextStyle(color: Colors.white),

@@ -1,7 +1,14 @@
+import 'package:app/constants/colors.dart';
+import 'package:app/constants/constants.dart';
+import 'package:app/models/slides.dart';
+import 'package:app/models/user.dart';
+import 'package:app/utils/api_service.dart';
+import 'package:app/utils/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:app/constants/temp.dart';
 import 'package:app/widget/drawer_widget/drawer_wrapper.dart';
+import 'package:provider/provider.dart';
 
 class MemberHomePage extends StatefulWidget {
   const MemberHomePage({Key? key}) : super(key: key);
@@ -28,6 +35,31 @@ class _MemberHomePageState extends State<MemberHomePage> {
         ),
       );
 
+  Future<UserObject?> getUser() async {
+    AuthenticationService authService = context.read<AuthenticationService>();
+    return (await authService.getUser());
+  }
+
+  Widget loadingSpinner() {
+    return const SizedBox(
+      height: 270.0,
+      child: Center(
+        child: CircularProgressIndicator(
+          color: ColorConstants.red,
+        ),
+      ),
+    );
+  }
+
+  Widget errorScreen(String? error) {
+    return SizedBox(
+      height: 270.0,
+      child: Center(
+        child: Text(error ?? "Something went wrong"),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final double categoryHeight =
@@ -47,82 +79,95 @@ class _MemberHomePageState extends State<MemberHomePage> {
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  CarouselSlider(
-                    items: [
-                      Container(
-                        margin: const EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          image: const DecorationImage(
-                            image: AssetImage("assets/images/drinkoffer1.jpg"),
-                            fit: BoxFit.cover,
+                  FutureBuilder<UserObject?>(
+                    future: getUser(),
+                    builder: ((context, userSnapshot) {
+                      if (userSnapshot.hasData) {
+                        return FutureBuilder<SlidesResponse>(
+                          future: ApiService.instance.getAppSlides(
+                            userSnapshot.data!.authToken,
+                            userSnapshot.data!.accountType,
                           ),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          image: const DecorationImage(
-                            image: AssetImage("assets/images/drinkoffer2.jpg"),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          image: const DecorationImage(
-                            image: AssetImage("assets/images/drinkoffer3.jpg"),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          image: const DecorationImage(
-                            image: AssetImage("assets/images/drinkoffer4.jpg"),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          image: const DecorationImage(
-                            image: AssetImage("assets/images/drinkoffer3.jpg"),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ],
-                    options: CarouselOptions(
-                      height: 270.0,
-                      enlargeCenterPage: true,
-                      autoPlay: true,
-                      aspectRatio: 16 / 9,
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      enableInfiniteScroll: true,
-                      autoPlayAnimationDuration: const Duration(
-                        milliseconds: 800,
-                      ),
-                      viewportFraction: 0.8,
-                    ),
+                          builder: ((context, snapshot) {
+                            Widget children;
+
+                            if (snapshot.hasData) {
+                              children = CarouselSlider(
+                                items: snapshot.data!.data!
+                                    .map(
+                                      (slide) => SizedBox(
+                                        child: Image.network(
+                                          "${ApiConstants.uploadsPath}/${slide.image}",
+                                          fit: BoxFit.cover,
+                                          loadingBuilder: ((
+                                            context,
+                                            child,
+                                            loadingProgress,
+                                          ) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return Container(
+                                              color: Colors.grey,
+                                            );
+                                          }),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                                options: CarouselOptions(
+                                  height: 270.0,
+                                  enlargeCenterPage: true,
+                                  autoPlay: true,
+                                  aspectRatio: 16 / 9,
+                                  autoPlayCurve: Curves.fastOutSlowIn,
+                                  enableInfiniteScroll: true,
+                                  autoPlayAnimationDuration: const Duration(
+                                    milliseconds: 800,
+                                  ),
+                                  viewportFraction: 0.8,
+                                ),
+                              );
+                            } else if (snapshot.hasError) {
+                              children = errorScreen(
+                                snapshot.error.toString(),
+                              );
+                            } else {
+                              children = loadingSpinner();
+                            }
+
+                            return Center(child: children);
+                          }),
+                        );
+                      } else if (userSnapshot.hasError) {
+                        return errorScreen(userSnapshot.error.toString());
+                      } else {
+                        return loadingSpinner();
+                      }
+                    }),
                   ),
                   const Padding(padding: EdgeInsets.all(8.0)),
-                  const TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.search),
+                  TextField(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/search');
+                    },
+                    readOnly: true,
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: Colors.black,
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(
                           Radius.circular(50.0),
                         ),
                       ),
-                      labelText: 'Search',
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(50.0),
+                        ),
+                      ),
+                      hintText: 'Search',
                     ),
                   ),
                   const Padding(padding: EdgeInsets.all(8.0)),
@@ -358,43 +403,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                           fit: BoxFit.fill,
                           child: InkWell(
                             onTap: () {
-                              showModalBottomSheet<void>(
-                                context: context,
-                                isScrollControlled: true,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(30),
-                                  ),
-                                ),
-                                builder: (BuildContext context) {
-                                  return Container(
-                                    height: 200,
-                                    color: const Color.fromARGB(
-                                      255,
-                                      230,
-                                      229,
-                                      227,
-                                    ),
-                                    child: Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          const Text('Buy a plan'),
-                                          ElevatedButton(
-                                            child: const Text('Subscribe'),
-                                            onPressed: () {
-                                              Navigator.pushNamed(
-                                                  context, '/subscription');
-                                            },
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
+                              Navigator.pushNamed(context, '/spin-wheel');
                             },
                           ),
                         ),

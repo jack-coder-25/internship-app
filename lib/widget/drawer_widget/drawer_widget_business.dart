@@ -82,6 +82,17 @@ class _DrawerWidgetBusinessState extends State<DrawerWidgetBusiness> {
             ),
           ),
           ListTile(
+            leading: const Icon(Icons.discount),
+            iconColor: Colors.white,
+            onTap: () {
+              Navigator.pushNamed(context, '/offers');
+            },
+            title: const Text(
+              'Offers',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          ListTile(
             leading: const Icon(Icons.group),
             iconColor: Colors.white,
             onTap: () {

@@ -1,3 +1,5 @@
+import 'package:app/pages/search_vendors.dart';
+import 'package:app/pages/spin_wheel.dart';
 import 'package:app/pages/wallet_topup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -75,6 +77,7 @@ class MyApp extends StatelessWidget {
           '/business-signup': (context) => BusinessSignupPage(),
           '/otp-verify': (context) => const OtpVerifyPage(),
           '/reset-password': (context) => ResetPasswordPage(),
+          '/search': (context) => const SearchPage(),
           '/bar-home': (context) => const BarHomePage(),
           '/bar-detail': (context) => const BarDetailPage(),
           '/onboarding': (context) => const OnboardingWrapper(),
@@ -88,6 +91,7 @@ class MyApp extends StatelessWidget {
           '/wallet-topup': (context) => const WalletTopupPage(),
           '/additional-coupons': (context) => const AdditionalCouponsPage(),
           '/partners': (context) => const PartnersPage(),
+          '/spin-wheel': (context) => const SpinWheelPage(),
           '/subscription-detail': (context) => const SubscriptionDetailPage(),
           '/clubs-associations': (context) => const ClubsAndAssociationsPage(),
           '/club-detail': (context) => const ClubDetailPage(),

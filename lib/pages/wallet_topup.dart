@@ -10,7 +10,7 @@ import 'package:app/utils/checkout.dart';
 import 'package:provider/provider.dart';
 
 class WalletTopupPageArguments {
-  final String amount;
+  final String? amount;
 
   WalletTopupPageArguments({
     required this.amount,
@@ -26,7 +26,7 @@ class WalletTopupPage extends StatefulWidget {
 
 class _WalletTopupPageState extends State<WalletTopupPage> {
   UserObject? user;
-  late WalletTopupPageArguments args;
+  late WalletTopupPageArguments? args;
   var amountTextController = TextEditingController();
 
   @override
@@ -35,20 +35,20 @@ class _WalletTopupPageState extends State<WalletTopupPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       var modalRoute = ModalRoute.of(context);
-      args = modalRoute?.settings.arguments as WalletTopupPageArguments;
+      args = modalRoute?.settings.arguments as WalletTopupPageArguments?;
 
       setState(() {
         user = context.read<UserObject?>();
-        amountTextController = TextEditingController(text: args.amount);
+        amountTextController = TextEditingController(text: args?.amount);
       });
     });
   }
 
   void onPayment() async {
-    String accessKey = "";
+    String accessKey = "392ecc6ec9775f5d74f10fa64f862f3ac524256d51cdab1eb62b5732b9ed1383";
     final paymentResponse = await makePayment(accessKey);
 
-    if (paymentResponse['status'] == 'success') {
+    if (paymentResponse['payment_response']['status'] == 'success') {
       String transcationId = generateRandomString(8);
 
       await ApiService.instance.topupWallet(
@@ -57,11 +57,16 @@ class _WalletTopupPageState extends State<WalletTopupPage> {
         transcationId,
         amountTextController.text,
       );
+
+      if (!mounted) return;
+      showSnackbar(context, 'Money added sucessfully!');
+      Navigator.pop(context);
     } else {
       if (!mounted) return;
+
       showSnackbar(
         context,
-        paymentResponse['error_msg'] ?? 'Something went wrong',
+        paymentResponse['payment_response']['error'] ?? 'Something went wrong',
       );
     }
   }
@@ -96,6 +101,7 @@ class _WalletTopupPageState extends State<WalletTopupPage> {
             child: TextFormField(
               validator: validateNotEmpty('Amount'),
               keyboardType: TextInputType.number,
+              textAlign: TextAlign.center,
               controller: amountTextController,
               decoration: const InputDecoration(
                 prefixText: '\u{20B9}',

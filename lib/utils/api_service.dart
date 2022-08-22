@@ -1,8 +1,12 @@
 import 'dart:io';
-
+import 'package:app/models/brands.dart';
+import 'package:app/models/coupons.dart';
+import 'package:app/models/dashboard.dart';
 import 'package:app/models/notifications.dart';
 import 'package:app/models/offers.dart';
 import 'package:app/models/profile.dart';
+import 'package:app/models/search.dart';
+import 'package:app/models/slides.dart';
 import 'package:app/models/subscriptions.dart';
 import 'package:app/models/support.dart';
 import 'package:app/models/user.dart';
@@ -635,7 +639,7 @@ class ApiService {
 
       var formData = FormData.fromMap({
         'plan_id': planId,
-        // TODO: Referall code not working
+        // TODO: Referral code not working
         // 'referral_code': referralCode,
       });
 
@@ -707,6 +711,278 @@ class ApiService {
 
       if (response.statusCode == 200) {
         var data = WalletTopupResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<AdditionalCouponResponse> getBvcAdditionalCoupons(
+    String authToken,
+    String subscriptionId,
+  ) async {
+    try {
+      var formData = FormData.fromMap({
+        'subscription_id': subscriptionId,
+      });
+
+      Response response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.bvcAdditionalCoupons,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = AdditionalCouponResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<AdditionalCouponResponse> getVendorAdditionalCoupons(
+    String authToken,
+    String subscriptionId,
+  ) async {
+    try {
+      var formData = FormData.fromMap({
+        'subscription_id': subscriptionId,
+      });
+
+      Response response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.vendorCoupons,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = AdditionalCouponResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<BuyCouponResponse> buyAdditionalCoupons(
+    String authToken,
+    String couponId,
+  ) async {
+    try {
+      var formData = FormData.fromMap({
+        'coupon_id': couponId,
+      });
+
+      Response response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.buyAdditionalCoupons,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = BuyCouponResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<BuyCouponResponse> buyVendorCoupons(
+    String authToken,
+    String couponId,
+  ) async {
+    try {
+      var formData = FormData.fromMap({
+        'coupon_id': couponId,
+      });
+
+      Response response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.buyVendorCoupons,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = BuyCouponResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<BrandsResponse> getBrands(
+    String authToken,
+  ) async {
+    try {
+      Response response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.ourBrands,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = BrandsResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<DashboardSummaryResponse> getSummaryDashboard(
+    String authToken,
+    AccountType accountType,
+  ) async {
+    try {
+      Response<dynamic> response;
+
+      if (accountType == AccountType.member) {
+        response = await Dio().post(
+          ApiConstants.baseUrl + ApiConstants.memberDashboard,
+          options: Options(
+            headers: {'Authorization': 'Bearer $authToken'},
+          ),
+        );
+      } else {
+        response = await Dio().post(
+          ApiConstants.baseUrl + ApiConstants.businessDashboard,
+          options: Options(
+            headers: {'Authorization': 'Bearer $authToken'},
+          ),
+        );
+      }
+
+      if (response.statusCode == 200) {
+        var data = DashboardSummaryResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<SlidesResponse> getAppSlides(
+    String authToken,
+    AccountType accountType,
+  ) async {
+    try {
+      Response<dynamic> response;
+
+      if (accountType == AccountType.member) {
+        response = await Dio().post(
+          ApiConstants.baseUrl + ApiConstants.memberSlides,
+          options: Options(
+            headers: {'Authorization': 'Bearer $authToken'},
+          ),
+        );
+      } else {
+        response = await Dio().post(
+          ApiConstants.baseUrl + ApiConstants.businessSlides,
+          options: Options(
+            headers: {'Authorization': 'Bearer $authToken'},
+          ),
+        );
+      }
+
+      if (response.statusCode == 200) {
+        var data = SlidesResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<VendorSearchResponse> searchVendors(
+    String authToken,
+    String search,
+    String type,
+  ) async {
+    try {
+      var formData = FormData.fromMap({
+        'search': search,
+        'type': type,
+      });
+
+      Response<dynamic> response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.searchVendors,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = VendorSearchResponse.fromJson(response.data);
 
         if (data.status == 'failed') {
           throw Exception(data.message);

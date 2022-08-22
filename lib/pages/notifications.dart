@@ -57,24 +57,28 @@ class _NotificationsPageState extends State<NotificationsPage> {
                 Widget children;
 
                 if (snapshot.hasData) {
-                  children = ListView.separated(
-                    separatorBuilder: (context, index) => const Divider(
-                      height: 2,
-                      color: Colors.black,
-                    ),
-                    itemCount: snapshot.data!.data!.length,
-                    itemBuilder: (((context, index) {
-                      return ListTile(
-                        title: Text(
-                          snapshot.data!.data![index].title!,
-                        ),
-                        subtitle: Text(
-                          snapshot.data!.data![index].description!,
-                        ),
-                        contentPadding: const EdgeInsets.all(10.0),
-                      );
-                    })),
-                  );
+                  if (snapshot.data!.data!.isEmpty) {
+                    children = const Text('No Notifications.');
+                  } else {
+                    children = ListView.separated(
+                      separatorBuilder: (context, index) => const Divider(
+                        height: 2,
+                        color: Colors.black,
+                      ),
+                      itemCount: snapshot.data!.data!.length,
+                      itemBuilder: (((context, index) {
+                        return ListTile(
+                          title: Text(
+                            snapshot.data!.data![index].title!,
+                          ),
+                          subtitle: Text(
+                            snapshot.data!.data![index].description!,
+                          ),
+                          contentPadding: const EdgeInsets.all(10.0),
+                        );
+                      })),
+                    );
+                  }
                 } else if (snapshot.hasError) {
                   children = errorScreen(snapshot.error.toString());
                 } else {

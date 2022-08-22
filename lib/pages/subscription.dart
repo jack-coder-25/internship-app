@@ -1,3 +1,4 @@
+import 'package:app/constants/constants.dart';
 import 'package:app/models/subscriptions.dart';
 import 'package:app/pages/subscription_detail.dart';
 import 'package:app/utils/api_service.dart';
@@ -79,7 +80,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
                           children: [
                             Ink.image(
                               image: NetworkImage(
-                                'https://bvcindia.in/uploads/${(snapshot.data!.data![index].cardBg!)}',
+                                '${ApiConstants.uploadsPath}/${(snapshot.data!.data![index].cardBg!)}',
                               ),
                               colorFilter: ColorFilter.mode(
                                 Colors.black.withOpacity(0.6),
