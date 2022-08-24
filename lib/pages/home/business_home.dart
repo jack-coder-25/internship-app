@@ -153,9 +153,7 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
                     ),
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          // TODO Coupon Redemption
-                        },
+                        onTap: () {},
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),

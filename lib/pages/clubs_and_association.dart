@@ -1,5 +1,13 @@
+import 'package:app/constants/constants.dart';
+import 'package:app/pages/club_detail.dart';
+import 'package:app/utils/helper.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:app/constants/colors.dart';
+import 'package:app/models/search.dart';
+import 'package:app/utils/api_service.dart';
+import 'package:app/models/user.dart';
+import 'package:app/utils/authentication_service.dart';
+import 'package:provider/provider.dart';
 
 class ClubsAndAssociationsPage extends StatefulWidget {
   const ClubsAndAssociationsPage({Key? key}) : super(key: key);
@@ -10,553 +18,186 @@ class ClubsAndAssociationsPage extends StatefulWidget {
 }
 
 class _ClubsAndAssociationsPageState extends State<ClubsAndAssociationsPage> {
-  Widget appBarTitle = const Text('Search...');
-  Icon searchIcon = const Icon(Icons.search);
+  Future<UserObject?> getUser() async {
+    AuthenticationService authService = context.read<AuthenticationService>();
+    return (await authService.getUser());
+  }
+
+  Widget loadingSpinner() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: const [
+        CircularProgressIndicator(
+          color: ColorConstants.red,
+        ),
+      ],
+    );
+  }
+
+  Widget errorScreen(String? error) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(error ?? "Something went wrong"),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Our Clubs and Association"),
-        backgroundColor: const Color.fromARGB(255, 255, 0, 0),
-        leading: const BackButton(
-          color: Color.fromARGB(255, 251, 240, 240),
+        backgroundColor: ColorConstants.red,
+        leading: BackButton(
+          onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: ListView(
-        scrollDirection: Axis.vertical,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: FittedBox(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/club-detail');
-                },
-                child: Material(
-                  color: Colors.white,
-                  elevation: 14.0,
-                  borderRadius: BorderRadius.circular(24.0),
-                  shadowColor: const Color(0x802196F3),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
-                        child: myDetailsContainer1(),
-                      ),
-                      SizedBox(
-                        width: 250,
-                        height: 180,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(24.0),
-                          child: const Image(
-                            fit: BoxFit.contain,
-                            alignment: Alignment.topRight,
-                            image: AssetImage("assets/images/club1.jpg"),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+      body: Center(
+        child: FutureBuilder<UserObject?>(
+          future: getUser(),
+          builder: ((context, userSnapshot) {
+            if (userSnapshot.hasData) {
+              return FutureBuilder<VendorSearchResponse>(
+                future: ApiService.instance.searchVendors(
+                  userSnapshot.data!.authToken,
+                  '',
+                  '',
                 ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: FittedBox(
-              child: Material(
-                color: Colors.white,
-                elevation: 14.0,
-                borderRadius: BorderRadius.circular(24.0),
-                shadowColor: const Color(0x802196F3),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0),
-                      child: myDetailsContainer4(),
-                    ),
-                    SizedBox(
-                      width: 250,
-                      height: 180,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(24.0),
-                        child: const Image(
-                          fit: BoxFit.contain,
-                          alignment: Alignment.topRight,
-                          image: AssetImage("assets/images/club2.jpg"),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: FittedBox(
-              child: Material(
-                color: Colors.white,
-                elevation: 14.0,
-                borderRadius: BorderRadius.circular(24.0),
-                shadowColor: const Color(0x802196F3),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0),
-                      child: myDetailsContainer3(),
-                    ),
-                    SizedBox(
-                      width: 250,
-                      height: 180,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(24.0),
-                        child: const Image(
-                          fit: BoxFit.contain,
-                          alignment: Alignment.topRight,
-                          image: AssetImage("assets/images/club3.jpg"),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: FittedBox(
-              child: Material(
-                color: Colors.white,
-                elevation: 14.0,
-                borderRadius: BorderRadius.circular(24.0),
-                shadowColor: const Color(0x802196F3),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0),
-                      child: myDetailsContainer2(),
-                    ),
-                    SizedBox(
-                      width: 250,
-                      height: 180,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(24.0),
-                        child: const Image(
-                          fit: BoxFit.contain,
-                          alignment: Alignment.topRight,
-                          image: AssetImage("assets/images/club4.jpg"),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: FittedBox(
-              child: Material(
-                color: Colors.white,
-                elevation: 14.0,
-                borderRadius: BorderRadius.circular(24.0),
-                shadowColor: const Color.fromARGB(255, 255, 8, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0),
-                      child: myDetailsContainer5(),
-                    ),
-                    SizedBox(
-                      width: 250,
-                      height: 180,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(24.0),
-                        child: const Image(
-                          fit: BoxFit.contain,
-                          alignment: Alignment.topRight,
-                          image: AssetImage("assets/images/club5.jpg"),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
+                builder: ((context, snapshot) {
+                  Widget children;
+
+                  if (snapshot.hasData) {
+                    if (snapshot.data!.data!.isEmpty) {
+                      children = const Text('No Clubs Available.');
+                    } else {
+                      children = ListView.builder(
+                        itemCount: snapshot.data!.data!.length,
+                        itemBuilder: (((context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Material(
+                              color: Colors.white,
+                              elevation: 8.0,
+                              borderRadius: BorderRadius.circular(12.0),
+                              child: InkWell(
+                                onTap: () {
+                                  var subscription = userSnapshot
+                                      .data?.profile?.data?.subscription;
+
+                                  var amcRequired = userSnapshot.data?.profile
+                                      ?.data?.subscription?.amcRequired;
+
+                                  if (subscription != null) {
+                                    if (amcRequired == 'Yes') {
+                                      showSnackbar(
+                                        context,
+                                        'Upgrade Subscription Plan',
+                                      );
+
+                                      Navigator.pushReplacementNamed(
+                                        context,
+                                        '/subscription',
+                                      );
+                                    } else {
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/club-detail',
+                                        arguments: ClubDetailPageArguments(
+                                          vendorId:
+                                              snapshot.data!.data![index].id!,
+                                        ),
+                                      );
+                                    }
+                                  } else {
+                                    showSnackbar(
+                                      context,
+                                      'Subscription Required',
+                                    );
+
+                                    Navigator.pushReplacementNamed(
+                                      context,
+                                      '/subscription',
+                                    );
+                                  }
+
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/club-detail',
+                                  );
+                                },
+                                child: Row(
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width: 180,
+                                      height: 120,
+                                      child: ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(12.0),
+                                          bottomLeft: Radius.circular(12.0),
+                                        ),
+                                        child: Image.network(
+                                          "${ApiConstants.uploadsPath}/${snapshot.data!.data![index].photo}",
+                                          fit: BoxFit.fill,
+                                          loadingBuilder: ((
+                                            context,
+                                            child,
+                                            loadingProgress,
+                                          ) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return Container(
+                                              height: 120,
+                                              width: 180,
+                                              color: Colors.grey,
+                                            );
+                                          }),
+                                        ),
+                                      ),
+                                    ),
+                                    Flexible(
+                                      child: Container(
+                                        padding: const EdgeInsets.only(
+                                          left: 15.0,
+                                          right: 15.0,
+                                        ),
+                                        child: Text(
+                                          snapshot.data!.data![index].name!,
+                                          overflow: TextOverflow.clip,
+                                          style: const TextStyle(
+                                            fontSize: 15.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        })),
+                      );
+                    }
+                  } else if (snapshot.hasError) {
+                    children = errorScreen(snapshot.error.toString());
+                  } else {
+                    children = loadingSpinner();
+                  }
+
+                  return Center(child: children);
+                }),
+              );
+            } else if (userSnapshot.hasError) {
+              return errorScreen(userSnapshot.error.toString());
+            } else {
+              return loadingSpinner();
+            }
+          }),
+        ),
       ),
     );
-  }
-
-  Widget myDetailsContainer1() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        const Padding(
-          padding: EdgeInsets.only(left: 8.0),
-          child: Text(
-            "BENZE ZODIAC CLUB",
-            style: TextStyle(
-              color: Color.fromARGB(255, 16, 12, 12),
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
-              Text(
-                "4.3",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              ),
-              Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Icon(
-                FontAwesomeIcons.solidStarHalf,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Text(
-                "(321)",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget myDetailsContainer2() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        const Padding(
-          padding: EdgeInsets.only(left: 8.0),
-          child: Text(
-            "WELLINGTON PLAZA CLUB",
-            style: TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0),
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Row(
-            children: const [
-              Text(
-                "4.3",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              ),
-              Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Icon(
-                FontAwesomeIcons.solidStarHalf,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Text(
-                "   ",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget myDetailsContainer3() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        const Padding(
-          padding: EdgeInsets.only(left: 8.0),
-          child: Text(
-            "KOLATHUR CLUB",
-            style: TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0),
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Row(
-            children: const [
-              Text(
-                "4.0",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              ),
-              Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Text(
-                "  ",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const Text(
-          "   ",
-          style: TextStyle(
-            color: Colors.black54,
-            fontSize: 18.0,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget myDetailsContainer4() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        const Padding(
-          padding: EdgeInsets.only(left: 8.0),
-          child: Text(
-            " BENZE ECR CLUB",
-            style: TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0),
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Row(
-            children: <Widget>[
-              const Text(
-                "3.5",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              ),
-              Column(
-                children: const [
-                  Icon(
-                    FontAwesomeIcons.solidStar,
-                    color: Colors.amber,
-                    size: 15.0,
-                  ),
-                ],
-              ),
-              const Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              const Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              const Icon(
-                FontAwesomeIcons.solidStarHalf,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              const Text(
-                "    ",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const Text(
-          "   ",
-          style: TextStyle(
-            color: Colors.black54,
-            fontSize: 18.0,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget myDetailsContainer5() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        const Padding(
-          padding: EdgeInsets.only(left: 8.0),
-          child: Text(
-            " BENZE ECR CLUB",
-            style: TextStyle(
-              color: Color.fromARGB(255, 0, 0, 0),
-              fontSize: 24.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: Row(
-            children: const [
-              Text(
-                "3.5",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              ),
-              Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Icon(
-                FontAwesomeIcons.solidStar,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Icon(
-                FontAwesomeIcons.solidStarHalf,
-                color: Colors.amber,
-                size: 15.0,
-              ),
-              Text(
-                "    ",
-                style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              ),
-            ],
-          ),
-        ),
-        const Text(
-          "   ",
-          style: TextStyle(
-            color: Colors.black54,
-            fontSize: 18.0,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget buildBar(BuildContext context) {
-    return AppBar(
-      centerTitle: true,
-      title: appBarTitle,
-      leading: IconButton(
-        icon: searchIcon,
-        onPressed: _searchPressed,
-      ),
-    );
-  }
-
-  void _searchPressed() {
-    setState(() {
-      if (searchIcon.icon == Icons.search) {
-        searchIcon = const Icon(Icons.close);
-        appBarTitle = const TextField(
-          decoration: InputDecoration(
-            prefixIcon: Icon(Icons.search),
-            hintText: 'Search...',
-          ),
-        );
-      } else {
-        searchIcon = const Icon(Icons.search);
-        appBarTitle = const Text('Search Example');
-      }
-    });
   }
 }

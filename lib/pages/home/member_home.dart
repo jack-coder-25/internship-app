@@ -1,4 +1,3 @@
-import 'package:app/constants/colors.dart';
 import 'package:app/constants/constants.dart';
 import 'package:app/models/slides.dart';
 import 'package:app/models/user.dart';
@@ -41,13 +40,11 @@ class _MemberHomePageState extends State<MemberHomePage> {
   }
 
   Widget loadingSpinner() {
-    return const SizedBox(
-      height: 270.0,
-      child: Center(
-        child: CircularProgressIndicator(
-          color: ColorConstants.red,
-        ),
-      ),
+    return Container(
+        height: 270,
+        width: double.infinity,
+        color: Colors.grey,
+        child: null
     );
   }
 

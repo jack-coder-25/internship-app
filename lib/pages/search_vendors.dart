@@ -2,8 +2,10 @@ import 'package:app/constants/colors.dart';
 import 'package:app/constants/constants.dart';
 import 'package:app/models/search.dart';
 import 'package:app/models/user.dart';
+import 'package:app/pages/club_detail.dart';
 import 'package:app/utils/api_service.dart';
 import 'package:app/utils/authentication_service.dart';
+import 'package:app/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -101,7 +103,6 @@ class _SearchPageState extends State<SearchPage> {
         backgroundColor: Colors.white,
       ),
       extendBody: true,
-      drawer: const Drawer(),
       body: Center(
         child: FutureBuilder<UserObject?>(
           future: getUser(),
@@ -125,51 +126,111 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                       );
                     } else {
-                      children = GridView.count(
-                        crossAxisCount: 2,
-                        childAspectRatio: .82,
-                        padding: const EdgeInsets.all(4.0),
-                        mainAxisSpacing: 16.0,
-                        crossAxisSpacing: 4.0,
-                        children: snapshot.data!.data!.map((Data vendor) {
-                          return GridTile(
-                            child: Column(
-                              children: [
-                                Image.network(
-                                  height: 140.0,
-                                  '${ApiConstants.uploadsPath}/${vendor.photo}',
-                                  fit: BoxFit.cover,
-                                  errorBuilder: ((context, error, stackTrace) {
-                                    return const SizedBox(
-                                      height: 140.0,
-                                      child: Center(
-                                        child: Text('No Image'),
-                                      ),
+                      children = ListView.builder(
+                        itemCount: snapshot.data!.data!.length,
+                        itemBuilder: (((context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Material(
+                              color: Colors.white,
+                              elevation: 8.0,
+                              borderRadius: BorderRadius.circular(12.0),
+                              child: InkWell(
+                                onTap: () {
+                                  var subscription = userSnapshot
+                                      .data?.profile?.data?.subscription;
+
+                                  var amcRequired = userSnapshot.data?.profile
+                                      ?.data?.subscription?.amcRequired;
+
+                                  if (subscription != null) {
+                                    if (amcRequired == 'Yes') {
+                                      showSnackbar(
+                                        context,
+                                        'Upgrade Subscription Plan',
+                                      );
+
+                                      Navigator.pushReplacementNamed(
+                                        context,
+                                        '/subscription',
+                                      );
+                                    } else {
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/club-detail',
+                                        arguments: ClubDetailPageArguments(
+                                          vendorId: snapshot.data!.data![index].id!,
+                                        ),
+                                      );
+                                    }
+                                  } else {
+                                    showSnackbar(
+                                      context,
+                                      'Subscription Required',
                                     );
-                                  }),
-                                  loadingBuilder: ((
+
+                                    Navigator.pushReplacementNamed(
+                                      context,
+                                      '/subscription',
+                                    );
+                                  }
+
+                                  Navigator.pushNamed(
                                     context,
-                                    child,
-                                    loadingProgress,
-                                  ) {
-                                    if (loadingProgress == null) return child;
-                                    return Container(
-                                      height: 140.0,
-                                      color: Colors.grey,
-                                    );
-                                  }),
+                                    '/club-detail',
+                                  );
+                                },
+                                child: Row(
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width: 180,
+                                      height: 120,
+                                      child: ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(12.0),
+                                          bottomLeft: Radius.circular(12.0),
+                                        ),
+                                        child: Image.network(
+                                          "${ApiConstants.uploadsPath}/${snapshot.data!.data![index].photo}",
+                                          fit: BoxFit.fill,
+                                          loadingBuilder: ((
+                                            context,
+                                            child,
+                                            loadingProgress,
+                                          ) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return Container(
+                                              height: 120,
+                                              width: 180,
+                                              color: Colors.grey,
+                                            );
+                                          }),
+                                        ),
+                                      ),
+                                    ),
+                                    Flexible(
+                                      child: Container(
+                                        padding: const EdgeInsets.only(
+                                          left: 15.0,
+                                          right: 15.0,
+                                        ),
+                                        child: Text(
+                                          snapshot.data!.data![index].name!,
+                                          overflow: TextOverflow.clip,
+                                          style: const TextStyle(
+                                            fontSize: 15.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  vendor.name ?? '',
-                                  textAlign: TextAlign.center,
-                                )
-                              ],
+                              ),
                             ),
                           );
-                        }).toList(),
+                        })),
                       );
                     }
                   } else if (snapshot.hasError) {
@@ -237,7 +298,7 @@ class _SearchPageState extends State<SearchPage> {
                         ],
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height / 1.4,
+                        height: MediaQuery.of(context).size.height / 1.25,
                         child: children,
                       )
                     ],

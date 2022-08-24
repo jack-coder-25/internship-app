@@ -54,4 +54,5 @@ class ApiConstants {
   static const String businessSlides = '/vendor_app.php?auth_get=app_slides';
 
   static const String searchVendors = '/user_app.php?auth_get=vendors';
+  static const String getVendorDetails = '/user_app.php?auth_get=vendor_details';
 }

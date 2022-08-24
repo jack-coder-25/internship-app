@@ -15,7 +15,6 @@ dependencies:
   intl: ^0.17.0
   sms_autofill: ^2.2.0
   provider: ^6.0.3
-  font_awesome_flutter: ^10.1.0
   dio: ^4.0.6
   smooth_page_indicator: ^1.0.0+2
   shared_preferences: ^2.0.15

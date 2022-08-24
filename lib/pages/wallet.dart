@@ -74,7 +74,7 @@ class _WalletPageState extends State<WalletPage> {
                     if (snapshot.data!.data!.isEmpty) {
                       children = const Padding(
                         padding: EdgeInsets.all(16.0),
-                        child:  Text('No Transcations'),
+                        child: Text('No Transcations'),
                       );
                     } else {
                       if (userSnapshot.data?.accountType ==
@@ -239,7 +239,9 @@ class _WalletPageState extends State<WalletPage> {
                                   ),
                                 ),
                                 Text(
-                                  'Last Transaction - ${snapshot.data?.data?[0].amount ?? '...'}',
+                                  snapshot.data?.data?.isNotEmpty == true
+                                      ? 'Last Transaction - ${snapshot.data?.data?[0].amount ?? '...'}'
+                                      : 'No Transaction',
                                   style: const TextStyle(
                                     fontSize: 15,
                                     color: Colors.white,

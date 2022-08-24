@@ -34,6 +34,14 @@ import 'package:app/utils/authentication_service.dart';
 
 late UserObject? userObject;
 
+// ⬜ Club detail page
+// ⬜ Generate EaseBuzz access key on server
+// ⬜ Fetch and show your coupons
+// ⬜ Fetch and show bookings
+// ⬜ Redeem coupon
+// ⬜ Coupon redemption page business
+// ⬜ Refferral code not working in subscribeToPlan
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   userObject = await AuthenticationService.init();

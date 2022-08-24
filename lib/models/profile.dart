@@ -263,6 +263,7 @@ class Subscription {
   String? cardBg;
   String? image;
   String? description;
+  String? amcRequired;
   String? amcImage;
   String? amcDescription;
   String? status;
@@ -285,6 +286,7 @@ class Subscription {
     this.cardBg,
     this.image,
     this.description,
+    this.amcRequired,
     this.amcImage,
     this.amcDescription,
     this.status,
@@ -310,6 +312,7 @@ class Subscription {
     data['image'] = image;
     data['description'] = description;
     data['amc_image'] = amcImage;
+    data['amc_required'] = amcRequired;
     data['amc_description'] = amcDescription;
     data['status'] = status;
     data['order_pos'] = orderPos;
@@ -333,6 +336,7 @@ class Subscription {
     cardBg = json['card_bg'];
     image = json['image'];
     description = json['description'];
+    amcRequired = json['amc_required'];
     amcImage = json['amc_image'];
     amcDescription = json['amc_description'];
     status = json['status'];

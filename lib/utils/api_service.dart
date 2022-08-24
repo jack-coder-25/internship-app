@@ -10,6 +10,7 @@ import 'package:app/models/slides.dart';
 import 'package:app/models/subscriptions.dart';
 import 'package:app/models/support.dart';
 import 'package:app/models/user.dart';
+import 'package:app/models/vendor.dart';
 import 'package:app/models/wallet.dart';
 import 'package:app/utils/authentication_service.dart';
 import 'package:dio/dio.dart';
@@ -639,7 +640,6 @@ class ApiService {
 
       var formData = FormData.fromMap({
         'plan_id': planId,
-        // TODO: Referral code not working
         // 'referral_code': referralCode,
       });
 
@@ -983,6 +983,39 @@ class ApiService {
 
       if (response.statusCode == 200) {
         var data = VendorSearchResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<VendorDetailResponse> getVendorDetails(
+    String authToken,
+    String vendorId,
+  ) async {
+    try {
+      var formData = FormData.fromMap({
+        'vendor_id': vendorId,
+      });
+
+      Response<dynamic> response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.getVendorDetails,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = VendorDetailResponse.fromJson(response.data);
 
         if (data.status == 'failed') {
           throw Exception(data.message);
