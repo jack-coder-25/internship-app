@@ -1,14 +1,12 @@
-import 'package:app/constants/colors.dart';
-import 'package:app/constants/constants.dart';
+import 'package:flutter/material.dart';
 import 'package:app/models/slides.dart';
 import 'package:app/models/user.dart';
 import 'package:app/utils/api_service.dart';
+import 'package:app/utils/authentication_service.dart';
 import 'package:app/widget/drawer_widget/drawer_wrapper.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../utils/authentication_service.dart';
+import 'package:app/constants/constants.dart';
 
 class BusinessHomePage extends StatefulWidget {
   const BusinessHomePage({Key? key}) : super(key: key);
@@ -44,13 +42,11 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
     }
 
     Widget loadingSpinner() {
-      return const SizedBox(
-        height: 270.0,
-        child: Center(
-          child: CircularProgressIndicator(
-            color: ColorConstants.red,
-          ),
-        ),
+      return Container(
+        height: 270,
+        width: double.infinity,
+        color: Colors.grey,
+        child: null,
       );
     }
 
@@ -153,7 +149,9 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
                     ),
                     children: [
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushNamed(context, '/coupon-redemption');
+                        },
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),

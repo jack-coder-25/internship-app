@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:app/models/bookings.dart';
 import 'package:app/models/brands.dart';
 import 'package:app/models/coupons.dart';
 import 'package:app/models/dashboard.dart';
@@ -37,14 +38,15 @@ class ApiService {
         final profile = ProfileResponse.fromJson(response.data);
 
         return UserObject(
-            email: profile.data!.email!,
-            fullName: profile.data?.name ?? '',
-            dateOfBirth: profile.data?.dob ?? '',
-            referralCode: profile.data?.referralCode ?? '',
-            accountType: AccountType.member,
-            authToken: authToken,
-            profile: profile,
-            businessProfile: null);
+          email: profile.data!.email!,
+          fullName: profile.data?.name ?? '',
+          dateOfBirth: profile.data?.dob ?? '',
+          referralCode: profile.data?.referralCode ?? '',
+          accountType: AccountType.member,
+          authToken: authToken,
+          profile: profile,
+          businessProfile: null,
+        );
       } else {
         throw Exception('Something went wrong [${response.statusCode}]');
       }
@@ -140,14 +142,15 @@ class ApiService {
         final businessProfile = BusinessProfileResponse.fromJson(response.data);
 
         return UserObject(
-            email: businessProfile.data!.email!,
-            fullName: businessProfile.data?.name ?? '',
-            dateOfBirth: businessProfile.data?.dob ?? '',
-            referralCode: businessProfile.data?.referralCode ?? '',
-            accountType: AccountType.business,
-            authToken: authToken,
-            businessProfile: businessProfile,
-            profile: null);
+          email: businessProfile.data!.email!,
+          fullName: businessProfile.data?.name ?? '',
+          dateOfBirth: businessProfile.data?.dob ?? '',
+          referralCode: businessProfile.data?.referralCode ?? '',
+          accountType: AccountType.business,
+          authToken: authToken,
+          businessProfile: businessProfile,
+          profile: null,
+        );
       } else {
         throw Exception('Something went wrong [${response.statusCode}]');
       }
@@ -1016,6 +1019,169 @@ class ApiService {
 
       if (response.statusCode == 200) {
         var data = VendorDetailResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<VendorServicesResponse> getVendorServices(
+    String authToken,
+    String vendorCategoryId,
+  ) async {
+    try {
+      var formData = FormData.fromMap({
+        'vendor_category_id': vendorCategoryId,
+      });
+
+      Response<dynamic> response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.getVendorServices,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = VendorServicesResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<MemberBookingsReponse> getMemberBookings(
+    String authToken,
+  ) async {
+    try {
+      Response<dynamic> response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.memberBookings,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = MemberBookingsReponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<BusinessBookingsReponse> getBusinessBookings(
+    String authToken,
+    String bookedDate,
+  ) async {
+    try {
+      var formData = FormData.fromMap({'booked_date': bookedDate});
+
+      Response<dynamic> response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.businessBookings,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = BusinessBookingsReponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<VendorServiceSlotsResponse> getVendorServiceSlots(
+    String authToken,
+    String serviceId,
+    String serviceDate,
+  ) async {
+    try {
+      var formData = FormData.fromMap({
+        'service_id': serviceId,
+        'service_date': serviceDate,
+      });
+
+      Response<dynamic> response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.vendorServiceSlots,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = VendorServiceSlotsResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<BookServiceResponse> bookService(
+    String authToken,
+    String serviceId,
+    String slotId,
+    String qty,
+  ) async {
+    try {
+      var formData = FormData.fromMap({
+        'service_id': serviceId,
+        'slot_id': slotId,
+        'qty': qty,
+      });
+
+      Response<dynamic> response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.serviceBooking,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = BookServiceResponse.fromJson(response.data);
 
         if (data.status == 'failed') {
           throw Exception(data.message);

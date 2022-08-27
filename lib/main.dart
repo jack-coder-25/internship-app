@@ -1,3 +1,6 @@
+import 'package:app/pages/coupon_redemption.dart';
+import 'package:app/pages/package_subscription.dart';
+import 'package:app/pages/package_subscription_detail.dart';
 import 'package:app/pages/search_vendors.dart';
 import 'package:app/pages/spin_wheel.dart';
 import 'package:app/pages/wallet_topup.dart';
@@ -10,7 +13,7 @@ import 'package:app/pages/auth/member/member_login.dart';
 import 'package:app/pages/auth/business/business_login.dart';
 import 'package:app/pages/auth/business/business_signup.dart';
 import 'package:app/pages/bar/bar_detail.dart';
-import 'package:app/pages/club_services.dart';
+import 'package:app/pages/club_service_detail.dart';
 import 'package:app/pages/reset_password.dart';
 import 'package:app/pages/bar/bar_home.dart';
 import 'package:app/pages/additional_coupons.dart';
@@ -34,13 +37,14 @@ import 'package:app/utils/authentication_service.dart';
 
 late UserObject? userObject;
 
-// ⬜ Club detail page
-// ⬜ Generate EaseBuzz access key on server
-// ⬜ Fetch and show your coupons
-// ⬜ Fetch and show bookings
-// ⬜ Redeem coupon
-// ⬜ Coupon redemption page business
-// ⬜ Refferral code not working in subscribeToPlan
+// 'bookings' page business
+// 'availability' page business
+// 'Package subscription' page business
+// 'Your Coupons' page member
+// 'service bookings request' page business
+// 'Coupon redemption' page business
+// Refferral code not working in 'subscribeToPlan'
+// Generate EaseBuzz access key on server
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -104,6 +108,10 @@ class MyApp extends StatelessWidget {
           '/clubs-associations': (context) => const ClubsAndAssociationsPage(),
           '/club-detail': (context) => const ClubDetailPage(),
           '/club-service-detail': (context) => const ClubServicesDetailPage(),
+          '/coupon-redemption': (context) => CouponRedemptionPage(),
+          '/package-subscription': (context) => const PackageSubscriptionPage(),
+          '/package-subscription-detail': (context) =>
+              const PackageSubscriptionDetailPage(),
         },
       ),
     );

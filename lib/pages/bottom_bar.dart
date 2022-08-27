@@ -1,6 +1,6 @@
+import 'package:app/pages/bookings/bookings_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:app/constants/colors.dart';
-import 'package:app/pages/bookings.dart';
 import 'package:app/pages/home/home_wrapper.dart';
 import 'package:app/pages/notifications.dart';
 import 'package:app/pages/support.dart';
@@ -45,7 +45,7 @@ class _BottomBarPageState extends State<BottomBarPage> {
         providers: providers,
         child: const HomeWrapper(),
       ),
-      const BookingsPage(),
+      const BookingsWrapper(),
       const WalletPage(),
       const NotificationsPage(),
       const SupportPage(),

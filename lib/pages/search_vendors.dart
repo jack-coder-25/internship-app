@@ -159,7 +159,8 @@ class _SearchPageState extends State<SearchPage> {
                                         context,
                                         '/club-detail',
                                         arguments: ClubDetailPageArguments(
-                                          vendorId: snapshot.data!.data![index].id!,
+                                          vendorId:
+                                              snapshot.data!.data![index].id!,
                                         ),
                                       );
                                     }
@@ -174,11 +175,6 @@ class _SearchPageState extends State<SearchPage> {
                                       '/subscription',
                                     );
                                   }
-
-                                  Navigator.pushNamed(
-                                    context,
-                                    '/club-detail',
-                                  );
                                 },
                                 child: Row(
                                   children: <Widget>[
@@ -297,9 +293,14 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height / 1.25,
-                        child: children,
+                      SingleChildScrollView(
+                        physics: const ClampingScrollPhysics(
+                          parent: NeverScrollableScrollPhysics(),
+                        ),
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height / 1.25,
+                          child: children,
+                        ),
                       )
                     ],
                   );

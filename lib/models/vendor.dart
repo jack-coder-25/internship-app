@@ -303,7 +303,13 @@ class Slides {
   Slides.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     vendorId = json['vendor_id'];
-    image = json['image'];
+
+    if (json['image'] is List<dynamic>) {
+      image = (json['image'] as List<dynamic>)[0];
+    } else {
+      image = json['image'];
+    }
+
     actionUrl = json['action_url'];
     orderPos = json['order_pos'];
     status = json['status'];
@@ -367,6 +373,368 @@ class Categories {
     data['status'] = status;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
+    return data;
+  }
+}
+
+class VendorServicesResponse {
+  String? status;
+  String? message;
+  List<CategoryData>? data;
+
+  VendorServicesResponse({this.status, this.message, this.data});
+
+  VendorServicesResponse.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+    if (json['data'] != null) {
+      data = <CategoryData>[];
+      json['data'].forEach((v) {
+        data!.add(CategoryData.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['status'] = status;
+    data['message'] = message;
+
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+
+    return data;
+  }
+}
+
+class CategoryData {
+  String? id;
+  String? serviceCategoryId;
+  String? vendorId;
+  String? categoryId;
+  String? title;
+  String? amount;
+  String? actualAmount;
+  String? bvcAmount;
+  String? shortNotes;
+  String? ac;
+  String? description;
+  String? photo;
+  List<Amenities>? amenities;
+  List<String>? rulesRegulations;
+  String? booking;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+  String? mapLink;
+  String? bookingEnabled;
+  List<CategorySlides>? slides;
+
+  CategoryData({
+    this.id,
+    this.serviceCategoryId,
+    this.vendorId,
+    this.categoryId,
+    this.title,
+    this.amount,
+    this.actualAmount,
+    this.bvcAmount,
+    this.shortNotes,
+    this.ac,
+    this.description,
+    this.photo,
+    this.amenities,
+    this.rulesRegulations,
+    this.booking,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.mapLink,
+    this.bookingEnabled,
+    this.slides,
+  });
+
+  CategoryData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    serviceCategoryId = json['service_category_id'];
+    vendorId = json['vendor_id'];
+    categoryId = json['category_id'];
+    title = json['title'];
+    amount = json['amount'];
+    actualAmount = json['actual_amount'];
+    bvcAmount = json['bvc_amount'];
+    shortNotes = json['short_notes'];
+    ac = json['ac'];
+    description = json['description'];
+    photo = json['photo'];
+
+    if (json['amenities'] != null) {
+      amenities = <Amenities>[];
+      json['amenities'].forEach((v) {
+        amenities!.add(Amenities.fromJson(v));
+      });
+    }
+
+    if (json['rules_regulations'] != null) {
+      rulesRegulations = <String>[];
+      json['rules_regulations'].forEach((v) {
+        rulesRegulations!.add(v.toString());
+      });
+    }
+
+    booking = json['booking'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    mapLink = json['map_link'];
+    bookingEnabled = json['booking_enabled'];
+
+    if (json['slides'] != null) {
+      slides = <CategorySlides>[];
+      json['slides'].forEach((v) {
+        slides!.add(CategorySlides.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['id'] = id;
+    data['service_category_id'] = serviceCategoryId;
+    data['vendor_id'] = vendorId;
+    data['category_id'] = categoryId;
+    data['title'] = title;
+    data['amount'] = amount;
+    data['actual_amount'] = actualAmount;
+    data['bvc_amount'] = bvcAmount;
+    data['short_notes'] = shortNotes;
+    data['ac'] = ac;
+    data['description'] = description;
+    data['photo'] = photo;
+
+    if (amenities != null) {
+      data['amenities'] = amenities!.map((v) => v.toJson()).toList();
+    }
+
+    if (rulesRegulations != null) {
+      data['rules_regulations'] =
+          rulesRegulations!.map((v) => v.toString()).toList();
+    }
+
+    data['booking'] = booking;
+    data['status'] = status;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['map_link'] = mapLink;
+    data['booking_enabled'] = bookingEnabled;
+
+    if (slides != null) {
+      data['slides'] = slides!.map((v) => v.toJson()).toList();
+    }
+
+    return data;
+  }
+}
+
+class CategorySlides {
+  String? id;
+  String? vendorServiceId;
+  String? image;
+  String? actionUrl;
+  String? orderPos;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+
+  CategorySlides({
+    this.id,
+    this.vendorServiceId,
+    this.image,
+    this.actionUrl,
+    this.orderPos,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  CategorySlides.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    vendorServiceId = json['vendor_service_id'];
+    image = json['image'];
+    actionUrl = json['action_url'];
+    orderPos = json['order_pos'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['id'] = id;
+    data['vendor_service_id'] = vendorServiceId;
+    data['image'] = image;
+    data['action_url'] = actionUrl;
+    data['order_pos'] = orderPos;
+    data['status'] = status;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    return data;
+  }
+}
+
+class Amenities {
+  String? title;
+  String? icon;
+
+  Amenities({this.title, this.icon});
+
+  Amenities.fromJson(Map<String, dynamic> json) {
+    title = json['title'];
+    icon = json['icon'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['title'] = title;
+    data['icon'] = icon;
+    return data;
+  }
+}
+
+class VendorServiceSlotsResponse {
+  String? status;
+  String? message;
+  List<VendorServiceSlotsData>? data;
+
+  VendorServiceSlotsResponse({
+    this.status,
+    this.message,
+    this.data,
+  });
+
+  VendorServiceSlotsResponse.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+    if (json['data'] != null) {
+      data = <VendorServiceSlotsData>[];
+      json['data'].forEach((v) {
+        data!.add(VendorServiceSlotsData.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['status'] = status;
+    data['message'] = message;
+
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+
+    return data;
+  }
+}
+
+class VendorServiceSlotsData {
+  String? id;
+  String? serviceId;
+  String? startAt;
+  String? endAt;
+  String? title;
+  String? qtyTotal;
+  String? qtyBooked;
+  String? qtyBlocked;
+  String? qtyAvailable;
+  String? status;
+  String? createdAt;
+  String? updatedAt;
+
+  VendorServiceSlotsData({
+    this.id,
+    this.serviceId,
+    this.startAt,
+    this.endAt,
+    this.title,
+    this.qtyTotal,
+    this.qtyBooked,
+    this.qtyBlocked,
+    this.qtyAvailable,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  VendorServiceSlotsData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    serviceId = json['service_id'];
+    startAt = json['start_at'];
+    endAt = json['end_at'];
+    title = json['title'];
+    qtyTotal = json['qty_total'];
+    qtyBooked = json['qty_booked'];
+    qtyBlocked = json['qty_blocked'];
+    qtyAvailable = json['qty_available'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['id'] = id;
+    data['service_id'] = serviceId;
+    data['start_at'] = startAt;
+    data['end_at'] = endAt;
+    data['title'] = title;
+    data['qty_total'] = qtyTotal;
+    data['qty_booked'] = qtyBooked;
+    data['qty_blocked'] = qtyBlocked;
+    data['qty_available'] = qtyAvailable;
+    data['status'] = status;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    return data;
+  }
+}
+
+class BookServiceResponse {
+  String? status;
+  String? message;
+  BookServiceData? data;
+
+  BookServiceResponse({this.status, this.message, this.data});
+
+  BookServiceResponse.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+    data = json['data'] != null ? BookServiceData.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['status'] = status;
+    data['message'] = message;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
+}
+
+class BookServiceData {
+  int? bookingId;
+
+  BookServiceData({this.bookingId});
+
+  BookServiceData.fromJson(Map<String, dynamic> json) {
+    bookingId = json['booking_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['booking_id'] = bookingId;
     return data;
   }
 }

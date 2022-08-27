@@ -5,7 +5,6 @@ import 'package:app/utils/api_service.dart';
 import 'package:app/utils/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:app/constants/temp.dart';
 import 'package:app/widget/drawer_widget/drawer_wrapper.dart';
 import 'package:provider/provider.dart';
 
@@ -41,10 +40,10 @@ class _MemberHomePageState extends State<MemberHomePage> {
 
   Widget loadingSpinner() {
     return Container(
-        height: 270,
-        width: double.infinity,
-        color: Colors.grey,
-        child: null
+      height: 270,
+      width: double.infinity,
+      color: Colors.grey,
+      child: null,
     );
   }
 
@@ -182,8 +181,11 @@ class _MemberHomePageState extends State<MemberHomePage> {
                           height: 180,
                           fit: BoxFit.fill,
                           child: InkWell(
-                            onTap: () {
-                              if (Temp.userSubscribed) {
+                            onTap: () async {
+                              var user = await getUser();
+                              if (!mounted) return;
+
+                              if (user?.profile?.data?.subscription != null) {
                                 Navigator.pushNamed(context, '/bar-home');
                               } else {
                                 Navigator.pushNamed(context, '/subscription');

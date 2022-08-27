@@ -122,11 +122,6 @@ class _ClubsAndAssociationsPageState extends State<ClubsAndAssociationsPage> {
                                       '/subscription',
                                     );
                                   }
-
-                                  Navigator.pushNamed(
-                                    context,
-                                    '/club-detail',
-                                  );
                                 },
                                 child: Row(
                                   children: <Widget>[

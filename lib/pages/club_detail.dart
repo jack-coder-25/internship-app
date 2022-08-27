@@ -1,15 +1,18 @@
+import 'package:app/pages/club_service_detail.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:app/constants/colors.dart';
+import 'package:app/constants/constants.dart';
 import 'package:app/models/user.dart';
 import 'package:app/models/vendor.dart';
 import 'package:app/utils/api_service.dart';
 import 'package:app/utils/authentication_service.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class ClubDetailPageArguments {
-  final String vendorId;
+  String vendorId;
 
   ClubDetailPageArguments({
     required this.vendorId,
@@ -24,42 +27,54 @@ class ClubDetailPage extends StatefulWidget {
 }
 
 class _ClubDetailPageState extends State<ClubDetailPage> {
+  ClubDetailPageArguments? args;
+  YoutubePlayerController? youtubePlayerController;
   final controller = PageController();
   bool isLastPage = false;
 
-  YoutubePlayerController youtubePlayerController = YoutubePlayerController(
-    initialVideoId: 'LXb3EKWsInQ',
-    flags: const YoutubePlayerFlags(
-      autoPlay: false,
-      mute: true,
-    ),
-  );
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (args == null && args?.vendorId == null) {
+        var modalRoute = ModalRoute.of(context);
+        args = modalRoute?.settings.arguments as ClubDetailPageArguments;
+        setState(() {});
+      }
+    });
+  }
 
   @override
   void dispose() {
     controller.dispose();
+    youtubePlayerController?.dispose();
     super.dispose();
   }
 
   Widget loadingSpinner() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: const [
-        CircularProgressIndicator(
-          color: ColorConstants.red,
-        ),
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const [
+          CircularProgressIndicator(
+            color: ColorConstants.red,
+          ),
+        ],
+      ),
     );
   }
 
   Widget errorScreen(String? error) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(error ?? "Something went wrong"),
-      ],
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(error ?? "Something went wrong"),
+        ],
+      ),
     );
   }
 
@@ -70,23 +85,34 @@ class _ClubDetailPageState extends State<ClubDetailPage> {
       return (await authService.getUser());
     }
 
-    var modalRoute = ModalRoute.of(context);
-    var args = modalRoute?.settings.arguments as ClubDetailPageArguments?;
-
     return Scaffold(
       body: FutureBuilder<UserObject?>(
         future: getUser(),
         builder: ((context, userSnapshot) {
-          if (userSnapshot.hasData && args != null) {
+          if (userSnapshot.hasData) {
             return FutureBuilder<VendorDetailResponse>(
               future: ApiService.instance.getVendorDetails(
                 userSnapshot.data!.authToken,
-                args.vendorId,
+                args!.vendorId,
               ),
               builder: ((context, snapshot) {
                 Widget children;
 
                 if (snapshot.hasData) {
+                  var slides = snapshot.data!.data!.slides!;
+
+                  if (snapshot.data?.data?.video != null) {
+                    youtubePlayerController = YoutubePlayerController(
+                      initialVideoId: YoutubePlayer.convertUrlToId(
+                        snapshot.data!.data!.video!,
+                      )!,
+                      flags: const YoutubePlayerFlags(
+                        autoPlay: false,
+                        mute: true,
+                      ),
+                    );
+                  }
+
                   children = SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,63 +122,74 @@ class _ClubDetailPageState extends State<ClubDetailPage> {
                           children: [
                             SizedBox(
                               height: 220.0,
-                              child: PageView(
-                                controller: controller,
-                                onPageChanged: (index) {
-                                  setState(() => isLastPage = index == 5);
-                                },
-                                children: [
-                                  Center(
-                                    child: Image.asset(
-                                      "assets/images/2a880090-a0e0-4a81-baf5-a4575db0c91a.jpg",
-                                      width: double.infinity,
-                                      height: 220.0,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  Center(
-                                    child: Image.asset(
-                                      "assets/images/009a652c-def4-489b-b2e6-00a6b080311b.jpg",
-                                      width: double.infinity,
-                                      height: 220.0,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  Center(
-                                    child: Image.asset(
-                                      "assets/images/48651f50-b91c-41ff-b571-3fad35a65222.jpg",
-                                      width: double.infinity,
-                                      height: 220.0,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  Center(
-                                    child: Image.asset(
-                                      "assets/images/a819e8b4-0d2a-4f51-8274-c8155e34abf7.jpg",
-                                      width: double.infinity,
-                                      height: 220.0,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              child: slides.isNotEmpty
+                                  ? PageView(
+                                      controller: controller,
+                                      onPageChanged: (index) {
+                                        setState(() {
+                                          isLastPage =
+                                              index == slides.length - 1;
+                                        });
+                                      },
+                                      children: slides
+                                          .map(
+                                            (slide) => Center(
+                                              child: Image.network(
+                                                "${ApiConstants.uploadsPath}/${slide.image}",
+                                                width: double.infinity,
+                                                height: 220.0,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (((
+                                                  context,
+                                                  error,
+                                                  stackTrace,
+                                                ) {
+                                                  return const Center(
+                                                    child: Text(
+                                                      'Cannot Load Image',
+                                                    ),
+                                                  );
+                                                })),
+                                                loadingBuilder: ((
+                                                  context,
+                                                  child,
+                                                  loadingProgress,
+                                                ) {
+                                                  if (loadingProgress == null) {
+                                                    return child;
+                                                  }
+                                                  return Container(
+                                                    color: Colors.grey,
+                                                  );
+                                                }),
+                                              ),
+                                            ),
+                                          )
+                                          .toList(),
+                                    )
+                                  : null,
                             ),
                             Positioned(
                               bottom: 15,
                               child: SmoothPageIndicator(
                                 controller: controller,
-                                count: 4,
+                                count: slides.length,
                                 effect: const WormEffect(
-                                  activeDotColor:
-                                      Color.fromARGB(255, 255, 0, 0),
+                                  activeDotColor: Color.fromARGB(
+                                    255,
+                                    255,
+                                    0,
+                                    0,
+                                  ),
                                   dotColor: Colors.black,
                                   spacing: 16,
                                 ),
                                 onDotClicked: ((index) =>
                                     controller.animateToPage(
                                       index,
-                                      duration:
-                                          const Duration(milliseconds: 500),
+                                      duration: const Duration(
+                                        milliseconds: 500,
+                                      ),
                                       curve: Curves.easeIn,
                                     )),
                               ),
@@ -167,72 +204,127 @@ class _ClubDetailPageState extends State<ClubDetailPage> {
                             ),
                           ],
                         ),
-                        const Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Text(
-                            "Our Services",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              child: snapshot.data!.data!.mapLink != null
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: InkWell(
+                                        onTap: () async {
+                                          await launchUrl(
+                                            Uri.parse(
+                                              snapshot.data!.data!.mapLink!,
+                                            ),
+                                          );
+                                        },
+                                        child: const Icon(
+                                          Icons.location_on,
+                                          size: 32,
+                                        ),
+                                      ),
+                                    )
+                                  : null,
+                            )
+                          ],
                         ),
-                        GridView.count(
-                          crossAxisCount: 3,
-                          childAspectRatio: 0.95,
-                          mainAxisSpacing: 10,
-                          padding: const EdgeInsets.all(16.0),
-                          crossAxisSpacing: 4.0,
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          children: <String>[
-                            'https://tse3.mm.bing.net/th?id=OIP.G7XrM7DhByJRg2Z-Z3zSkAHaE7&pid=Api&P=0',
-                            'https://www.gannett-cdn.com/-mm-/05b227ad5b8ad4e9dcb53af4f31d7fbdb7fa901b/c=0-64-2119-1259/local/-/media/USATODAY/USATODAY/2014/08/13/1407953244000-177513283.jpg?width=2119&height=1195&fit=crop&format=pjpg&auto=webp',
-                            'https://media.architecturaldigest.com/photos/57e42deafe422b3e29b7e790/master/pass/JW_LosCabos_2015_MainExterior.jpg',
-                            'https://media.cntraveler.com/photos/57d864b9b77fe35639ae1a55/master/pass/Pool-HardRockHotelGoa-India-CRHotel.jpg',
-                          ].map((String url) {
-                            return GridTile(
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, '/club-service-detail');
-                                },
-                                child: Column(
+                        Container(
+                          child: snapshot.data!.data!.categories!.isNotEmpty
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Image.network(
-                                      height: 130.0,
-                                      url,
-                                      fit: BoxFit.cover,
-                                      loadingBuilder: ((
-                                        context,
-                                        child,
-                                        loadingProgress,
-                                      ) {
-                                        if (loadingProgress == null)
-                                          return child;
-                                        return Container(color: Colors.grey);
-                                      }),
+                                    const Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: Text(
+                                        "Our Services",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    GridView.count(
+                                      crossAxisCount: 3,
+                                      childAspectRatio: 0.95,
+                                      mainAxisSpacing: 10,
+                                      padding: const EdgeInsets.all(16.0),
+                                      crossAxisSpacing: 4.0,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      children: snapshot.data!.data!.categories!
+                                          .map((category) => GridTile(
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.pushNamed(
+                                                      context,
+                                                      '/club-service-detail',
+                                                      arguments:
+                                                          ClubServicesDetailPageArguments(
+                                                        vendorCategoryId:
+                                                            category.id!,
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Column(
+                                                    children: [
+                                                      Image.network(
+                                                        height: 130.0,
+                                                        "${ApiConstants.uploadsPath}/${category.image}",
+                                                        fit: BoxFit.cover,
+                                                        loadingBuilder: ((
+                                                          context,
+                                                          child,
+                                                          loadingProgress,
+                                                        ) {
+                                                          if (loadingProgress ==
+                                                              null) {
+                                                            return child;
+                                                          }
+                                                          return Container(
+                                                            height: 130.0,
+                                                            color: Colors.grey,
+                                                          );
+                                                        }),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ))
+                                          .toList(),
                                     ),
                                   ],
-                                ),
-                              ),
-                            );
-                          }).toList(),
+                                )
+                              : null,
                         ),
-                        const SizedBox(height: 10.0),
-                        const Padding(
-                          padding: EdgeInsets.all(16.0),
-                          child: Text(
-                            "Video",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        YoutubePlayer(
-                          controller: youtubePlayerController,
-                          showVideoProgressIndicator: true,
-                          progressColors: const ProgressBarColors(
-                            playedColor: Colors.red,
-                            handleColor: Colors.red,
-                          ),
+                        Container(
+                          child: youtubePlayerController != null
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(height: 10.0),
+                                    const Padding(
+                                      padding: EdgeInsets.all(16.0),
+                                      child: Text(
+                                        "Video",
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    YoutubePlayer(
+                                      controller: youtubePlayerController!,
+                                      showVideoProgressIndicator: true,
+                                      progressColors: const ProgressBarColors(
+                                        playedColor: Colors.red,
+                                        handleColor: Colors.red,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : null,
                         ),
                         const SizedBox(height: 10.0),
                         const Padding(
@@ -245,17 +337,19 @@ class _ClubDetailPageState extends State<ClubDetailPage> {
                         ),
                         const SizedBox(height: 10.0),
                         Padding(
-                          padding:
-                              const EdgeInsets.only(left: 16.0, right: 16.0),
+                          padding: const EdgeInsets.only(
+                            left: 16.0,
+                            right: 16.0,
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
+                            children: [
+                              const Text(
                                 "Phone",
                                 textAlign: TextAlign.left,
                               ),
                               Text(
-                                "+919790985285",
+                                snapshot.data?.data?.phone ?? '-',
                                 textAlign: TextAlign.right,
                               ),
                             ],
@@ -263,17 +357,19 @@ class _ClubDetailPageState extends State<ClubDetailPage> {
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding:
-                              const EdgeInsets.only(left: 16.0, right: 16.0),
+                          padding: const EdgeInsets.only(
+                            left: 16.0,
+                            right: 16.0,
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
+                            children: [
+                              const Text(
                                 "Email",
                                 textAlign: TextAlign.left,
                               ),
                               Text(
-                                "customercare@bvcindia.com",
+                                snapshot.data?.data?.email ?? '-',
                                 textAlign: TextAlign.right,
                               ),
                             ],
@@ -281,18 +377,26 @@ class _ClubDetailPageState extends State<ClubDetailPage> {
                         ),
                         const SizedBox(height: 10),
                         Padding(
-                          padding:
-                              const EdgeInsets.only(left: 16.0, right: 16.0),
+                          padding: const EdgeInsets.only(
+                            left: 16.0,
+                            right: 16.0,
+                          ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
+                            children: [
+                              const Text(
                                 "Address",
                                 textAlign: TextAlign.left,
                               ),
-                              Text(
-                                "No 781, Rayala Towers, 2nd Floor, \n Anna Salai, Mount Road, Chennai - 600002 \n (Opposite Rageja Towers & LIC Building)",
-                                textAlign: TextAlign.right,
+                              Flexible(
+                                child: Text(
+                                  snapshot.data!.data!.address!,
+                                  overflow: TextOverflow.clip,
+                                  textAlign: TextAlign.right,
+                                  style: const TextStyle(
+                                    fontSize: 15.0,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -307,7 +411,7 @@ class _ClubDetailPageState extends State<ClubDetailPage> {
                   children = loadingSpinner();
                 }
 
-                return Center(child: children);
+                return Container(child: children);
               }),
             );
           } else if (userSnapshot.hasError) {

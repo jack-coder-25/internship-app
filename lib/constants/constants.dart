@@ -55,4 +55,10 @@ class ApiConstants {
 
   static const String searchVendors = '/user_app.php?auth_get=vendors';
   static const String getVendorDetails = '/user_app.php?auth_get=vendor_details';
+  static const String getVendorServices = '/user_app.php?auth_get=vendor_services';
+
+  static const String memberBookings = '/user_app.php?auth_get=my_bookings';
+  static const String businessBookings = '/vendor_app.php?auth_get=bookings';
+  static const String vendorServiceSlots = '/user_app.php?auth_get=vendor_service_slots';
+  static const String serviceBooking = '/user_app.php?auth_do=service_booking';
 }

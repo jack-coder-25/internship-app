@@ -11,7 +11,7 @@ class BarDetailPage extends StatefulWidget {
 }
 
 class _BarDetailPageState extends State<BarDetailPage> {
-  int quantity = 0;
+  int quantity = 1;
 
   @override
   Widget build(BuildContext context) {
