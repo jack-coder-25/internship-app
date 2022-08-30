@@ -1,3 +1,5 @@
+import 'package:quiver/core.dart';
+
 class VendorDetailResponse {
   String? status;
   String? message;
@@ -455,6 +457,13 @@ class CategoryData {
     this.slides,
   });
 
+  @override
+  bool operator ==(other) =>
+      other is CategoryData && id == other.id && title == other.title;
+
+  @override
+  int get hashCode => hash2(id.hashCode, title.hashCode);
+
   CategoryData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     serviceCategoryId = json['service_category_id'];
@@ -735,6 +744,25 @@ class BookServiceData {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
     data['booking_id'] = bookingId;
+    return data;
+  }
+}
+
+class StartServiceResponse {
+  String? status;
+  String? message;
+
+  StartServiceResponse({this.status, this.message});
+
+  StartServiceResponse.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['status'] = status;
+    data['message'] = message;
     return data;
   }
 }

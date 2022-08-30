@@ -74,7 +74,7 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    couponId = json['coupon_id'].cast<String>();
+    couponId = json['coupon_id']?.cast<String>() ?? [];
     additionalCouponId = json['additional_coupon_id'];
     title = json['title'];
     amount = json['amount'];

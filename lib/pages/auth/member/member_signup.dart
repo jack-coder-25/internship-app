@@ -60,12 +60,11 @@ class _MemberSignupPageState extends State<MemberSignupPage> {
         context,
         '/otp-verify',
         arguments: OtpVerifyPageArguments(
-          user: user,
-          mobile: mobileTextController.text.trim(),
-          password: passwordTextController.text.trim(),
-          showOnboarding: true,
-          accountType: AccountType.member
-        ),
+            user: user,
+            mobile: mobileTextController.text.trim(),
+            password: passwordTextController.text.trim(),
+            showOnboarding: true,
+            accountType: AccountType.member),
       );
     }
   }

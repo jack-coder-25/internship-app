@@ -148,7 +148,7 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
                       crossAxisSpacing: 30,
                     ),
                     children: [
-                      GestureDetector(
+                      InkWell(
                         onTap: () {
                           Navigator.pushNamed(context, '/coupon-redemption');
                         },
@@ -176,7 +176,7 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
                           ),
                         ),
                       ),
-                      GestureDetector(
+                      InkWell(
                         onTap: () {
                           Navigator.pushNamed(context, '/profile');
                         },
@@ -204,7 +204,7 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
                           ),
                         ),
                       ),
-                      GestureDetector(
+                      InkWell(
                         onTap: () {
                           setSelectedIndex(
                             items.indexWhere(
@@ -236,7 +236,7 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
                           ),
                         ),
                       ),
-                      GestureDetector(
+                      InkWell(
                         onTap: () {
                           setSelectedIndex(
                             items.indexWhere(
@@ -268,7 +268,35 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
                           ),
                         ),
                       ),
-                      GestureDetector(
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, '/availability');
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: const Color.fromARGB(255, 255, 0, 0),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(
+                                Icons.history,
+                                size: 55,
+                                color: Color.fromARGB(255, 255, 255, 255),
+                              ),
+                              Text(
+                                "Availability",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                  fontSize: 15,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      InkWell(
                         onTap: () {
                           setSelectedIndex(
                             items.indexWhere(

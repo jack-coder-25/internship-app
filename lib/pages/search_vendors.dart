@@ -298,7 +298,8 @@ class _SearchPageState extends State<SearchPage> {
                           parent: NeverScrollableScrollPhysics(),
                         ),
                         child: SizedBox(
-                          height: MediaQuery.of(context).size.height / 1.25,
+                          height: (MediaQuery.of(context).size.height / 1.25) -
+                              MediaQuery.of(context).viewInsets.bottom,
                           child: children,
                         ),
                       )

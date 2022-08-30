@@ -91,6 +91,30 @@ class _ClubServicesDetailPageState extends State<ClubServicesDetailPage> {
     );
   }
 
+  Future<void> fetchSlots(
+    DateTime dateTime,
+    String authToken,
+    String serviceId,
+  ) async {
+    if (!mounted) return;
+    var date = DateFormat(pattern).format(dateTime);
+
+    try {
+      var slots = await ApiService.instance.getVendorServiceSlots(
+        authToken,
+        serviceId,
+        date,
+      );
+
+      setState(() {
+        selectedSlots = slots.data!;
+        quantity = 1;
+      });
+    } catch (error) {
+      showSnackbar(context, 'Error fetching slots');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Future<UserObject?> getUser() async {
@@ -102,15 +126,25 @@ class _ClubServicesDetailPageState extends State<ClubServicesDetailPage> {
       String authToken,
       String vendorCategoryId,
     ) async {
-      var data = await ApiService.instance.getVendorServices(
-        authToken,
-        vendorCategoryId,
-      );
+      try {
+        var data = await ApiService.instance.getVendorServices(
+          authToken,
+          vendorCategoryId,
+        );
 
-      if (data.data!.isNotEmpty) {
-        return data;
-      } else {
-        return Future.error('Service does not exist.');
+        await fetchSlots(
+          now,
+          authToken,
+          data.data![selectedCategory].id!,
+        );
+
+        if (data.data!.isNotEmpty) {
+          return data;
+        } else {
+          return Future.error('Service does not exist.');
+        }
+      } catch (error) {
+        return Future.error('Something went wrong');
       }
     }
 
@@ -454,23 +488,11 @@ class _ClubServicesDetailPageState extends State<ClubServicesDetailPage> {
                             widgetWidth: MediaQuery.of(context).size.width,
                             datePickerController: datePickerController,
                             onValueSelected: (dateTime) async {
-                              var date = DateFormat(pattern).format(dateTime);
-
-                              try {
-                                var slots = await ApiService.instance
-                                    .getVendorServiceSlots(
-                                  userSnapshot.data!.authToken,
-                                  snapshot.data!.data![selectedCategory].id!,
-                                  date,
-                                );
-
-                                setState(() {
-                                  selectedSlots = slots.data!;
-                                  quantity = 1;
-                                });
-                              } catch (error) {
-                                showSnackbar(context, 'Error fetching slots');
-                              }
+                              await fetchSlots(
+                                dateTime,
+                                userSnapshot.data!.authToken,
+                                snapshot.data!.data![selectedCategory].id!,
+                              );
                             },
                           ),
                         ),
