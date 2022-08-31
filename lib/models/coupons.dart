@@ -147,3 +147,240 @@ class BuyCouponResponse {
     return data;
   }
 }
+
+class AvailableCouponsResponse {
+  String? status;
+  String? message;
+  List<AvailableCouponsData>? data;
+
+  AvailableCouponsResponse({this.status, this.message, this.data});
+
+  AvailableCouponsResponse.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+    if (json['data'] != null) {
+      data = <AvailableCouponsData>[];
+      json['data'].forEach((v) {
+        data!.add(AvailableCouponsData.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['status'] = status;
+    data['message'] = message;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class AvailableCouponsData {
+  String? id;
+  String? userId;
+  String? offerId;
+  String? code;
+  String? status;
+  String? generatedBy;
+  String? redeemedAt;
+  String? createdAt;
+  String? updatedAt;
+  String? vendorId;
+  String? title;
+  String? image;
+  String? description;
+  String? startsOn;
+  String? endsOn;
+  String? vendorName;
+  String? categoryId;
+  String? serviceName;
+
+  AvailableCouponsData({
+    this.id,
+    this.userId,
+    this.offerId,
+    this.code,
+    this.status,
+    this.generatedBy,
+    this.redeemedAt,
+    this.createdAt,
+    this.updatedAt,
+    this.vendorId,
+    this.title,
+    this.image,
+    this.description,
+    this.startsOn,
+    this.endsOn,
+    this.vendorName,
+    this.categoryId,
+    this.serviceName,
+  });
+
+  AvailableCouponsData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    offerId = json['offer_id'];
+    code = json['code'];
+    status = json['status'];
+    generatedBy = json['generated_by'];
+    redeemedAt = json['redeemed_at'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    vendorId = json['vendor_id'];
+    title = json['title'];
+    image = json['image'];
+    description = json['description'];
+    startsOn = json['starts_on'];
+    endsOn = json['ends_on'];
+    vendorName = json['vendor_name'];
+    categoryId = json['category_id'];
+    serviceName = json['service_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['offer_id'] = offerId;
+    data['code'] = code;
+    data['status'] = status;
+    data['generated_by'] = generatedBy;
+    data['redeemed_at'] = redeemedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['vendor_id'] = vendorId;
+    data['title'] = title;
+    data['image'] = image;
+    data['description'] = description;
+    data['starts_on'] = startsOn;
+    data['ends_on'] = endsOn;
+    data['vendor_name'] = vendorName;
+    data['category_id'] = categoryId;
+    data['service_name'] = serviceName;
+    return data;
+  }
+}
+
+class RedeemCouponsResponse {
+  String? status;
+  String? message;
+
+  RedeemCouponsResponse({this.status, this.message});
+
+  RedeemCouponsResponse.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['status'] = status;
+    data['message'] = message;
+    return data;
+  }
+}
+
+class RedeemedCouponsResponse {
+  String? status;
+  String? message;
+  List<RedeemedCouponsData>? data;
+
+  RedeemedCouponsResponse({this.status, this.message, this.data});
+
+  RedeemedCouponsResponse.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+    if (json['data'] != null) {
+      data = <RedeemedCouponsData>[];
+      json['data'].forEach((v) {
+        data!.add(RedeemedCouponsData.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['status'] = status;
+    data['message'] = message;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class RedeemedCouponsData {
+  String? id;
+  String? userId;
+  String? offerId;
+  String? code;
+  String? status;
+  String? generatedBy;
+  String? redeemedAt;
+  String? createdAt;
+  String? updatedAt;
+  String? title;
+  String? image;
+  String? description;
+  String? startsOn;
+  String? endsOn;
+  String? vendorName;
+
+  RedeemedCouponsData({
+    this.id,
+    this.userId,
+    this.offerId,
+    this.code,
+    this.status,
+    this.generatedBy,
+    this.redeemedAt,
+    this.createdAt,
+    this.updatedAt,
+    this.title,
+    this.image,
+    this.description,
+    this.startsOn,
+    this.endsOn,
+    this.vendorName,
+  });
+
+  RedeemedCouponsData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    offerId = json['offer_id'];
+    code = json['code'];
+    status = json['status'];
+    generatedBy = json['generated_by'];
+    redeemedAt = json['redeemed_at'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    title = json['title'];
+    image = json['image'];
+    description = json['description'];
+    startsOn = json['starts_on'];
+    endsOn = json['ends_on'];
+    vendorName = json['vendor_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['offer_id'] = offerId;
+    data['code'] = code;
+    data['status'] = status;
+    data['generated_by'] = generatedBy;
+    data['redeemed_at'] = redeemedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['title'] = title;
+    data['image'] = image;
+    data['description'] = description;
+    data['starts_on'] = startsOn;
+    data['ends_on'] = endsOn;
+    data['vendor_name'] = vendorName;
+    return data;
+  }
+}

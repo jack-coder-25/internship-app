@@ -1,4 +1,6 @@
+import 'package:app/constants/colors.dart';
 import 'package:app/constants/constants.dart';
+import 'package:app/models/offers.dart';
 import 'package:app/models/slides.dart';
 import 'package:app/models/user.dart';
 import 'package:app/utils/api_service.dart';
@@ -19,13 +21,33 @@ class _MemberHomePageState extends State<MemberHomePage> {
   Future<bool?> showWarning(BuildContext context) async => showDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Wanna leave ?'),
+          title: const Text('Do You Want To Exit ?'),
           actions: [
             ElevatedButton(
+              style: TextButton.styleFrom(
+                backgroundColor: ColorConstants.red,
+                fixedSize: const Size(48, 36),
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20.0),
+                  ),
+                ),
+              ),
               onPressed: () => Navigator.pop(context, true),
               child: const Text('Yes'),
             ),
             ElevatedButton(
+              style: TextButton.styleFrom(
+                backgroundColor: ColorConstants.red,
+                fixedSize: const Size(48, 36),
+                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20.0),
+                  ),
+                ),
+              ),
               onPressed: () => Navigator.pop(context, false),
               child: const Text('No'),
             ),
@@ -38,7 +60,12 @@ class _MemberHomePageState extends State<MemberHomePage> {
     return (await authService.getUser());
   }
 
-  Widget loadingSpinner() {
+  Future<VendorOffersResponse> getOffers() async {
+    var user = await getUser();
+    return await ApiService.instance.getVendorOffers(user!.authToken);
+  }
+
+  Widget loadingScreen() {
     return Container(
       height: 270,
       width: double.infinity,
@@ -77,7 +104,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                 children: [
                   FutureBuilder<UserObject?>(
                     future: getUser(),
-                    builder: ((context, userSnapshot) {
+                    builder: ((_, userSnapshot) {
                       if (userSnapshot.hasData) {
                         return FutureBuilder<SlidesResponse>(
                           future: ApiService.instance.getAppSlides(
@@ -129,7 +156,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                                 snapshot.error.toString(),
                               );
                             } else {
-                              children = loadingSpinner();
+                              children = loadingScreen();
                             }
 
                             return Center(child: children);
@@ -138,7 +165,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                       } else if (userSnapshot.hasError) {
                         return errorScreen(userSnapshot.error.toString());
                       } else {
-                        return loadingSpinner();
+                        return loadingScreen();
                       }
                     }),
                   ),
@@ -204,153 +231,90 @@ class _MemberHomePageState extends State<MemberHomePage> {
                       ],
                     ),
                   ),
-                  SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 20,
-                        horizontal: 20,
-                      ),
-                      child: FittedBox(
-                        fit: BoxFit.fill,
-                        alignment: Alignment.topCenter,
-                        child: Row(
-                          children: <Widget>[
-                            InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(context, '/subscription');
-                              },
-                              child: Container(
-                                width: 150,
-                                margin: const EdgeInsets.only(right: 20),
-                                height: categoryHeight,
-                                decoration: const BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(20.0),
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        "Coupon",
-                                        style: TextStyle(
-                                          fontSize: 25,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        "1",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.white,
+                  const Padding(padding: EdgeInsets.all(8.0)),
+                  FutureBuilder<VendorOffersResponse>(
+                    future: getOffers(),
+                    builder: (((_, snapshot) {
+                      if (snapshot.hasData) {
+                        if (snapshot.data!.data!.isEmpty) {
+                          return Container(
+                            color: Colors.grey,
+                            child: const Text(
+                              'No Offers at The Moment',
+                            ),
+                          );
+                        }
+
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                              vertical: 20,
+                              horizontal: 20,
+                            ),
+                            child: Row(
+                              children: snapshot.data!.data!.map((offer) {
+                                return FittedBox(
+                                  fit: BoxFit.fill,
+                                  alignment: Alignment.topCenter,
+                                  child: Row(
+                                    children: <Widget>[
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            '/offers',
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 200,
+                                          margin: const EdgeInsets.only(
+                                            right: 20,
+                                          ),
+                                          height: categoryHeight,
+                                          decoration: const BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(20.0),
+                                            ),
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Image.network(
+                                                fit: BoxFit.contain,
+                                                '${ApiConstants.uploadsPath}/${offer.image}',
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  offer.title ?? '--',
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                ),
-                              ),
+                                );
+                              }).toList(),
                             ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(context, '/subscription');
-                              },
-                              child: Container(
-                                width: 150,
-                                margin: const EdgeInsets.only(right: 20),
-                                height: categoryHeight,
-                                decoration: BoxDecoration(
-                                  color: Colors.redAccent.shade400,
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(20.0),
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        "Coupon",
-                                        style: TextStyle(
-                                          fontSize: 25,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        "2",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(context, '/subscription');
-                              },
-                              child: Container(
-                                width: 150,
-                                margin: const EdgeInsets.only(right: 20),
-                                height: categoryHeight,
-                                decoration: BoxDecoration(
-                                  color: Colors.red.shade800,
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(20.0),
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: const [
-                                      Text(
-                                        "Coupon",
-                                        style: TextStyle(
-                                          fontSize: 25,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        "3",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                          ),
+                        );
+                      } else if (snapshot.hasError) {
+                        return errorScreen(snapshot.error.toString());
+                      } else {
+                        return loadingScreen();
+                      }
+                    })),
                   ),
+                  const Padding(padding: EdgeInsets.all(8.0)),
                   Card(
                     color: Colors.grey,
                     clipBehavior: Clip.antiAlias,
@@ -362,7 +326,8 @@ class _MemberHomePageState extends State<MemberHomePage> {
                       children: [
                         Ink.image(
                           image: const AssetImage(
-                              'assets/images/theclublogo-rm.jpg'),
+                            'assets/images/theclublogo-rm.jpg',
+                          ),
                           height: 180,
                           fit: BoxFit.fill,
                           child: InkWell(

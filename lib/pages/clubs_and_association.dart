@@ -18,6 +18,22 @@ class ClubsAndAssociationsPage extends StatefulWidget {
 }
 
 class _ClubsAndAssociationsPageState extends State<ClubsAndAssociationsPage> {
+  UserObject? user;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      user = context.read<UserObject?>();
+      setState(() {});
+
+      if (user?.profile?.data?.subscription == null) {
+        Navigator.pushReplacementNamed(context, '/subscription');
+      }
+    });
+  }
+
   Future<UserObject?> getUser() async {
     AuthenticationService authService = context.read<AuthenticationService>();
     return (await authService.getUser());

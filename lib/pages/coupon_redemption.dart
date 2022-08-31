@@ -1,5 +1,12 @@
+import 'package:app/constants/colors.dart';
+import 'package:app/models/user.dart';
+import 'package:app/utils/api_service.dart';
+import 'package:app/utils/authentication_service.dart';
+import 'package:app/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:app/styles/buttton.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:provider/provider.dart';
 
 class CouponRedemptionPage extends StatefulWidget {
   CouponRedemptionPage({Key? key}) : super(key: key);
@@ -11,6 +18,13 @@ class CouponRedemptionPage extends StatefulWidget {
 }
 
 class _CouponRedemptionPageState extends State<CouponRedemptionPage> {
+  final couponCodeController = TextEditingController();
+
+  Future<UserObject?> getUser() async {
+    AuthenticationService authService = context.read<AuthenticationService>();
+    return (await authService.getUser());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +53,7 @@ class _CouponRedemptionPageState extends State<CouponRedemptionPage> {
                   child: Column(
                     children: [
                       TextFormField(
+                        controller: couponCodeController,
                         keyboardType: TextInputType.text,
                         textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
@@ -47,7 +62,7 @@ class _CouponRedemptionPageState extends State<CouponRedemptionPage> {
                               Radius.circular(20.0),
                             ),
                           ),
-                          labelText: ' Enter Coupon ',
+                          labelText: 'Enter Coupon',
                           focusedBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
                               color: Colors.black87,
@@ -62,24 +77,123 @@ class _CouponRedemptionPageState extends State<CouponRedemptionPage> {
                       ),
                       const Padding(padding: EdgeInsets.all(8.0)),
                       ElevatedButton(
-                        onPressed: (() => CouponRedemptionPage),
-                        style: buttonStyleRed,
+                        onPressed: () async {
+                          if (couponCodeController.text.isEmpty) {
+                            showSnackbar(context, 'Enter Coupon Code');
+                            return;
+                          }
+
+                          var user = await getUser();
+                          try {
+                            await ApiService.instance.redeemVendorCoupon(
+                              user!.authToken,
+                              couponCodeController.text,
+                            );
+                            if (!mounted) return;
+                            showSnackbar(
+                              context,
+                              'Coupon Redeemed Sucessfully',
+                            );
+                          } catch (error) {
+                            if (!mounted) return;
+                            showSnackbar(context, error.toString());
+                          }
+                        },
+                        style: buttonStyle,
                         child: const Text(
-                          "Submit",
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 255, 0, 0),
-                          ),
+                          "Apply",
                         ),
                       ),
-                      const Padding(padding: EdgeInsets.all(100.0)),
+                      const Padding(padding: EdgeInsets.all(10.0)),
                       ElevatedButton(
-                        onPressed: (() => CouponRedemptionPage),
-                        style: buttonStyleRed,
+                        onPressed: () async {
+                          var user = await getUser();
+
+                          try {
+                            var history =
+                                await ApiService.instance.getRedeemedCoupons(
+                              user!.authToken,
+                            );
+
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(
+                                    10.0,
+                                  ),
+                                  topRight: Radius.circular(
+                                    10.0,
+                                  ),
+                                ),
+                              ),
+                              builder: (context) => Padding(
+                                padding: MediaQuery.of(context).viewInsets,
+                                child: SizedBox(
+                                  height: 450,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      children: [
+                                        const Text(
+                                          'Redeemed Coupons',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 380,
+                                          child: ListView.separated(
+                                            separatorBuilder:
+                                                (context, index) =>
+                                                    const Divider(
+                                              height: 2,
+                                              color: Colors.black,
+                                            ),
+                                            itemCount: history.data!.length,
+                                            itemBuilder: (((context, index) {
+                                              return ListTile(
+                                                title: Text(
+                                                  history.data![index].code!,
+                                                  style: const TextStyle(
+                                                    color: ColorConstants.red,
+                                                    fontSize: 18
+                                                  ),
+                                                ),
+                                                subtitle: Html(
+                                                  data: history.data![index]
+                                                          .description ??
+                                                      '',
+                                                  style: {
+                                                    'body': Style(
+                                                      margin:
+                                                          const EdgeInsets.all(
+                                                        0,
+                                                      ),
+                                                    )
+                                                  },
+                                                ),
+                                                contentPadding:
+                                                    const EdgeInsets.all(10.0),
+                                              );
+                                            })),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          } catch (error) {
+                            if (!mounted) return;
+                            showSnackbar(context, 'Cannot fetch history');
+                          }
+                        },
+                        style: buttonStyle,
                         child: const Text(
                           "View History",
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 252, 4, 4),
-                          ),
                         ),
                       ),
                     ],

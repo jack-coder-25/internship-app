@@ -5,6 +5,7 @@ void showSnackbar(BuildContext context, String message) {
     SnackBar(
       content: Text(message),
       duration: const Duration(milliseconds: 1200),
+      behavior: SnackBarBehavior.floating,
     ),
   );
 }

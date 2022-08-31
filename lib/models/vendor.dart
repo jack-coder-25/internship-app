@@ -766,3 +766,41 @@ class StartServiceResponse {
     return data;
   }
 }
+
+class DeleteServiceSlotResponse {
+  String? status;
+  String? message;
+
+  DeleteServiceSlotResponse({this.status, this.message});
+
+  DeleteServiceSlotResponse.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['status'] = status;
+    data['message'] = message;
+    return data;
+  }
+}
+
+class AddServiceSlotsResponse {
+  String? status;
+  String? message;
+
+  AddServiceSlotsResponse({this.status, this.message});
+
+  AddServiceSlotsResponse.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['status'] = status;
+    data['message'] = message;
+    return data;
+  }
+}

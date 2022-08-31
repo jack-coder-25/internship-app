@@ -45,7 +45,7 @@ class _AdditionalCouponsPageState extends State<AdditionalCouponsPage> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.red,
-          title: const Text('Additional coupons'),
+          title: const Text('Additional Coupons'),
           leading: BackButton(
             onPressed: () => Navigator.pop(context),
           ),

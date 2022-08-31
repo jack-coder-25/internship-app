@@ -1365,4 +1365,251 @@ class ApiService {
       throw Exception(e.toString());
     }
   }
+
+  Future<DeleteServiceSlotResponse> deleteServiceSlot(
+    String authToken,
+    String slotId,
+  ) async {
+    try {
+      var formData = FormData.fromMap({
+        'slot_id': slotId,
+      });
+
+      Response<dynamic> response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.deleteServiceSlot,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = DeleteServiceSlotResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<AddServiceSlotsResponse> addServiceSlots(
+    String authToken,
+    String serviceId,
+    String startDate,
+    String endDate,
+    String slots,
+  ) async {
+    try {
+      var formData = FormData.fromMap({
+        'service_id': serviceId,
+        'start_date': startDate,
+        'end_date': endDate,
+        'slots': slots,
+        'save_slots': true
+      });
+
+      Response<dynamic> response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.addServiceSlots,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = AddServiceSlotsResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<VendorOffersResponse> getVendorOffers(
+    String authToken,
+  ) async {
+    try {
+      Response<dynamic> response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.vendorOffers,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = VendorOffersResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<GeneralOffersResponse> getGeneralOffers(
+    String authToken,
+  ) async {
+    try {
+      Response<dynamic> response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.generalOffers,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = GeneralOffersResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<ClaimOfferResponse> claimOffer(
+    String authToken,
+    String offerId,
+  ) async {
+    try {
+      var formData = FormData.fromMap({
+        'offer_id': offerId,
+      });
+
+      Response<dynamic> response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.claimOffer,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = ClaimOfferResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<AvailableCouponsResponse> getAvailableCoupons(
+    String authToken,
+  ) async {
+    try {
+      Response<dynamic> response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.availableCoupons,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = AvailableCouponsResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<RedeemCouponsResponse> redeemVendorCoupon(
+    String authToken,
+    String couponCode,
+  ) async {
+    try {
+      var formData = FormData.fromMap(({
+        'coupon_code': couponCode,
+      }));
+
+      Response<dynamic> response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.redeemVendorCoupon,
+        data: formData,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = RedeemCouponsResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<RedeemedCouponsResponse> getRedeemedCoupons(
+    String authToken,
+  ) async {
+    try {
+      Response<dynamic> response = await Dio().post(
+        ApiConstants.baseUrl + ApiConstants.redeemedCoupons,
+        options: Options(
+          headers: {'Authorization': 'Bearer $authToken'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        var data = RedeemedCouponsResponse.fromJson(response.data);
+
+        if (data.status == 'failed') {
+          throw Exception(data.message);
+        }
+
+        return data;
+      } else {
+        throw Exception('Something went wrong [${response.statusCode}]');
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }

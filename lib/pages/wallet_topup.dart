@@ -45,7 +45,7 @@ class _WalletTopupPageState extends State<WalletTopupPage> {
   }
 
   void onPayment() async {
-    String accessKey = "392ecc6ec9775f5d74f10fa64f862f3ac524256d51cdab1eb62b5732b9ed1383";
+    String accessKey = "a562d431d9cb5e54ff355973fe86e20d2a64400ed0ce9bb7522904c57c8acff9";
     final paymentResponse = await makePayment(accessKey);
 
     if (paymentResponse['payment_response']['status'] == 'success') {

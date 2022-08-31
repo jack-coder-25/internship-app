@@ -25,7 +25,6 @@ import 'package:app/pages/coupons.dart';
 import 'package:app/pages/partners.dart';
 import 'package:app/pages/subscription_detail.dart';
 import 'package:app/models/user.dart';
-import 'package:app/pages/dashboard.dart';
 import 'package:app/pages/splash_screen.dart';
 import 'package:app/pages/subscription.dart';
 import 'package:app/pages/referrals.dart';
@@ -37,11 +36,7 @@ import 'package:app/utils/authentication_service.dart';
 
 late UserObject? userObject;
 
-// 'availability' (business) - delete, add services page
-// 'Offers' (member)
-// 'Coupon redemption' (business)
-// 'Your Coupons' (member)
-// Open pages only when subscribed (member)
+// Show & Apply coupon codes at club page
 // Refferral code not working in 'subscribeToPlan'
 // Generate EaseBuzz access key on server
 
@@ -93,7 +88,6 @@ class MyApp extends StatelessWidget {
           '/bar-detail': (context) => const BarDetailPage(),
           '/onboarding': (context) => const OnboardingWrapper(),
           '/bottom-bar': (context) => const BottomBarPage(),
-          '/dashboard': (context) => const DashboardPage(),
           '/profile': (context) => const ProfileWrapper(),
           '/referrals': (context) => const ReferralsPage(),
           '/offers': (context) => const OffersWrapper(),

@@ -65,6 +65,16 @@ class ApiConstants {
   static const String completeService = '/vendor_app.php?auth_do=complete_service';
 
   static const String services = '/vendor_app.php?auth_get=services';
-  static const String categories = '/vendor_app.php?auth_do=categories';
+  static const String categories = '/vendor_app.php?auth_get=categories';
   static const String serviceSlots = '/vendor_app.php?auth_get=service_slots';
+  static const String deleteServiceSlot = '/vendor_app.php?auth_delete=service_slot';
+  static const String addServiceSlots = '/vendor_app.php?auth_add=service_slots';
+
+  static const String vendorOffers = '/user_app.php?auth_get=vendor_offers';
+  static const String generalOffers = '/user_app.php?auth_get=general_offers';
+  static const String claimOffer = '/user_app.php?auth_do=claim_offer';
+
+  static const String availableCoupons = '/user_app.php?auth_get=available_coupons';
+  static const String redeemVendorCoupon = '/vendor_app.php?auth_do=redeem_coupon';
+  static const String redeemedCoupons = '/vendor_app.php?auth_get=redeemed_coupons';
 }
