@@ -1,13 +1,13 @@
-import 'package:app/constants/colors.dart';
-import 'package:app/constants/constants.dart';
-import 'package:app/models/offers.dart';
-import 'package:app/models/slides.dart';
-import 'package:app/models/user.dart';
-import 'package:app/utils/api_service.dart';
-import 'package:app/utils/authentication_service.dart';
+import 'package:mci/constants/colors.dart';
+import 'package:mci/constants/constants.dart';
+import 'package:mci/models/offers.dart';
+import 'package:mci/models/slides.dart';
+import 'package:mci/models/user.dart';
+import 'package:mci/utils/api_service.dart';
+import 'package:mci/utils/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:app/widget/drawer_widget/drawer_wrapper.dart';
+import 'package:mci/widget/drawer_widget/drawer_wrapper.dart';
 import 'package:provider/provider.dart';
 
 class MemberHomePage extends StatefulWidget {
@@ -66,11 +66,16 @@ class _MemberHomePageState extends State<MemberHomePage> {
   }
 
   Widget loadingScreen() {
-    return Container(
-      height: 270,
-      width: double.infinity,
-      color: Colors.grey,
-      child: null,
+    return ClipRRect(
+      borderRadius: const BorderRadius.all(
+        Radius.circular(20.0),
+      ),
+      child: Container(
+        height: 200,
+        width: double.infinity,
+        color: Colors.grey,
+        child: null,
+      ),
     );
   }
 
@@ -212,7 +217,7 @@ class _MemberHomePageState extends State<MemberHomePage> {
                               var user = await getUser();
                               if (!mounted) return;
 
-                              if (user?.profile?.data?.subscription != null) {
+                              if (user?.profile?.data?.subscriptionId != null) {
                                 Navigator.pushNamed(context, '/bar-home');
                               } else {
                                 Navigator.pushNamed(context, '/subscription');
@@ -232,85 +237,121 @@ class _MemberHomePageState extends State<MemberHomePage> {
                     ),
                   ),
                   const Padding(padding: EdgeInsets.all(8.0)),
-                  FutureBuilder<VendorOffersResponse>(
-                    future: getOffers(),
-                    builder: (((_, snapshot) {
-                      if (snapshot.hasData) {
-                        if (snapshot.data!.data!.isEmpty) {
-                          return Container(
-                            color: Colors.grey,
-                            child: const Text(
-                              'No Offers at The Moment',
-                            ),
-                          );
-                        }
-
-                        return SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(
-                              vertical: 20,
-                              horizontal: 20,
-                            ),
-                            child: Row(
-                              children: snapshot.data!.data!.map((offer) {
-                                return FittedBox(
-                                  fit: BoxFit.fill,
-                                  alignment: Alignment.topCenter,
-                                  child: Row(
-                                    children: <Widget>[
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                            context,
-                                            '/offers',
-                                          );
-                                        },
-                                        child: Container(
-                                          width: 200,
-                                          margin: const EdgeInsets.only(
-                                            right: 20,
-                                          ),
-                                          height: categoryHeight,
-                                          decoration: const BoxDecoration(
-                                            color: Colors.red,
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(20.0),
-                                            ),
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Image.network(
-                                                fit: BoxFit.contain,
-                                                '${ApiConstants.uploadsPath}/${offer.image}',
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  offer.title ?? '--',
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                  FutureBuilder<UserObject?>(
+                    future: getUser(),
+                    builder: (((context, userSnapshot) {
+                      if (userSnapshot.hasData) {
+                        return userSnapshot
+                                    .data?.profile?.data?.subscriptionId !=
+                                null
+                            ? FutureBuilder<VendorOffersResponse>(
+                                future: getOffers(),
+                                builder: (((_, snapshot) {
+                                  if (snapshot.hasData) {
+                                    if (snapshot.data!.data!.isEmpty) {
+                                      return ClipRRect(
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(
+                                            20.0,
                                           ),
                                         ),
+                                        child: Container(
+                                          height: 180,
+                                          color: Colors.grey,
+                                          child: const Center(
+                                            child: Text(
+                                              'No Offers at The Moment',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }
+
+                                    return SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Container(
+                                        margin: const EdgeInsets.symmetric(
+                                          vertical: 20,
+                                          horizontal: 20,
+                                        ),
+                                        child: Row(
+                                          children:
+                                              snapshot.data!.data!.map((offer) {
+                                            return FittedBox(
+                                              fit: BoxFit.fill,
+                                              alignment: Alignment.topCenter,
+                                              child: Row(
+                                                children: <Widget>[
+                                                  InkWell(
+                                                    onTap: () {
+                                                      Navigator.pushNamed(
+                                                        context,
+                                                        '/offers',
+                                                      );
+                                                    },
+                                                    child: Container(
+                                                      width: 200,
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                        right: 20,
+                                                      ),
+                                                      height: categoryHeight,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        color: Colors.red,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(20.0),
+                                                        ),
+                                                      ),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Image.network(
+                                                            fit: BoxFit.contain,
+                                                            '${ApiConstants.uploadsPath}/${offer.image}',
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Text(
+                                                              offer.title ??
+                                                                  '--',
+                                                              style:
+                                                                  const TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }).toList(),
+                                        ),
                                       ),
-                                    ],
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        );
-                      } else if (snapshot.hasError) {
-                        return errorScreen(snapshot.error.toString());
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return errorScreen(
+                                        snapshot.error.toString());
+                                  } else {
+                                    return loadingScreen();
+                                  }
+                                })),
+                              )
+                            : const SizedBox();
                       } else {
-                        return loadingScreen();
+                        return const SizedBox();
                       }
                     })),
                   ),

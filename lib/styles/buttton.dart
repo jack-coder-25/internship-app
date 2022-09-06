@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app/constants/colors.dart';
+import 'package:mci/constants/colors.dart';
 
 ButtonStyle buttonStyle = TextButton.styleFrom(
   backgroundColor: ColorConstants.red,

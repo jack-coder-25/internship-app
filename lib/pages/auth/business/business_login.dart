@@ -1,10 +1,10 @@
-import 'package:app/pages/reset_password.dart';
-import 'package:app/utils/authentication_service.dart';
+import 'package:mci/pages/reset_password.dart';
+import 'package:mci/utils/authentication_service.dart';
 import 'package:flutter/material.dart';
-import 'package:app/styles/buttton.dart';
-import 'package:app/utils/validation.dart';
-import 'package:app/utils/helper.dart';
-import 'package:app/constants/colors.dart';
+import 'package:mci/styles/buttton.dart';
+import 'package:mci/utils/validation.dart';
+import 'package:mci/utils/helper.dart';
+import 'package:mci/constants/colors.dart';
 import 'package:provider/provider.dart';
 
 class BusinessLoginPage extends StatefulWidget {

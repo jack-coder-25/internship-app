@@ -1,22 +1,19 @@
 import 'dart:io';
-import 'package:mci/utils/api_service.dart';
-import 'package:mci/utils/authentication_service.dart';
 import 'package:mci/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
-class BusinessOffersPage extends StatefulWidget {
-  BusinessOffersPage({Key? key}) : super(key: key);
+class BusinessCouponsPage extends StatefulWidget {
+  BusinessCouponsPage({Key? key}) : super(key: key);
 
   final formKey = GlobalKey<FormState>();
 
   @override
-  State<BusinessOffersPage> createState() => _BusinessOffersPageState();
+  State<BusinessCouponsPage> createState() => _BusinessCouponsPageState();
 }
 
-class _BusinessOffersPageState extends State<BusinessOffersPage> {
+class _BusinessCouponsPageState extends State<BusinessCouponsPage> {
   File? image;
   final titleTextController = TextEditingController();
   final descriptionTextController = TextEditingController();
@@ -38,18 +35,7 @@ class _BusinessOffersPageState extends State<BusinessOffersPage> {
   void onSubmit() async {
     if (widget.formKey.currentState?.validate() == true) {
       if (image != null) {
-        const storage = FlutterSecureStorage();
-        final authToken = await storage.read(key: token) ?? '';
-
-        await ApiService.instance.requestOffer(
-          titleTextController.text,
-          descriptionTextController.text,
-          image!,
-          authToken,
-        );
-
-        if (!mounted) return;
-        showSnackbar(context, 'Offer Created!');
+        showSnackbar(context, 'Coupon Created!');
         Navigator.pop(context);
       } else {
         showSnackbar(context, 'Upload Image!');
@@ -63,7 +49,7 @@ class _BusinessOffersPageState extends State<BusinessOffersPage> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          "Offers",
+          "Coupons",
           style: TextStyle(color: Colors.black),
         ),
         elevation: 0.0,
@@ -101,7 +87,7 @@ class _BusinessOffersPageState extends State<BusinessOffersPage> {
                           vertical: 9.0,
                           horizontal: 13.0,
                         ),
-                        hintText: "Your Offer Title",
+                        hintText: "Your Coupon Title",
                       ),
                     ),
                   ),
@@ -121,7 +107,7 @@ class _BusinessOffersPageState extends State<BusinessOffersPage> {
                             ),
                           ),
                           onPressed: () => pickImage(),
-                          child: const Text("UPLOAD OFFER BANNER (300x200)"),
+                          child: const Text("UPLOAD COUPON BANNER (300x200)"),
                         ),
                       ),
                     ),

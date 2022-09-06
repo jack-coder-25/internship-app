@@ -1,5 +1,5 @@
-import 'package:app/constants/colors.dart';
-import 'package:app/styles/buttton.dart';
+import 'package:mci/constants/colors.dart';
+import 'package:mci/styles/buttton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:rxdart/rxdart.dart';

@@ -1,11 +1,11 @@
-import 'package:app/models/user.dart';
-import 'package:app/pages/wallet_topup.dart';
-import 'package:app/utils/api_service.dart';
+import 'package:mci/models/user.dart';
+import 'package:mci/pages/wallet_topup.dart';
+import 'package:mci/utils/api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:app/models/subscriptions.dart';
-import 'package:app/utils/helper.dart';
-import 'package:app/constants/colors.dart';
-import 'package:app/styles/buttton.dart';
+import 'package:mci/models/subscriptions.dart';
+import 'package:mci/utils/helper.dart';
+import 'package:mci/constants/colors.dart';
+import 'package:mci/styles/buttton.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 

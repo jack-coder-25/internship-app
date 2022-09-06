@@ -1,9 +1,9 @@
-import 'package:app/models/user.dart';
+import 'package:mci/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:app/utils/helper.dart';
-import 'package:app/utils/authentication_service.dart';
-import 'package:app/constants/colors.dart';
+import 'package:mci/utils/helper.dart';
+import 'package:mci/utils/authentication_service.dart';
+import 'package:mci/constants/colors.dart';
 
 class DrawerWidgetMember extends StatefulWidget {
   const DrawerWidgetMember({Key? key}) : super(key: key);
@@ -98,11 +98,7 @@ class _DrawerWidgetMemberState extends State<DrawerWidgetMember> {
             leading: const Icon(Icons.percent),
             iconColor: Colors.white,
             onTap: () {
-              if (user?.profile?.data?.subscriptionId == null) {
-                Navigator.pushNamed(context, '/subscription');
-              } else {
-                Navigator.pushNamed(context, '/additional-coupons');
-              }
+              Navigator.pushNamed(context, '/additional-coupons');
             },
             title: const Text(
               'Additional Coupons',

@@ -1,12 +1,12 @@
-import 'package:app/styles/buttton.dart';
-import 'package:app/utils/helper.dart';
+import 'package:mci/styles/buttton.dart';
+import 'package:mci/utils/helper.dart';
 import 'package:flutter/material.dart';
-import 'package:app/constants/colors.dart';
-import 'package:app/constants/constants.dart';
-import 'package:app/models/offers.dart';
-import 'package:app/models/user.dart';
-import 'package:app/utils/api_service.dart';
-import 'package:app/utils/authentication_service.dart';
+import 'package:mci/constants/colors.dart';
+import 'package:mci/constants/constants.dart';
+import 'package:mci/models/offers.dart';
+import 'package:mci/models/user.dart';
+import 'package:mci/utils/api_service.dart';
+import 'package:mci/utils/authentication_service.dart';
 import 'package:flutter_dialogs/flutter_dialogs.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +28,7 @@ class _MemberOffersPageState extends State<MemberOffersPage> {
       user = context.read<UserObject?>();
       setState(() {});
 
-      if (user?.profile?.data?.subscription == null) {
+      if (user?.profile?.data?.subscriptionId == null) {
         Navigator.pushReplacementNamed(context, '/subscription');
       }
     });
@@ -181,64 +181,74 @@ class _VendorOffersGridState extends State<VendorOffersGrid> {
                 Widget children;
 
                 if (snapshot.hasData) {
-                  children = GridView.count(
-                    crossAxisCount: 2,
-                    childAspectRatio: .85,
-                    padding: const EdgeInsets.all(4.0),
-                    mainAxisSpacing: 8.0,
-                    crossAxisSpacing: 8.0,
-                    children: snapshot.data!.data!.map((
-                      VendorOfferData offer,
-                    ) {
-                      return GridTile(
-                        child: Column(
-                          children: [
-                            ClipRRect(
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(10.0),
+                  if (snapshot.data!.data!.isEmpty == true) {
+                    children = Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const [
+                        Text('No Offers at This Moment'),
+                      ],
+                    );
+                  } else {
+                    children = GridView.count(
+                      crossAxisCount: 2,
+                      childAspectRatio: .85,
+                      padding: const EdgeInsets.all(4.0),
+                      mainAxisSpacing: 8.0,
+                      crossAxisSpacing: 8.0,
+                      children: snapshot.data!.data!.map((
+                        VendorOfferData offer,
+                      ) {
+                        return GridTile(
+                          child: Column(
+                            children: [
+                              ClipRRect(
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10.0),
+                                ),
+                                child: Image.network(
+                                  height: 140.0,
+                                  '${ApiConstants.uploadsPath}/${offer.image!}',
+                                  fit: BoxFit.cover,
+                                  loadingBuilder: ((
+                                    context,
+                                    child,
+                                    loadingProgress,
+                                  ) {
+                                    if (loadingProgress == null) return child;
+                                    return Container(color: Colors.grey);
+                                  }),
+                                ),
                               ),
-                              child: Image.network(
-                                height: 140.0,
-                                '${ApiConstants.uploadsPath}/${offer.image!}',
-                                fit: BoxFit.cover,
-                                loadingBuilder: ((
-                                  context,
-                                  child,
-                                  loadingProgress,
-                                ) {
-                                  if (loadingProgress == null) return child;
-                                  return Container(color: Colors.grey);
-                                }),
+                              const SizedBox(height: 5),
+                              Text(
+                                offer.title ?? '-',
+                                maxLines: 2,
                               ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              offer.title ?? '-',
-                              maxLines: 2,
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                showConfirmationAlert(
-                                  context,
-                                  mounted,
-                                  offer,
-                                  userSnapshot.data!,
-                                );
-                              },
-                              style: TextButton.styleFrom(
-                                primary: Colors.white,
-                                backgroundColor: Colors.red,
+                              ElevatedButton(
+                                onPressed: () {
+                                  showConfirmationAlert(
+                                    context,
+                                    mounted,
+                                    offer,
+                                    userSnapshot.data!,
+                                  );
+                                },
+                                style: TextButton.styleFrom(
+                                  primary: Colors.white,
+                                  backgroundColor: Colors.red,
+                                ),
+                                child: Text(
+                                  offer.couponCode!,
+                                  style: const TextStyle(fontSize: 20),
+                                ),
                               ),
-                              child: Text(
-                                offer.couponCode!,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  );
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    );
+                  }
                 } else if (snapshot.hasError) {
                   children = errorScreen(snapshot.error.toString());
                 } else {
@@ -288,6 +298,10 @@ class _GeneralOffersGridState extends State<GeneralOffersGrid> {
                 Widget children;
 
                 if (snapshot.hasData) {
+                  if (snapshot.data?.data?.isEmpty == true) {
+                    children = const Text('No Offers at This Moment');
+                  }
+
                   children = GridView.count(
                     crossAxisCount: 2,
                     childAspectRatio: .82,

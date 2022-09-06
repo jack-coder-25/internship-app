@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'package:app/models/user.dart';
+import 'package:mci/models/user.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:app/styles/buttton.dart';
-import 'package:app/utils/helper.dart';
-import 'package:app/constants/colors.dart';
-import 'package:app/utils/authentication_service.dart';
+import 'package:mci/styles/buttton.dart';
+import 'package:mci/utils/helper.dart';
+import 'package:mci/constants/colors.dart';
+import 'package:mci/utils/authentication_service.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 class OtpVerifyPageArguments {

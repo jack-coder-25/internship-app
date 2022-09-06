@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:app/models/user.dart';
-import 'package:app/utils/authentication_service.dart';
-import 'package:app/utils/validation.dart';
-import 'package:app/pages/auth/otp_verify.dart';
-import 'package:app/utils/helper.dart';
-import 'package:app/constants/colors.dart';
-import 'package:app/styles/buttton.dart';
+import 'package:mci/models/user.dart';
+import 'package:mci/utils/authentication_service.dart';
+import 'package:mci/utils/validation.dart';
+import 'package:mci/pages/auth/otp_verify.dart';
+import 'package:mci/utils/helper.dart';
+import 'package:mci/constants/colors.dart';
+import 'package:mci/styles/buttton.dart';
 
 class MemberSignupPage extends StatefulWidget {
   MemberSignupPage({Key? key}) : super(key: key);

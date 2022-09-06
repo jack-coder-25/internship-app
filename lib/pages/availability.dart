@@ -1,14 +1,13 @@
 import 'dart:convert';
-
-import 'package:app/constants/colors.dart';
-import 'package:app/main.dart';
-import 'package:app/models/categories.dart';
-import 'package:app/models/user.dart';
-import 'package:app/models/vendor.dart';
-import 'package:app/styles/buttton.dart';
-import 'package:app/utils/api_service.dart';
-import 'package:app/utils/authentication_service.dart';
-import 'package:app/utils/helper.dart';
+import 'package:mci/constants/colors.dart';
+import 'package:mci/main.dart';
+import 'package:mci/models/categories.dart';
+import 'package:mci/models/user.dart';
+import 'package:mci/models/vendor.dart';
+import 'package:mci/styles/buttton.dart';
+import 'package:mci/utils/api_service.dart';
+import 'package:mci/utils/authentication_service.dart';
+import 'package:mci/utils/helper.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -211,8 +210,9 @@ class _BusinessBookingsPage extends State<AvailabilityPage> {
                                       value: selectedCategory,
                                       icon: const Icon(Icons.arrow_drop_down),
                                       isDense: true,
-                                      items: servicesSnapshot.data!.data!
-                                          .map((item) {
+                                      items: servicesSnapshot.data!.data?.map((
+                                        item,
+                                      ) {
                                         return DropdownMenuItem(
                                           value: item,
                                           child: Text(
@@ -663,7 +663,7 @@ class _AddServiceSheetState extends State<AddServiceSheet> {
                     const SizedBox(height: 20),
                     FutureBuilder<CategoriesResponse>(
                       future: ApiService.instance.getCategories(
-                        userObject!.authToken,
+                        userObject?.authToken ?? '-',
                       ),
                       builder: (((context, snapshot) {
                         if (snapshot.hasData) {
@@ -677,7 +677,7 @@ class _AddServiceSheetState extends State<AddServiceSheet> {
                                   value: selectedCategoryId,
                                   icon: const Icon(Icons.arrow_drop_down),
                                   isDense: true,
-                                  items: snapshot.data!.data!.map((item) {
+                                  items: snapshot.data!.data?.map((item) {
                                     return DropdownMenuItem(
                                       value: item.id,
                                       child: Text(
@@ -718,7 +718,7 @@ class _AddServiceSheetState extends State<AddServiceSheet> {
                           if (snapshot.data!.data!.isEmpty) {
                             selectedServiceId = null;
                           } else {
-                            selectedServiceId ??= snapshot.data!.data?[0].id;
+                            selectedServiceId ??= snapshot.data?.data?[0].id;
                           }
 
                           return Column(
@@ -731,7 +731,7 @@ class _AddServiceSheetState extends State<AddServiceSheet> {
                                   icon: const Icon(Icons.arrow_drop_down),
                                   hint: const Text('No Services'),
                                   isDense: true,
-                                  items: snapshot.data!.data!.map((item) {
+                                  items: snapshot.data!.data?.map((item) {
                                     return DropdownMenuItem(
                                       value: item.id,
                                       child: Text(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:app/pages/welcome.dart';
-import 'package:app/models/user.dart';
-import 'package:app/pages/bottom_bar.dart';
+import 'package:mci/pages/welcome.dart';
+import 'package:mci/models/user.dart';
+import 'package:mci/pages/bottom_bar.dart';
 
 class AuthenticationWrapper extends StatelessWidget {
   const AuthenticationWrapper({Key? key}) : super(key: key);

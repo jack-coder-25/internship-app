@@ -1,12 +1,12 @@
-import 'package:app/models/user.dart';
-import 'package:app/utils/api_service.dart';
-import 'package:app/utils/functions.dart';
-import 'package:app/utils/helper.dart';
-import 'package:app/utils/validation.dart';
+import 'package:mci/models/user.dart';
+import 'package:mci/utils/api_service.dart';
+import 'package:mci/utils/functions.dart';
+import 'package:mci/utils/helper.dart';
+import 'package:mci/utils/validation.dart';
 import 'package:flutter/material.dart';
-import 'package:app/constants/colors.dart';
-import 'package:app/styles/buttton.dart';
-import 'package:app/utils/checkout.dart';
+import 'package:mci/constants/colors.dart';
+import 'package:mci/styles/buttton.dart';
+import 'package:mci/utils/checkout.dart';
 import 'package:provider/provider.dart';
 
 class WalletTopupPageArguments {
@@ -45,7 +45,8 @@ class _WalletTopupPageState extends State<WalletTopupPage> {
   }
 
   void onPayment() async {
-    String accessKey = "a562d431d9cb5e54ff355973fe86e20d2a64400ed0ce9bb7522904c57c8acff9";
+    String accessKey =
+        "a562d431d9cb5e54ff355973fe86e20d2a64400ed0ce9bb7522904c57c8acff9";
     final paymentResponse = await makePayment(accessKey);
 
     if (paymentResponse['payment_response']['status'] == 'success') {

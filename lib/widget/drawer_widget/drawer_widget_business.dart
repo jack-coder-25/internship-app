@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:app/utils/helper.dart';
-import 'package:app/models/user.dart';
-import 'package:app/utils/authentication_service.dart';
-import 'package:app/constants/colors.dart';
+import 'package:mci/utils/helper.dart';
+import 'package:mci/models/user.dart';
+import 'package:mci/utils/authentication_service.dart';
+import 'package:mci/constants/colors.dart';
 
 class DrawerWidgetBusiness extends StatefulWidget {
   const DrawerWidgetBusiness({Key? key}) : super(key: key);
@@ -80,17 +80,6 @@ class _DrawerWidgetBusinessState extends State<DrawerWidgetBusiness> {
             },
             title: const Text(
               'Package Subscription',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.discount),
-            iconColor: Colors.white,
-            onTap: () {
-              Navigator.pushNamed(context, '/offers');
-            },
-            title: const Text(
-              'Offers',
               style: TextStyle(color: Colors.white),
             ),
           ),

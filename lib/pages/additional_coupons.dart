@@ -1,10 +1,10 @@
-import 'package:app/constants/colors.dart';
-import 'package:app/constants/constants.dart';
-import 'package:app/models/coupons.dart';
-import 'package:app/models/user.dart';
-import 'package:app/utils/api_service.dart';
-import 'package:app/utils/authentication_service.dart';
-import 'package:app/utils/helper.dart';
+import 'package:mci/constants/colors.dart';
+import 'package:mci/constants/constants.dart';
+import 'package:mci/models/coupons.dart';
+import 'package:mci/models/user.dart';
+import 'package:mci/utils/api_service.dart';
+import 'package:mci/utils/authentication_service.dart';
+import 'package:mci/utils/helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dialogs/flutter_dialogs.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +27,7 @@ class _AdditionalCouponsPageState extends State<AdditionalCouponsPage> {
       user = context.read<UserObject?>();
       setState(() {});
 
-      if (user?.profile?.data?.subscription == null) {
+      if (user?.profile?.data?.subscriptionId == null) {
         Navigator.pushReplacementNamed(context, '/subscription');
       }
     });
@@ -272,7 +272,7 @@ class _OtherCouponsGridState extends State<OtherCouponsGrid> {
             return FutureBuilder<AdditionalCouponResponse>(
               future: ApiService.instance.getBvcAdditionalCoupons(
                 userSnapshot.data!.authToken,
-                userSnapshot.data!.profile!.data!.subscriptionId!,
+                userSnapshot.data!.profile!.data!.subscriptionId ?? '',
               ),
               builder: ((context, snapshot) {
                 Widget children;

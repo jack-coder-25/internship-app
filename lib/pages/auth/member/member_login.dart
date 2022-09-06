@@ -1,11 +1,11 @@
-import 'package:app/pages/reset_password.dart';
+import 'package:mci/pages/reset_password.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:app/styles/buttton.dart';
-import 'package:app/utils/validation.dart';
-import 'package:app/utils/authentication_service.dart';
-import 'package:app/constants/colors.dart';
-import 'package:app/utils/helper.dart';
+import 'package:mci/styles/buttton.dart';
+import 'package:mci/utils/validation.dart';
+import 'package:mci/utils/authentication_service.dart';
+import 'package:mci/constants/colors.dart';
+import 'package:mci/utils/helper.dart';
 
 class MemberLoginPage extends StatefulWidget {
   MemberLoginPage({Key? key}) : super(key: key);

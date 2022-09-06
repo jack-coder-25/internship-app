@@ -1,8 +1,8 @@
-import 'package:app/constants/colors.dart';
-import 'package:app/models/notifications.dart';
-import 'package:app/models/user.dart';
-import 'package:app/utils/api_service.dart';
-import 'package:app/utils/authentication_service.dart';
+import 'package:mci/constants/colors.dart';
+import 'package:mci/models/notifications.dart';
+import 'package:mci/models/user.dart';
+import 'package:mci/utils/api_service.dart';
+import 'package:mci/utils/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

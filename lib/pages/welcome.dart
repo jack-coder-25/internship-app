@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app/constants/colors.dart';
+import 'package:mci/constants/colors.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);

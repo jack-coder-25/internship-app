@@ -1,12 +1,12 @@
-import 'package:app/constants/constants.dart';
-import 'package:app/pages/club_detail.dart';
-import 'package:app/utils/helper.dart';
+import 'package:mci/constants/constants.dart';
+import 'package:mci/pages/club_detail.dart';
+import 'package:mci/utils/helper.dart';
 import 'package:flutter/material.dart';
-import 'package:app/constants/colors.dart';
-import 'package:app/models/search.dart';
-import 'package:app/utils/api_service.dart';
-import 'package:app/models/user.dart';
-import 'package:app/utils/authentication_service.dart';
+import 'package:mci/constants/colors.dart';
+import 'package:mci/models/search.dart';
+import 'package:mci/utils/api_service.dart';
+import 'package:mci/models/user.dart';
+import 'package:mci/utils/authentication_service.dart';
 import 'package:provider/provider.dart';
 
 class ClubsAndAssociationsPage extends StatefulWidget {
@@ -28,7 +28,7 @@ class _ClubsAndAssociationsPageState extends State<ClubsAndAssociationsPage> {
       user = context.read<UserObject?>();
       setState(() {});
 
-      if (user?.profile?.data?.subscription == null) {
+      if (user?.profile?.data?.subscriptionId == null) {
         Navigator.pushReplacementNamed(context, '/subscription');
       }
     });
@@ -101,7 +101,7 @@ class _ClubsAndAssociationsPageState extends State<ClubsAndAssociationsPage> {
                               child: InkWell(
                                 onTap: () {
                                   var subscription = userSnapshot
-                                      .data?.profile?.data?.subscription;
+                                      .data?.profile?.data?.subscriptionId;
 
                                   var amcRequired = userSnapshot.data?.profile
                                       ?.data?.subscription?.amcRequired;

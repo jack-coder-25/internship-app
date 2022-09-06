@@ -1,13 +1,13 @@
-import 'package:app/constants/constants.dart';
-import 'package:app/styles/buttton.dart';
-import 'package:app/utils/helper.dart';
+import 'package:mci/constants/constants.dart';
+import 'package:mci/styles/buttton.dart';
+import 'package:mci/utils/helper.dart';
 import 'package:flutter/material.dart';
-import 'package:app/constants/colors.dart';
-import 'package:app/models/user.dart';
-import 'package:app/utils/authentication_service.dart';
+import 'package:mci/constants/colors.dart';
+import 'package:mci/models/user.dart';
+import 'package:mci/utils/authentication_service.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:app/utils/validation.dart';
+import 'package:mci/utils/validation.dart';
 
 class MemberProfilePage extends StatefulWidget {
   MemberProfilePage({Key? key}) : super(key: key);

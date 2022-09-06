@@ -1,11 +1,11 @@
-import 'package:app/pages/bookings/bookings_wrapper.dart';
+import 'package:mci/pages/bookings/bookings_wrapper.dart';
 import 'package:flutter/material.dart';
-import 'package:app/constants/colors.dart';
-import 'package:app/pages/home/home_wrapper.dart';
-import 'package:app/pages/notifications.dart';
-import 'package:app/pages/support.dart';
-import 'package:app/pages/wallet.dart';
-import 'package:app/widget/drawer_widget/drawer_wrapper.dart';
+import 'package:mci/constants/colors.dart';
+import 'package:mci/pages/home/home_wrapper.dart';
+import 'package:mci/pages/notifications.dart';
+import 'package:mci/pages/support.dart';
+import 'package:mci/pages/wallet.dart';
+import 'package:mci/widget/drawer_widget/drawer_wrapper.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 

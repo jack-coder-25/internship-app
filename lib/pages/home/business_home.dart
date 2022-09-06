@@ -1,13 +1,13 @@
-import 'package:app/constants/colors.dart';
+import 'package:mci/constants/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:app/models/slides.dart';
-import 'package:app/models/user.dart';
-import 'package:app/utils/api_service.dart';
-import 'package:app/utils/authentication_service.dart';
-import 'package:app/widget/drawer_widget/drawer_wrapper.dart';
+import 'package:mci/models/slides.dart';
+import 'package:mci/models/user.dart';
+import 'package:mci/utils/api_service.dart';
+import 'package:mci/utils/authentication_service.dart';
+import 'package:mci/widget/drawer_widget/drawer_wrapper.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:provider/provider.dart';
-import 'package:app/constants/constants.dart';
+import 'package:mci/constants/constants.dart';
 
 class BusinessHomePage extends StatefulWidget {
   const BusinessHomePage({Key? key}) : super(key: key);
@@ -191,6 +191,7 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
                                   size: 55,
                                   color: Color.fromARGB(255, 255, 255, 255),
                                 ),
+                                SizedBox(height: 10),
                                 Text(
                                   "Coupon Redemption",
                                   style: TextStyle(
@@ -219,8 +220,67 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
                                   size: 55,
                                   color: Color.fromARGB(255, 255, 255, 255),
                                 ),
+                                SizedBox(height: 10),
                                 Text(
                                   "Profile",
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 255, 255, 255),
+                                    fontSize: 15,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/offers');
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: const Color.fromARGB(255, 255, 0, 0),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(
+                                  Icons.discount,
+                                  size: 55,
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  "Offers",
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 255, 255, 255),
+                                    fontSize: 15,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/coupons');
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: const Color.fromARGB(255, 255, 0, 0),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(
+                                  Icons.percent,
+                                  size: 55,
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                ),
+                                SizedBox(height: 10),
+                                Text(
+                                  "Coupons",
                                   style: TextStyle(
                                     color: Color.fromARGB(255, 255, 255, 255),
                                     fontSize: 15,
@@ -251,6 +311,7 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
                                   size: 55,
                                   color: Color.fromARGB(255, 255, 255, 255),
                                 ),
+                                SizedBox(height: 10),
                                 Text(
                                   "Wallet",
                                   style: TextStyle(
@@ -283,6 +344,7 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
                                   size: 55,
                                   color: Color.fromARGB(255, 255, 255, 255),
                                 ),
+                                SizedBox(height: 10),
                                 Text(
                                   "Bookings",
                                   style: TextStyle(
@@ -311,6 +373,7 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
                                   size: 55,
                                   color: Color.fromARGB(255, 255, 255, 255),
                                 ),
+                                SizedBox(height: 10),
                                 Text(
                                   "Availability",
                                   style: TextStyle(
@@ -343,6 +406,7 @@ class _BusinessHomePageState extends State<BusinessHomePage> {
                                   size: 55,
                                   color: Color.fromARGB(255, 255, 255, 255),
                                 ),
+                                SizedBox(height: 10),
                                 Text(
                                   "Contact Admin",
                                   style: TextStyle(

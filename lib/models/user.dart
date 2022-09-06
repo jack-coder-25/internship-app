@@ -1,5 +1,5 @@
-import 'package:app/models/profile.dart';
-import 'package:app/utils/authentication_service.dart';
+import 'package:mci/models/profile.dart';
+import 'package:mci/utils/authentication_service.dart';
 
 class UserObject {
   UserObject({

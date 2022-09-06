@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:app/models/auth.dart';
-import 'package:app/utils/api_service.dart';
-import 'package:app/models/user.dart';
+import 'package:mci/models/auth.dart';
+import 'package:mci/utils/api_service.dart';
+import 'package:mci/models/user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 enum AccountType { member, business }

@@ -1,10 +1,10 @@
-import 'package:app/constants/colors.dart';
-import 'package:app/models/user.dart';
-import 'package:app/utils/api_service.dart';
-import 'package:app/utils/authentication_service.dart';
-import 'package:app/utils/helper.dart';
+import 'package:mci/constants/colors.dart';
+import 'package:mci/models/user.dart';
+import 'package:mci/utils/api_service.dart';
+import 'package:mci/utils/authentication_service.dart';
+import 'package:mci/utils/helper.dart';
 import 'package:flutter/material.dart';
-import 'package:app/styles/buttton.dart';
+import 'package:mci/styles/buttton.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 
@@ -157,9 +157,8 @@ class _CouponRedemptionPageState extends State<CouponRedemptionPage> {
                                                 title: Text(
                                                   history.data![index].code!,
                                                   style: const TextStyle(
-                                                    color: ColorConstants.red,
-                                                    fontSize: 18
-                                                  ),
+                                                      color: ColorConstants.red,
+                                                      fontSize: 18),
                                                 ),
                                                 subtitle: Html(
                                                   data: history.data![index]

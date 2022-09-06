@@ -1,7 +1,7 @@
-import 'package:app/models/user.dart';
-import 'package:app/pages/bookings/bookings_business.dart';
-import 'package:app/pages/bookings/bookings_member.dart';
-import 'package:app/utils/authentication_service.dart';
+import 'package:mci/models/user.dart';
+import 'package:mci/pages/bookings/bookings_business.dart';
+import 'package:mci/pages/bookings/bookings_member.dart';
+import 'package:mci/utils/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

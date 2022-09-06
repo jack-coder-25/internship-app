@@ -1,11 +1,11 @@
-import 'package:app/constants/constants.dart';
-import 'package:app/models/subscriptions.dart';
-import 'package:app/pages/subscription_detail.dart';
-import 'package:app/utils/api_service.dart';
+import 'package:mci/constants/constants.dart';
+import 'package:mci/models/subscriptions.dart';
+import 'package:mci/pages/subscription_detail.dart';
+import 'package:mci/utils/api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:app/models/user.dart';
-import 'package:app/utils/authentication_service.dart';
-import 'package:app/constants/colors.dart';
+import 'package:mci/models/user.dart';
+import 'package:mci/utils/authentication_service.dart';
+import 'package:mci/constants/colors.dart';
 import 'package:provider/provider.dart';
 
 class SubscriptionPage extends StatefulWidget {
