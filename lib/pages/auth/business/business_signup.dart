@@ -101,11 +101,12 @@ class _BusinessSignupPageState extends State<BusinessSignupPage> {
         context,
         '/otp-verify',
         arguments: OtpVerifyPageArguments(
-            user: user,
-            mobile: mobileTextController.text.trim(),
-            password: passwordTextController.text.trim(),
-            showOnboarding: true,
-            accountType: AccountType.business),
+          user: user,
+          mobile: mobileTextController.text.trim(),
+          password: passwordTextController.text.trim(),
+          showOnboarding: true,
+          accountType: AccountType.business,
+        ),
       );
     }
   }
